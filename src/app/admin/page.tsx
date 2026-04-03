@@ -55,7 +55,7 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: "countries", label: "Countries",   icon: "🌍" },
   { id: "stories",   label: "Stories",     icon: "📖" },
   { id: "apps",      label: "Travel Apps", icon: "📱" },
-  { id: "settings",  label: "Settings",    icon: "⚙️" },
+  { id: "settings",  label: "⚙ Settings",    icon: "🎛️" },
 ];
 function Sidebar({ tab, setTab, onLogout }: { tab: Tab; setTab: (t: Tab) => void; onLogout: () => void }) {
   return (
@@ -615,7 +615,7 @@ function Settings({ token }: { token: string }) {
 // ── Root ──────────────────────────────────────────────────────────────────────
 export default function AdminPage() {
   const [token, setToken] = useState<string | null>(null);
-  const [tab, setTab] = useState<Tab>("messages");
+  const [tab, setTab] = useState<Tab>("settings");
   useEffect(() => { const t = sessionStorage.getItem("ranzo_admin"); if (t) setToken(t); }, []);
   const login = (t: string) => { sessionStorage.setItem("ranzo_admin", t); setToken(t); };
   const logout = () => { sessionStorage.removeItem("ranzo_admin"); setToken(null); };
