@@ -1,632 +1,601 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, LogOut, RefreshCw, Mail, ShoppingBag, Trash2, LayoutGrid, Settings, Key, Globe, Save, BarChart3, Users, Monitor, MonitorSmartphone, MousePointer2, Paperclip, MapPin } from "lucide-react";
+import { CONTINENTS, STORIES, TRAVEL_APPS } from "@/lib/data";
 
-interface Submission {
-    id: string;
-    number?: number;
-    title?: string;
-    email?: string;
-    name?: string;
-    form_name?: string;
-    created_at: string;
-    human_fields?: Record<string, string>;
-    ordered_human_fields?: { name: string; title: string; value: string }[];
-    data: Record<string, string>;
+// ── Types ─────────────────────────────────────────────────────────────────────
+interface Msg { id: string; name: string; email: string; brand?: string; message: string; date: string; read: boolean; }
+type Tab = "messages" | "countries" | "stories" | "apps" | "settings";
+type Story = (typeof STORIES)[0];
+type App   = (typeof TRAVEL_APPS)[0];
+
+// ── Shared Styles ─────────────────────────────────────────────────────────────
+const card:  React.CSSProperties = { background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: 24 };
+const inp:   React.CSSProperties = { background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 14px", color: "#f8f8f0", fontSize: 13, width: "100%", outline: "none", boxSizing: "border-box" };
+const label: React.CSSProperties = { fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", color: "rgba(248,248,240,0.35)", marginBottom: 6, display: "block" };
+const btnP:  React.CSSProperties = { padding: "9px 22px", borderRadius: 8, fontSize: 12, fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", cursor: "pointer", border: "none", background: "linear-gradient(135deg,#7c3aed,#6366f1)", color: "#fff" };
+const btnG:  React.CSSProperties = { padding: "9px 22px", borderRadius: 8, fontSize: 12, fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", cursor: "pointer", background: "rgba(255,255,255,0.06)", color: "rgba(248,248,240,0.6)", border: "1px solid rgba(255,255,255,0.1)" };
+const btnD:  React.CSSProperties = { padding: "9px 22px", borderRadius: 8, fontSize: 12, fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", cursor: "pointer", border: "none", background: "rgba(239,68,68,0.12)", color: "#f87171" };
+const fmt = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+// ── Login ─────────────────────────────────────────────────────────────────────
+function Login({ onLogin }: { onLogin: (t: string) => void }) {
+  const [u, setU] = useState(""); const [p, setP] = useState(""); const [err, setErr] = useState(""); const [loading, setLoading] = useState(false);
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault(); setLoading(true); setErr("");
+    try {
+      const r = await fetch("/api/admin-auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: u, password: p }) });
+      const d = await r.json();
+      if (d.success) onLogin(d.token); else setErr("Invalid credentials");
+    } catch { setErr("Connection error"); }
+    setLoading(false);
+  };
+  return (
+    <div style={{ minHeight: "100vh", background: "#060608", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-ui)" }}>
+      <div style={{ position: "fixed", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(124,58,237,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ ...card, width: 380, position: "relative" }}>
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: 4, background: "linear-gradient(135deg,#a78bfa,#818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginBottom: 8 }}>RANZODZ</div>
+          <div style={{ fontSize: 11, color: "rgba(248,248,240,0.35)", letterSpacing: 2, textTransform: "uppercase" }}>Admin Dashboard</div>
+        </div>
+        <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div><span style={label}>Username</span><input style={inp} placeholder="admin" value={u} onChange={e => setU(e.target.value)} autoFocus /></div>
+          <div><span style={label}>Password</span><input style={inp} type="password" placeholder="••••••••" value={p} onChange={e => setP(e.target.value)} /></div>
+          {err && <div style={{ fontSize: 12, color: "#f87171", textAlign: "center" }}>{err}</div>}
+          <button type="submit" disabled={loading} style={{ ...btnP, padding: "13px 0", marginTop: 8, width: "100%" }}>{loading ? "Signing in…" : "Sign In →"}</button>
+        </form>
+      </motion.div>
+    </div>
+  );
 }
 
-export default function AdminDashboard() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
-    const [loginError, setLoginError] = useState("");
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+const TABS: { id: Tab; label: string; icon: string }[] = [
+  { id: "messages",  label: "Messages",    icon: "✉" },
+  { id: "countries", label: "Countries",   icon: "🌍" },
+  { id: "stories",   label: "Stories",     icon: "📖" },
+  { id: "apps",      label: "Travel Apps", icon: "📱" },
+  { id: "settings",  label: "Settings",    icon: "⚙️" },
+];
+function Sidebar({ tab, setTab, onLogout }: { tab: Tab; setTab: (t: Tab) => void; onLogout: () => void }) {
+  return (
+    <div style={{ width: 220, background: "#0d0d12", borderRight: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", padding: "0", flexShrink: 0, minHeight: "100vh" }}>
+      <div style={{ padding: "28px 24px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: 3, background: "linear-gradient(135deg,#a78bfa,#818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>RANZODZ</div>
+        <div style={{ fontSize: 9, color: "rgba(248,248,240,0.3)", letterSpacing: 2, marginTop: 3, textTransform: "uppercase" }}>Admin Panel</div>
+      </div>
+      <div style={{ flex: 1, padding: "16px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
+        {TABS.map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 10, border: "none", cursor: "pointer", width: "100%", textAlign: "left", transition: "all 0.2s", background: tab === t.id ? "rgba(124,58,237,0.18)" : "transparent", color: tab === t.id ? "#a78bfa" : "rgba(248,248,240,0.45)", fontWeight: tab === t.id ? 600 : 400, fontSize: 13 }}>
+            <span style={{ fontSize: 17 }}>{t.icon}</span>{t.label}
+          </button>
+        ))}
+      </div>
+      <div style={{ padding: "16px 12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <button onClick={onLogout} style={{ ...btnG, width: "100%", textAlign: "center" as const, padding: "10px 0" }}>Sign Out</button>
+      </div>
+    </div>
+  );
+}
 
-    const [showForgotPassword, setShowForgotPassword] = useState(false);
-    const [resetEmail, setResetEmail] = useState("");
-    const [resetStatus, setResetStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-
-    const [activeTab, setActiveTab] = useState<"all" | "contact" | "order" | "analytics" | "settings">("all");
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
-    const [statuses, setStatuses] = useState<Record<string, string>>({});
-    const [isLoading, setIsLoading] = useState(false);
-    const [storageStatus, setStorageStatus] = useState<{ type: string; is_kv_connected: boolean; is_blob_connected: boolean; is_resend_connected?: boolean }>({ type: "unknown", is_kv_connected: false, is_blob_connected: false, is_resend_connected: false });
-
-    // New States for Analytics & Settings Configs
-    const [timeFilter, setTimeFilter] = useState<"24h" | "7d" | "30d" | "all">("all");
-    const [analytics, setAnalytics] = useState<any>(null);
-    const [siteSettings, setSiteSettings] = useState<Record<string, string>>({
-        global_email: "",
-        global_phone: "",
-        hero_title: "",
-    });
-    const [isSavingSettings, setIsSavingSettings] = useState(false);
-
-    useEffect(() => {
-        const authStatus = sessionStorage.getItem("admin_auth");
-        if (authStatus === "true") setIsAuthenticated(true);
-        try {
-            const savedStatuses = JSON.parse(localStorage.getItem("admin_submission_statuses") || "{}");
-            setStatuses(savedStatuses);
-        } catch (e) { }
-    }, []);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            fetchSubmissions();
-            fetchAnalytics(timeFilter);
-            fetchSettings();
-        }
-    }, [isAuthenticated, timeFilter]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoginError("");
-        setIsLoggingIn(true);
-        await new Promise(r => setTimeout(r, 800));
-
-        if (username && password) {
-            try {
-                const res = await fetch("/api/admin-auth", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ username, password }),
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    sessionStorage.setItem("admin_token", data.token);
-                    setIsAuthenticated(true);
-                    sessionStorage.setItem("admin_auth", "true");
-                } else {
-                    setLoginError("Invalid username or password");
-                }
-            } catch {
-                setLoginError("Connection error. Please try again.");
-            }
-        } else {
-            setLoginError("Please enter your credentials.");
-        }
-        setIsLoggingIn(false);
-    };
-
-    const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setResetStatus("submitting");
-        try {
-            const formData = new FormData();
-            formData.append("form-name", "password_reset");
-            formData.append("email", resetEmail);
-            await fetch("/", { method: "POST", body: new URLSearchParams(formData as any).toString() });
-            setResetStatus("success");
-            setTimeout(() => { setShowForgotPassword(false); setResetStatus("idle"); setResetEmail(""); }, 4000);
-        } catch (err) {
-            setResetStatus("error");
-            setTimeout(() => setResetStatus("idle"), 4000);
-        }
-    };
-
-    const handleLogout = () => {
-        sessionStorage.removeItem("admin_auth");
-        sessionStorage.removeItem("admin_token");
-        setIsAuthenticated(false);
-        setUsername("");
-        setPassword("");
-    };
-
-    const fetchAnalytics = async (filter = timeFilter) => {
-        try {
-            const res = await fetch(`/api/analytics?filter=${filter}`);
-            if (res.ok) {
-                const data = await res.json();
-                setAnalytics(data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch analytics:", error);
-        }
-    };
-
-    const fetchSettings = async () => {
-        try {
-            const res = await fetch("/api/settings");
-            if (res.ok) {
-                const data = await res.json();
-                setSiteSettings(prev => ({ ...prev, ...data }));
-            }
-        } catch (error) {
-            console.error("Failed to fetch settings:", error);
-        }
-    };
-
-    const saveSettingItem = async (key: string, value: string) => {
-        try {
-            await fetch("/api/settings", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ key, value }),
-            });
-        } catch (error) {
-            console.error("Error saving setting", key, error);
-            throw error;
-        }
-    };
-
-    const handleSaveSettings = async () => {
-        setIsSavingSettings(true);
-        try {
-            await saveSettingItem("global_email", siteSettings.global_email);
-            await saveSettingItem("global_phone", siteSettings.global_phone);
-            await saveSettingItem("hero_title", siteSettings.hero_title);
-            alert("Settings saved dynamically to the Database!");
-        } catch (error) {
-            alert("Failed to save settings. Check logs.");
-        } finally {
-            setIsSavingSettings(false);
-        }
-    };
-
-    const fetchSubmissions = async () => {
-        setIsLoading(true);
-        try {
-            const adminToken = sessionStorage.getItem("admin_token");
-            if (!adminToken) throw new Error("No admin token found. Please re-login.");
-
-            const res = await fetch("/api/submit", { headers: { Authorization: `Bearer ${adminToken}` } });
-            if (!res.ok) throw new Error(`API error: ${res.status}`);
-            
-            const jsonResponse = await res.json();
-            const apiData: Submission[] = jsonResponse.submissions || [];
-
-            if (jsonResponse.storage) setStorageStatus(jsonResponse.storage);
-
-            let localData: Submission[] = [];
-            try { localData = JSON.parse(localStorage.getItem("admin_local_submissions") || "[]"); } catch (e) { }
-
-            const syncedLocalData = localData.filter(localSub => {
-                const localEmail = localSub.data.email;
-                const localType = localSub.form_name || localSub.data["form-name"];
-                return !apiData.some(apiSub => {
-                    const apiEmail = apiSub.data.email || apiSub.email;
-                    const apiType = apiSub.form_name || apiSub.data["form-name"];
-                    return apiEmail === localEmail && apiType === localType;
-                });
-            });
-
-            setSubmissions([...syncedLocalData, ...apiData]);
-            setLoginError("")
-        } catch (error: any) {
-            console.error(error);
-            setLoginError("Failed to fetch online data. Check your connection or re-deploy the site.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleDeleteSubmission = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this submission?")) return;
-        try {
-            const adminToken = sessionStorage.getItem("admin_token");
-            if (!id.startsWith('local-')) {
-                const res = await fetch(`/api/submit?id=${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${adminToken}` } });
-                if (!res.ok) throw new Error("Failed to delete from server");
-            }
-            const localData: Submission[] = JSON.parse(localStorage.getItem("admin_local_submissions") || "[]");
-            const updatedLocal = localData.filter(s => s.id !== id);
-            localStorage.setItem("admin_local_submissions", JSON.stringify(updatedLocal));
-            setSubmissions(prev => prev.filter(s => s.id !== id));
-        } catch (error: any) {
-            alert(error.message);
-        }
-    };
-
-    const handleStatusChange = (id: string, newStatus: string) => {
-        const updated = { ...statuses, [id]: newStatus };
-        setStatuses(updated);
-        localStorage.setItem("admin_submission_statuses", JSON.stringify(updated));
-    };
-
-    const displayedSubmissions = submissions.filter(s => {
-        if (activeTab === "settings" || activeTab === "analytics") return false;
-        const type = (s.form_name || s.data["form-name"] || "").toLowerCase();
-        if (activeTab === "all") return type === "contact" || type === "order";
-        return type === activeTab;
-    }).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-
-    if (!isAuthenticated) {
-        return (
-            <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--background)]">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                    className="w-full max-w-md bg-[var(--card)] p-8 rounded-2xl border border-[var(--border)] shadow-xl relative overflow-hidden"
-                >
-                    <AnimatePresence mode="wait">
-                        {!showForgotPassword ? (
-                            <motion.div key="login" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.2 }}>
-                                <div className="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mb-6 mx-auto"><Lock size={24} /></div>
-                                <h1 className="text-2xl font-bold text-center mb-2 text-[var(--foreground)]">Admin Access</h1>
-                                <p className="text-[var(--muted-foreground)] text-sm text-center mb-8">Enter your credentials to access the admin portal.</p>
-
-                                <form onSubmit={handleLogin} className="space-y-4">
-                                    <div className="space-y-1.5">
-                                        <label className="text-sm font-medium text-[var(--foreground)]">Username</label>
-                                        <input type="text" required value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-blue-500/50 outline-none text-[var(--foreground)]" />
-                                    </div>
-                                    <div className="space-y-1.5">
-                                        <div className="flex justify-between items-center">
-                                            <label className="text-sm font-medium text-[var(--foreground)]">Password</label>
-                                            <button type="button" onClick={() => setShowForgotPassword(true)} className="text-xs text-blue-500 hover:text-blue-400 font-medium transition-colors">Forgot password?</button>
-                                        </div>
-                                        <input type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••••••••••" className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-blue-500/50 outline-none text-[var(--foreground)]" />
-                                    </div>
-                                    {loginError && <p className="text-red-500 text-sm text-center">{loginError}</p>}
-                                    <button type="submit" disabled={isLoggingIn} className="w-full mt-4 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-semibold flex justify-center items-center gap-2 disabled:opacity-70 transition-all">
-                                        {isLoggingIn ? "Verifying..." : "Login"}
-                                    </button>
-                                </form>
-                            </motion.div>
-                        ) : (
-                            <motion.div key="forgot" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ duration: 0.2 }}>
-                                <div className="w-12 h-12 bg-purple-500/10 text-purple-500 rounded-full flex items-center justify-center mb-6 mx-auto"><Mail size={24} /></div>
-                                <h1 className="text-2xl font-bold text-center mb-2 text-[var(--foreground)]">Reset Password</h1>
-                                <p className="text-[var(--muted-foreground)] text-sm text-center mb-8">Enter your admin email to receive a secure reset link.</p>
-
-                                <form name="password_reset" method="POST" onSubmit={handlePasswordReset} className="space-y-4">
-                                    <input type="hidden" name="form-name" value="password_reset" />
-                                    <div className="space-y-1.5">
-                                        <label className="text-sm font-medium text-[var(--foreground)]">Admin Email</label>
-                                        <input type="email" name="email" required value={resetEmail} onChange={e => setResetEmail(e.target.value)} placeholder="admin@example.com" className="w-full px-4 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--background)] focus:ring-2 focus:ring-purple-500/50 outline-none text-[var(--foreground)]" />
-                                    </div>
-                                    <button type="submit" disabled={resetStatus === "submitting" || resetStatus === "success"} className={`w-full mt-4 py-3 rounded-xl text-white font-semibold flex justify-center items-center gap-2 transition-all ${resetStatus === "success" ? "bg-emerald-500" : "bg-purple-600 hover:bg-purple-700"} disabled:opacity-70`}>
-                                        {resetStatus === "submitting" ? "Sending..." : resetStatus === "success" ? "Reset Link Sent!" : "Send Reset Link"}
-                                    </button>
-                                    {resetStatus === "error" && <p className="text-red-500 text-sm text-center mt-2">Failed to send request. Try again.</p>}
-                                    <button type="button" onClick={() => setShowForgotPassword(false)} className="w-full py-2.5 text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors mt-2">Back to Login</button>
-                                </form>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </motion.div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="min-h-screen bg-[var(--muted)] pb-20">
-            <header className="bg-[var(--card)] border-b border-[var(--border)] sticky top-0 z-40">
-                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <h1 className="font-bold text-xl flex items-center gap-2 text-[var(--foreground)]">
-                        <Lock size={18} className="text-blue-500" /> Admin Dashboard
-                    </h1>
-                    <div className="flex items-center gap-4">
-                        <button onClick={() => { fetchSubmissions(); fetchAnalytics(); fetchSettings(); }} disabled={isLoading} className="p-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--muted)] rounded-lg transition-all" title="Refresh Data">
-                            <RefreshCw size={18} className={isLoading ? "animate-spin" : ""} />
-                        </button>
-                        <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-500 hover:bg-red-500/10 rounded-lg transition-all">
-                            <LogOut size={16} /> <span className="hidden sm:inline">Logout</span>
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <main className="max-w-6xl mx-auto px-6 mt-8">
-                <div className="flex flex-wrap gap-4 mb-8">
-                    <button onClick={() => setActiveTab("analytics")} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${activeTab === "analytics" ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/25" : "bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] hover:bg-white/5"}`}>
-                        <BarChart3 size={18} /> Analytics Space
-                    </button>
-                    <button onClick={() => setActiveTab("all")} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${activeTab === "all" ? "bg-[var(--accent)] text-white shadow-lg shadow-blue-500/25" : "bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] hover:bg-white/5"}`}>
-                        <LayoutGrid size={18} /> All Submissions
-                    </button>
-                    <button onClick={() => setActiveTab("order")} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${activeTab === "order" ? "bg-amber-600 text-white shadow-lg shadow-amber-600/25" : "bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] hover:bg-white/5"}`}>
-                        <ShoppingBag size={18} /> Requests Only
-                    </button>
-                    <button onClick={() => setActiveTab("contact")} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${activeTab === "contact" ? "bg-purple-600 text-white shadow-lg shadow-purple-600/25" : "bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] hover:bg-white/5"}`}>
-                        <Mail size={18} /> Messages
-                    </button>
-                    <button onClick={() => setActiveTab("settings")} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${activeTab === "settings" ? "bg-slate-700 text-white shadow-lg shadow-slate-700/25" : "bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)] hover:bg-white/5"}`}>
-                        <Settings size={18} /> CMS Settings
-                    </button>
-                </div>
-
-                {isLoading && displayedSubmissions.length === 0 && activeTab !== "analytics" && activeTab !== "settings" ? (
-                    <div className="flex justify-center py-20"><RefreshCw size={24} className="animate-spin text-[var(--muted-foreground)]" /></div>
-                ) : activeTab === "analytics" ? (
-                    <div className="space-y-6">
-                        {/* Filter bar */}
-                        <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-bold">Analytics Space</h2>
-                            <select
-                                value={timeFilter}
-                                onChange={(e) => setTimeFilter(e.target.value as any)}
-                                className="bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] text-sm rounded-lg px-4 py-2"
-                            >
-                                <option value="all">All Time</option>
-                                <option value="30d">Last 30 Days</option>
-                                <option value="7d">Last 7 Days</option>
-                                <option value="24h">Last 24 Hours</option>
-                            </select>
-                        </div>
-
-                        {/* KPI Cards Row */}
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
-                                <Users size={24} className="text-emerald-500 mb-2" />
-                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Total Views</p>
-                                <p className="text-3xl font-black mt-1">{analytics?.totalViews || 0}</p>
-                            </div>
-                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
-                                <Globe size={24} className="text-blue-500 mb-2" />
-                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Unique Visitors</p>
-                                <p className="text-3xl font-black mt-1">{analytics?.uniqueVisitors || 0}</p>
-                            </div>
-                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
-                                <Users size={24} className="text-purple-500 mb-2" />
-                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">New Visitors</p>
-                                <p className="text-3xl font-black mt-1">{analytics?.newVisitors ?? "—"}</p>
-                            </div>
-                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
-                                <RefreshCw size={24} className="text-amber-500 mb-2" />
-                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Returning</p>
-                                <p className="text-3xl font-black mt-1">{analytics?.returningVisitors ?? "—"}</p>
-                            </div>
-                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
-                                <BarChart3 size={24} className="text-rose-500 mb-2" />
-                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Avg Session</p>
-                                <p className="text-3xl font-black mt-1">{analytics?.avgSession != null ? `${analytics.avgSession}s` : "—"}</p>
-                            </div>
-                        </div>
-
-                        {/* Left column: breakdowns — Right column: logs */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                            {/* Breakdown column */}
-                            <div className="md:col-span-1 space-y-6">
-
-                                {/* Top Pages */}
-                                <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl space-y-3">
-                                    <h3 className="text-base font-bold flex items-center gap-2"><LayoutGrid size={16} className="text-purple-500" /> Top Pages</h3>
-                                    {analytics?.topPages?.length > 0 ? (
-                                        <ul className="space-y-2">
-                                            {analytics.topPages.map((page: any, idx: number) => (
-                                                <li key={idx} className="flex items-center justify-between text-sm">
-                                                    <span className="font-medium truncate max-w-[160px]">{page.name}</span>
-                                                    <span className="text-[var(--muted-foreground)] font-bold">{page.count}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : <p className="text-[var(--muted-foreground)] text-sm">No data yet.</p>}
-                                </div>
-
-                                {/* Browsers */}
-                                {[
-                                    { key: "browsers", label: "Browsers", color: "bg-blue-500", icon: <Globe size={16} className="text-blue-500" /> },
-                                    { key: "devices", label: "Devices", color: "bg-emerald-500", icon: <MonitorSmartphone size={16} className="text-emerald-500" /> },
-                                    { key: "operatingSystems", label: "Operating Systems", color: "bg-amber-500", icon: <Monitor size={16} className="text-amber-500" /> },
-                                    { key: "topCountries", label: "Locations", color: "bg-rose-500", icon: <MapPin size={16} className="text-rose-500" /> },
-                                    { key: "topReferrers", label: "Referrers", color: "bg-indigo-500", icon: <Globe size={16} className="text-indigo-400" /> },
-                                    { key: "topLanguages", label: "Languages", color: "bg-teal-500", icon: <Globe size={16} className="text-teal-400" /> },
-                                ].map(({ key, label, color, icon }) => (
-                                    <div key={key} className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl space-y-3">
-                                        <h3 className="text-base font-bold flex items-center gap-2">{icon} {label}</h3>
-                                        {analytics?.[key]?.length > 0 ? (
-                                            <ul className="space-y-2">
-                                                {analytics[key].map((item: any, idx: number) => {
-                                                    const pct = Math.round((item.count / (analytics.totalViews || 1)) * 100);
-                                                    return (
-                                                        <li key={idx} className="text-sm">
-                                                            <div className="flex justify-between mb-1">
-                                                                <span className="font-medium truncate max-w-[140px]">{item.name}</span>
-                                                                <span className="text-[var(--muted-foreground)]">{pct}%</span>
-                                                            </div>
-                                                            <div className="w-full bg-[var(--muted)] rounded-full h-1.5">
-                                                                <div className={`${color} h-1.5 rounded-full`} style={{ width: `${pct}%` }}></div>
-                                                            </div>
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        ) : <p className="text-[var(--muted-foreground)] text-sm">No data yet.</p>}
-                                    </div>
-                                ))}
-
-                                {/* Peak Traffic Hours */}
-                                <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl">
-                                    <h3 className="text-base font-bold flex items-center gap-2 mb-4"><BarChart3 size={16} className="text-sky-400" /> Peak Traffic Hours</h3>
-                                    {analytics?.peakHours?.length > 0 ? (
-                                        <div className="flex items-end gap-[2px] h-20">
-                                            {analytics.peakHours.map((h: any, idx: number) => {
-                                                const maxCount = Math.max(...analytics.peakHours.map((x: any) => x.count), 1);
-                                                const heightPct = Math.max((h.count / maxCount) * 100, 4);
-                                                return (
-                                                    <div key={idx} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
-                                                        <div title={`${h.hour}:00 — ${h.count} visits`} className="w-full bg-sky-500/70 rounded-sm hover:bg-sky-400 transition-colors" style={{ height: `${heightPct}%` }}></div>
-                                                        {h.hour % 6 === 0 && <span className="text-[9px] text-[var(--muted-foreground)]">{h.hour}h</span>}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    ) : <p className="text-[var(--muted-foreground)] text-sm">No data yet.</p>}
-                                </div>
-                            </div>
-
-                            {/* Live Traffic Logs */}
-                            <div className="md:col-span-2 bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col">
-                                <h3 className="text-xl font-bold mb-4">Live Traffic Log</h3>
-                                <div className="flex-1 overflow-auto">
-                                    {analytics?.recentLogs?.length > 0 ? (
-                                        <table className="w-full text-sm">
-                                            <thead>
-                                                <tr className="text-left text-[var(--muted-foreground)] text-xs uppercase tracking-wider border-b border-[var(--border)]">
-                                                    <th className="pb-2 pr-3">Page</th>
-                                                    <th className="pb-2 pr-3 hidden md:table-cell">Device / OS</th>
-                                                    <th className="pb-2 pr-3 hidden md:table-cell">Location</th>
-                                                    <th className="pb-2 pr-3 hidden lg:table-cell">Referrer</th>
-                                                    <th className="pb-2 text-right">Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {analytics.recentLogs.map((log: any, idx: number) => (
-                                                    <tr key={idx} className="border-b border-[var(--border)] hover:bg-white/5 transition-colors">
-                                                        <td className="py-2 pr-3">
-                                                            <div className="flex items-center gap-2">
-                                                                {log.device === "Mobile" ? <MonitorSmartphone className="text-purple-400 shrink-0" size={14}/> : <Monitor className="text-sky-400 shrink-0" size={14}/>}
-                                                                <span className="font-medium truncate max-w-[120px]">{log.pathname}</span>
-                                                            </div>
-                                                            <span className="text-[10px] text-[var(--muted-foreground)]">{log.browser}</span>
-                                                        </td>
-                                                        <td className="py-2 pr-3 hidden md:table-cell text-[var(--muted-foreground)]">
-                                                            {log.device}{log.os ? ` · ${log.os}` : ""}
-                                                        </td>
-                                                        <td className="py-2 pr-3 hidden md:table-cell text-[var(--muted-foreground)]">
-                                                            {[log.city, log.country].filter(Boolean).join(", ") || "—"}
-                                                        </td>
-                                                        <td className="py-2 pr-3 hidden lg:table-cell text-[var(--muted-foreground)]">{log.referrer || "Direct"}</td>
-                                                        <td className="py-2 text-right text-[var(--muted-foreground)] tabular-nums text-xs whitespace-nowrap">
-                                                            {new Date(log.visitedAt).toLocaleTimeString()}<br/>
-                                                            <span className="text-[10px]">{new Date(log.visitedAt).toLocaleDateString()}</span>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    ) : (
-                                        <p className="text-[var(--muted-foreground)] py-8 text-center border border-dashed rounded-lg">No traffic recorded yet. Try reloading the homepage.</p>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : activeTab === "settings" ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Dynamic CMS Configurations */}
-                        <div className="bg-[var(--card)] p-8 rounded-2xl border border-[var(--border)] shadow-xl">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-2 bg-blue-500/10 text-blue-500 rounded-lg"><Settings size={20} /></div>
-                                <h2 className="text-xl font-bold">Content CMS Form</h2>
-                            </div>
-                            <p className="text-sm text-[var(--muted-foreground)] mb-6">Modify these values to immediately update your public portfolio content across all sections using Prisma Postgres.</p>
-
-                            <div className="space-y-4">
-                                <div className="space-y-1">
-                                    <label className="text-sm font-semibold">Contact Email</label>
-                                    <input type="text" value={siteSettings.global_email || ""} onChange={(e) => setSiteSettings({ ...siteSettings, global_email: e.target.value })} className="w-full px-4 py-2 border rounded-xl bg-[var(--background)] border-[var(--border)]" placeholder="e.g. yourname@gmail.com" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-sm font-semibold">Contact Phone Number</label>
-                                    <input type="text" value={siteSettings.global_phone || ""} onChange={(e) => setSiteSettings({ ...siteSettings, global_phone: e.target.value })} className="w-full px-4 py-2 border rounded-xl bg-[var(--background)] border-[var(--border)]" placeholder="e.g. +1 (555) 123-4567" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-sm font-semibold">Hero Title Text</label>
-                                    <input type="text" value={siteSettings.hero_title || ""} onChange={(e) => setSiteSettings({ ...siteSettings, hero_title: e.target.value })} className="w-full px-4 py-2 border rounded-xl bg-[var(--background)] border-[var(--border)]" placeholder="e.g. Building Next-Gen Experiences" />
-                                </div>
-
-                                <button onClick={handleSaveSettings} disabled={isSavingSettings} className="w-full mt-4 py-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all">
-                                    <Save size={18} /> {isSavingSettings ? "Saving to Database..." : "Save Settings to Live Site"}
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Vercel KV Status (Kept exactly as before) */}
-                        <div className="bg-[var(--card)] p-8 rounded-2xl border border-[var(--border)] shadow-xl">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-2 bg-slate-500/10 text-slate-500 rounded-lg"><Key size={20} /></div>
-                                <h2 className="text-xl font-bold">Storage Integrations</h2>
-                            </div>
-                            <div className="space-y-6">
-                                <div className={`p-4 rounded-xl border ${storageStatus.is_kv_connected ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-amber-500/5 border-amber-500/20'}`}>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <div className={`w-2 h-2 rounded-full ${storageStatus.is_kv_connected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-                                        <p className={`text-sm font-bold uppercase tracking-wider ${storageStatus.is_kv_connected ? 'text-emerald-500' : 'text-amber-500'}`}>Redis KV: {storageStatus.is_kv_connected ? 'Connected' : 'Disconnected'}</p>
-                                    </div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <div className={`w-2 h-2 rounded-full ${storageStatus.is_blob_connected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-                                        <p className={`text-sm font-bold uppercase tracking-wider ${storageStatus.is_blob_connected ? 'text-emerald-500' : 'text-amber-500'}`}>Vercel Blob: {storageStatus.is_blob_connected ? 'Connected' : 'Disconnected'}</p>
-                                    </div>
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <div className={`w-2 h-2 rounded-full ${storageStatus.is_resend_connected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
-                                        <p className={`text-sm font-bold uppercase tracking-wider ${storageStatus.is_resend_connected ? 'text-emerald-500' : 'text-amber-500'}`}>Resend Email: {storageStatus.is_resend_connected ? 'Connected' : 'Disconnected'}</p>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-[var(--muted-foreground)] pb-6 mb-2 border-b border-[var(--border)]">Your Postgres connection is driven via Prisma globally.</p>
-                                <button onClick={() => fetchSubmissions()} className="w-full py-3 bg-[var(--muted)] hover:bg-[var(--border)] font-bold rounded-xl flex items-center justify-center gap-2 transition-all">
-                                    <RefreshCw size={18} className={isLoading ? "animate-spin" : ""} /> Check Connection Status
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                ) : displayedSubmissions.length === 0 ? (
-                    <div className="text-center py-20 border border-[var(--border)] border-dashed rounded-2xl bg-[var(--card)]">
-                        <p className="text-[var(--muted-foreground)]">No submissions found.</p>
-                    </div>
-                ) : (
-                    <div className="grid gap-4">
-                        <AnimatePresence>
-                            {displayedSubmissions.map((sub) => (
-                                <motion.div key={sub.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm relative group">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-                                        <div className="flex items-center gap-3">
-                                            <h3 className="font-bold text-lg text-[var(--foreground)]">{sub.data.name || sub.data.first_name || "Unknown"}</h3>
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${sub.form_name?.toLowerCase() === "contact" ? "bg-purple-500/10 text-purple-500" : "bg-amber-500/10 text-amber-500"}`}>
-                                                {sub.form_name?.toLowerCase() === 'contact' ? 'Message' : 'Request'}
-                                            </span>
-                                            <select
-                                                value={statuses[sub.id] || "new"}
-                                                onChange={(e) => handleStatusChange(sub.id, e.target.value)}
-                                                className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer appearance-none border-none outline-none pr-6 bg-transparent uppercase tracking-wider
-                                                    ${(statuses[sub.id] || "new") === "new" ? "text-blue-500 bg-blue-500/10" : ""}
-                                                    ${(statuses[sub.id]) === "in-progress" ? "text-amber-500 bg-amber-500/10" : ""}
-                                                    ${(statuses[sub.id]) === "completed" ? "text-emerald-500 bg-emerald-500/10" : ""}
-                                                    ${(statuses[sub.id]) === "archived" ? "text-slate-500 bg-slate-500/10" : ""}
-                                                `}
-                                                style={{ backgroundImage: `url('data:image/svg+xml;utf8,<svg fill="currentColor" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')`, backgroundRepeat: "no-repeat", backgroundPosition: "right 4px center" }}
-                                            >
-                                                <option value="new">New</option>
-                                                <option value="in-progress">In Progress</option>
-                                                <option value="completed">Completed</option>
-                                                <option value="archived">Archived</option>
-                                            </select>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <span className="text-xs text-[var(--muted-foreground)]">
-                                                {new Date(sub.created_at).toLocaleString()}
-                                            </span>
-                                            <button onClick={() => handleDeleteSubmission(sub.id)} className="text-red-500/50 hover:text-red-500 transition-colors p-2 hover:bg-red-500/10 rounded-lg">
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <a href={`mailto:${sub.data.email}`} className="text-sm text-blue-500 hover:underline">{sub.data.email}</a>
-                                        {sub.data.service && (
-                                            <div className="mt-1 flex items-center justify-end w-full">
-                                                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-500">
-                                                    {sub.data.service}
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="mt-4 pt-4 border-t border-[var(--border)]">
-                                        <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wider mb-2 font-semibold">Requirements / Message</p>
-                                        <p className="text-[var(--foreground)] whitespace-pre-wrap text-sm leading-relaxed">
-                                            {sub.data.requirements || sub.data.message || "No message provided."}
-                                        </p>
-                                    </div>
-
-                                    {sub.data.attachment && (
-                                        <div className="mt-4 pt-4 border-t border-[var(--border)] flex">
-                                            <a href={sub.data.attachment} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--accent)]/10 hover:bg-[var(--accent)]/20 text-[var(--accent)] rounded-lg text-sm font-semibold transition-colors">
-                                                <Paperclip size={16} /> View Attachment
-                                            </a>
-                                        </div>
-                                    )}
-                                </motion.div>
-                            ))}
-                        </AnimatePresence>
-                    </div>
-                )}
-            </main>
+// ── Messages ──────────────────────────────────────────────────────────────────
+function Messages({ token }: { token: string }) {
+  const [msgs, setMsgs] = useState<Msg[]>([]); const [sel, setSel] = useState<Msg | null>(null); const [loading, setLoading] = useState(true);
+  const load = useCallback(async () => {
+    setLoading(true);
+    try { const r = await fetch("/api/admin/messages", { headers: { Authorization: `Bearer ${token}` } }); const d = await r.json(); setMsgs(d.messages ?? []); } catch { setMsgs([]); }
+    setLoading(false);
+  }, [token]);
+  useEffect(() => { load(); }, [load]);
+  const mark = async (id: string, read: boolean) => { await fetch("/api/admin/messages", { method: "PATCH", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ id, read }) }); setMsgs(m => m.map(x => x.id === id ? { ...x, read } : x)); if (sel?.id === id) setSel(s => s ? { ...s, read } : s); };
+  const del = async (id: string) => { if (!confirm("Delete this message?")) return; await fetch("/api/admin/messages", { method: "DELETE", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ id }) }); setMsgs(m => m.filter(x => x.id !== id)); if (sel?.id === id) setSel(null); };
+  const unread = msgs.filter(m => !m.read).length;
+  return (
+    <div style={{ display: "flex", height: "100vh" }}>
+      {/* list */}
+      <div style={{ width: 320, borderRight: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", flexShrink: 0 }}>
+        <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: "#f8f8f0" }}>Inbox</span>
+          {unread > 0 && <span style={{ background: "#7c3aed", color: "#fff", fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 999 }}>{unread}</span>}
+          <button onClick={load} style={{ ...btnG, marginLeft: "auto", padding: "5px 12px", fontSize: 11 }}>↻ Refresh</button>
         </div>
-    );
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {loading ? <div style={{ padding: 24, color: "rgba(248,248,240,0.35)", fontSize: 13 }}>Loading…</div>
+            : msgs.length === 0 ? (
+              <div style={{ padding: 40, textAlign: "center", color: "rgba(248,248,240,0.25)" }}>
+                <div style={{ fontSize: 36, marginBottom: 12 }}>✉</div>
+                <div style={{ fontSize: 13 }}>No messages yet</div>
+              </div>
+            ) : msgs.map(m => (
+              <div key={m.id} onClick={() => { setSel(m); if (!m.read) mark(m.id, true); }} style={{ padding: "16px 20px", cursor: "pointer", borderBottom: "1px solid rgba(255,255,255,0.05)", background: sel?.id === m.id ? "rgba(124,58,237,0.1)" : "transparent", transition: "background 0.15s" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                  {!m.read && <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#7c3aed", flexShrink: 0 }} />}
+                  <span style={{ fontSize: 13, fontWeight: m.read ? 400 : 600, color: m.read ? "rgba(248,248,240,0.65)" : "#f8f8f0", flex: 1 }}>{m.name}</span>
+                  <span style={{ fontSize: 10, color: "rgba(248,248,240,0.3)", flexShrink: 0 }}>{fmt(m.date)}</span>
+                </div>
+                {m.brand && <div style={{ fontSize: 11, color: "#a78bfa", marginBottom: 3 }}>{m.brand}</div>}
+                <div style={{ fontSize: 12, color: "rgba(248,248,240,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.message}</div>
+              </div>
+            ))}
+        </div>
+      </div>
+      {/* detail */}
+      <div style={{ flex: 1, padding: 36, overflowY: "auto" }}>
+        {!sel ? (
+          <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12, color: "rgba(248,248,240,0.2)" }}>
+            <span style={{ fontSize: 44 }}>✉</span><span style={{ fontSize: 14 }}>Select a message to read</span>
+          </div>
+        ) : (
+          <motion.div key={sel.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24, gap: 16 }}>
+              <div>
+                <div style={{ fontSize: 22, fontWeight: 700, color: "#f8f8f0", marginBottom: 6 }}>{sel.name}</div>
+                <a href={`mailto:${sel.email}`} style={{ fontSize: 13, color: "#818cf8", textDecoration: "none" }}>{sel.email}</a>
+                {sel.brand && <div style={{ marginTop: 8, display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 999, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", fontSize: 12, color: "rgba(248,248,240,0.6)" }}>🏢 {sel.brand}</div>}
+              </div>
+              <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
+                <button onClick={() => mark(sel.id, !sel.read)} style={btnG}>{sel.read ? "Mark Unread" : "Mark Read"}</button>
+                <button onClick={() => del(sel.id)} style={btnD}>Delete</button>
+              </div>
+            </div>
+            <div style={{ fontSize: 11, color: "rgba(248,248,240,0.3)", marginBottom: 20 }}>📅 {fmt(sel.date)}</div>
+            <div style={{ ...card, fontSize: 14, lineHeight: 1.85, color: "rgba(248,248,240,0.8)", whiteSpace: "pre-wrap" }}>{sel.message}</div>
+            <a href={`mailto:${sel.email}?subject=Re: Your inquiry`} style={{ display: "inline-block", marginTop: 20, ...btnP, textDecoration: "none" }}>Reply via Email ↗</a>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Countries ─────────────────────────────────────────────────────────────────
+type Photo = { src: string; caption: string };
+type CountryEntry = { name: string; flag: string; photos?: Photo[] };
+type ContinentEntry = { id: string; name: string; emoji: string; color: string; countries: CountryEntry[] };
+
+function Countries({ token }: { token: string }) {
+  const [continents, setContinents] = useState<ContinentEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [active, setActive] = useState(CONTINENTS[0].id);
+  const [editCountry, setEditCountry] = useState<string | null>(null);
+  const [nc, setNc] = useState({ name: "", flag: "" });
+  const [newPhoto, setNewPhoto] = useState({ src: "", caption: "" });
+  const [saving, setSaving] = useState(false); const [saved, setSaved] = useState(false);
+
+  // Load from KV on mount, fall back to CONTINENTS defaults
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetch("/api/admin/content?key=countries", { headers: { Authorization: `Bearer ${token}` } });
+        const d = await r.json();
+        if (d.data && Array.isArray(d.data) && d.data.length > 0) {
+          setContinents(d.data);
+        } else {
+          setContinents(CONTINENTS.map(c => ({ ...c, countries: c.countries.map(co => ({ ...co })) })));
+        }
+      } catch {
+        setContinents(CONTINENTS.map(c => ({ ...c, countries: c.countries.map(co => ({ ...co })) })));
+      }
+      setLoading(false);
+    })();
+  }, [token]);
+
+  const cont = continents.find(c => c.id === active);
+  const editingCountry = cont?.countries.find(c => c.name === editCountry);
+
+  const removeCountry = (i: number) => { setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.filter((_, j) => j !== i) } : c)); setEditCountry(null); };
+  const addCountry = () => { if (!nc.name.trim()) return; setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: [...c.countries, { name: nc.name.trim(), flag: nc.flag || "🏳" }] } : c)); setNc({ name: "", flag: "" }); };
+
+  const addPhoto = () => {
+    if (!editCountry || !newPhoto.src.trim()) return;
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: [...(co.photos || []), { src: newPhoto.src.trim(), caption: newPhoto.caption.trim() }] } : co) } : c));
+    setNewPhoto({ src: "", caption: "" });
+  };
+  const removePhoto = (pi: number) => {
+    if (!editCountry) return;
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).filter((_, i) => i !== pi) } : co) } : c));
+  };
+
+  const [saveErr, setSaveErr] = useState("");
+  const save = async () => {
+    setSaving(true); setSaveErr("");
+    try {
+      const r = await fetch("/api/admin/content", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ key: "countries", data: continents }) });
+      if (r.ok) { setSaved(true); setTimeout(() => setSaved(false), 2500); }
+      else { const d = await r.json().catch(() => ({})); setSaveErr(d.error || `Error ${r.status}`); }
+    } catch { setSaveErr("Network error"); }
+    finally { setSaving(false); }
+  };
+
+  if (loading) return <div style={{ padding: 36, color: "rgba(248,248,240,0.35)", fontSize: 14 }}>Loading countries…</div>;
+  if (!cont) return null;
+
+  return (
+    <div style={{ padding: 36, maxWidth: 900 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+        <div><h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>Countries</h2><p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>Manage visited countries and photos per continent. Click a country to edit its photos.</p></div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+          {saveErr && <div style={{ fontSize: 12, color: "#f87171" }}>{saveErr}</div>}
+          <button onClick={save} disabled={saving} style={btnP}>{saving ? "Saving…" : saved ? "✓ Saved!" : "Save Changes"}</button>
+        </div>
+      </div>
+
+      {/* Continent tabs */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
+        {continents.map(c => (
+          <button key={c.id} onClick={() => { setActive(c.id); setEditCountry(null); }} style={{ padding: "9px 18px", borderRadius: 8, border: active === c.id ? `1px solid ${c.color}50` : "1px solid rgba(255,255,255,0.08)", background: active === c.id ? `${c.color}22` : "rgba(255,255,255,0.04)", color: active === c.id ? c.color : "rgba(248,248,240,0.5)", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+            {c.emoji} {c.name} ({c.countries.length})
+          </button>
+        ))}
+      </div>
+
+      {/* Country chips — click to select and manage photos */}
+      <div style={{ ...card, marginBottom: 20 }}>
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 16 }}>
+          {cont.countries.length} Countries · <span style={{ color: cont.color }}>click a country to add/remove photos</span>
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          {cont.countries.map((c, i) => (
+            <div
+              key={i}
+              onClick={() => setEditCountry(editCountry === c.name ? null : c.name)}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 999, background: editCountry === c.name ? `${cont.color}22` : `${cont.color}14`, border: `1px solid ${editCountry === c.name ? cont.color + "50" : cont.color + "30"}`, fontSize: 13, color: editCountry === c.name ? "#f8f8f0" : "rgba(248,248,240,0.75)", cursor: "pointer", transition: "all 0.15s" }}
+            >
+              <span style={{ fontSize: 17 }}>{c.flag}</span>
+              <span>{c.name}</span>
+              {c.photos && c.photos.length > 0 && <span style={{ fontSize: 10, opacity: 0.65, marginLeft: 2 }}>📷 {c.photos.length}</span>}
+              <button onClick={e => { e.stopPropagation(); removeCountry(i); }} style={{ background: "none", border: "none", color: "rgba(248,248,240,0.3)", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1, marginLeft: 4 }}>×</button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Photo editor panel — appears when a country is selected */}
+      <AnimatePresence>
+        {editCountry && editingCountry && (
+          <motion.div key={editCountry} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden", marginBottom: 20 }}>
+            <div style={{ ...card, borderColor: `${cont.color}40` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: cont.color, marginBottom: 16 }}>
+                📷 Photos for {editCountry} · {(editingCountry.photos || []).length} photo(s)
+              </div>
+
+              {/* Existing photos list */}
+              {(editingCountry.photos || []).length > 0 ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+                  {(editingCountry.photos || []).map((photo, pi) => (
+                    <div key={pi} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 8, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
+                      <div style={{ width: 60, height: 44, borderRadius: 6, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
+                        <img src={photo.src} alt={photo.caption} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 12, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
+                        <div style={{ fontSize: 11, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
+                      </div>
+                      <button onClick={() => removePhoto(pi)} style={{ ...btnD, padding: "5px 12px", fontSize: 11, flexShrink: 0 }}>Remove</button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ padding: "12px 0 20px", fontSize: 13, color: "rgba(248,248,240,0.3)" }}>No photos yet for {editCountry}. Add your first photo below.</div>
+              )}
+
+              {/* Add new photo */}
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 12 }}>Add New Photo</div>
+                <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
+                  <div style={{ flex: "2 1 200px" }}><span style={label}>Image URL (Google Drive, Imgur, etc.)</span><input style={inp} placeholder="https://lh3.googleusercontent.com/d/..." value={newPhoto.src} onChange={e => setNewPhoto(p => ({ ...p, src: e.target.value }))} /></div>
+                  <div style={{ flex: "1 1 140px" }}><span style={label}>Caption</span><input style={inp} placeholder="e.g. Sahara Desert" value={newPhoto.caption} onChange={e => setNewPhoto(p => ({ ...p, caption: e.target.value }))} onKeyDown={e => e.key === "Enter" && addPhoto()} /></div>
+                  <button onClick={addPhoto} style={{ ...btnP, flexShrink: 0 }}>+ Add Photo</button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Add new country */}
+      <div style={card}>
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 16 }}>Add Country</div>
+        <div style={{ display: "flex", gap: 12, alignItems: "flex-end" }}>
+          <div style={{ flex: 1 }}><span style={label}>Country Name</span><input style={inp} placeholder="e.g. Japan" value={nc.name} onChange={e => setNc(p => ({ ...p, name: e.target.value }))} onKeyDown={e => e.key === "Enter" && addCountry()} /></div>
+          <div style={{ width: 110 }}><span style={label}>Flag Emoji</span><input style={inp} placeholder="🇯🇵" value={nc.flag} onChange={e => setNc(p => ({ ...p, flag: e.target.value }))} /></div>
+          <button onClick={addCountry} style={{ ...btnP, flexShrink: 0 }}>Add</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Stories ───────────────────────────────────────────────────────────────────
+function StoriesTab({ token }: { token: string }) {
+  const [stories, setStories] = useState<Story[]>(STORIES.map(s => ({ ...s })));
+  const [open, setOpen] = useState<number | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveErr, setSaveErr] = useState("");
+
+  // Load saved stories from KV on mount
+  useEffect(() => {
+    fetch("/api/admin/content?key=stories", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => { if (d.data && Array.isArray(d.data) && d.data.length > 0) setStories(d.data); })
+      .catch(() => {});
+  }, [token]);
+
+  const upd = (i: number, f: string, v: string) => setStories(ss => ss.map((s, j) => j === i ? { ...s, [f]: v } : s));
+
+  const save = async () => {
+    setSaving(true);
+    setSaveErr("");
+    try {
+      const r = await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "stories", data: stories }),
+      });
+      if (r.ok) {
+        setSaved(true);
+        setOpen(null);
+        setTimeout(() => setSaved(false), 2500);
+      } else {
+        const d = await r.json().catch(() => ({}));
+        setSaveErr(d.error || `Error ${r.status}`);
+      }
+    } catch (e) {
+      setSaveErr("Network error — check connection");
+    } finally {
+      setSaving(false);
+    }
+  };
+  return (
+    <div style={{ padding: 36, maxWidth: 860 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+        <div><h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>Stories</h2><p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>Edit your travel stories shown on the site.</p></div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+          {saveErr && <div style={{ fontSize: 12, color: "#f87171" }}>{saveErr}</div>}
+          <button onClick={save} disabled={saving} style={btnP}>{saving ? "Saving…" : saved ? "✓ Saved!" : "Save All"}</button>
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {stories.map((s, i) => (
+          <div key={s.id} style={card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ width: 56, height: 56, borderRadius: 10, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }}>
+                <img src={s.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 10px", borderRadius: 999, background: `${s.color}18`, color: s.color, border: `1px solid ${s.color}30` }}>{s.tag}</span>
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#f8f8f0" }}>{s.title}</div>
+                <div style={{ fontSize: 12, color: "rgba(248,248,240,0.4)", marginTop: 2 }}>📍 {s.location}</div>
+              </div>
+              <button onClick={() => setOpen(open === i ? null : i)} style={open === i ? btnD : btnG}>{open === i ? "Close" : "Edit"}</button>
+            </div>
+            <AnimatePresence>
+              {open === i && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden" }}>
+                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 20, marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                    <div><span style={label}>Title</span><input style={inp} value={s.title} onChange={e => upd(i, "title", e.target.value)} /></div>
+                    <div><span style={label}>Location</span><input style={inp} value={s.location} onChange={e => upd(i, "location", e.target.value)} /></div>
+                    <div><span style={label}>Tag Label</span><input style={inp} value={s.tag} onChange={e => upd(i, "tag", e.target.value)} /></div>
+                    <div><span style={label}>Accent Color</span><input style={inp} value={s.color} onChange={e => upd(i, "color", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}><span style={label}>Short Description</span><textarea style={{ ...inp, minHeight: 80, resize: "none" as const }} value={s.excerpt} onChange={e => upd(i, "excerpt", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}><span style={label}>Image URL</span><input style={inp} value={s.image} onChange={e => upd(i, "image", e.target.value)} /></div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Apps ──────────────────────────────────────────────────────────────────────
+function AppsTab({ token }: { token: string }) {
+  const [apps, setApps] = useState<App[]>(TRAVEL_APPS.map(a => ({ ...a })));
+  const [open, setOpen] = useState<number | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [na, setNa] = useState({ name: "", emoji: "", category: "", desc: "", url: "", color: "#7c3aed" });
+  const [saving, setSaving] = useState(false); const [saved, setSaved] = useState(false);
+  const upd = (i: number, f: string, v: string) => setApps(as => as.map((a, j) => j === i ? { ...a, [f]: v } : a));
+  const remove = (i: number) => { if (!confirm("Remove this app?")) return; setApps(as => as.filter((_, j) => j !== i)); };
+  const add = () => { if (!na.name.trim()) return; setApps(as => [...as, { ...na }]); setNa({ name: "", emoji: "", category: "", desc: "", url: "", color: "#7c3aed" }); setAdding(false); };
+  const [saveErr, setSaveErr] = useState("");
+  const save = async () => {
+    setSaving(true); setSaveErr("");
+    try {
+      const r = await fetch("/api/admin/content", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ key: "apps", data: apps }) });
+      if (r.ok) { setSaved(true); setOpen(null); setTimeout(() => setSaved(false), 2500); }
+      else { const d = await r.json().catch(() => ({})); setSaveErr(d.error || `Error ${r.status}`); }
+    } catch { setSaveErr("Network error"); }
+    finally { setSaving(false); }
+  };
+  return (
+    <div style={{ padding: 36, maxWidth: 860 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+        <div><h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>Travel Apps</h2><p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>Manage your travel toolkit shown on the site.</p></div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={() => setAdding(!adding)} style={btnG}>+ Add App</button>
+          <button onClick={save} disabled={saving} style={btnP}>{saving ? "Saving…" : saved ? "✓ Saved!" : "Save All"}</button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {adding && (
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden", marginBottom: 16 }}>
+            <div style={{ ...card, borderColor: "rgba(124,58,237,0.3)" }}>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "#a78bfa", marginBottom: 16 }}>New App</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, marginBottom: 14 }}>
+                <div><span style={label}>Name</span><input style={inp} placeholder="Skyscanner" value={na.name} onChange={e => setNa(p => ({ ...p, name: e.target.value }))} /></div>
+                <div><span style={label}>Emoji</span><input style={inp} placeholder="✈️" value={na.emoji} onChange={e => setNa(p => ({ ...p, emoji: e.target.value }))} /></div>
+                <div><span style={label}>Category</span><input style={inp} placeholder="Flights" value={na.category} onChange={e => setNa(p => ({ ...p, category: e.target.value }))} /></div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+                <div><span style={label}>URL</span><input style={inp} placeholder="https://..." value={na.url} onChange={e => setNa(p => ({ ...p, url: e.target.value }))} /></div>
+                <div><span style={label}>Color</span><input style={inp} placeholder="#7c3aed" value={na.color} onChange={e => setNa(p => ({ ...p, color: e.target.value }))} /></div>
+              </div>
+              <div style={{ marginBottom: 16 }}><span style={label}>Description</span><input style={inp} placeholder="What it's used for…" value={na.desc} onChange={e => setNa(p => ({ ...p, desc: e.target.value }))} /></div>
+              <div style={{ display: "flex", gap: 10 }}>
+                <button onClick={add} style={btnP}>Add App</button>
+                <button onClick={() => setAdding(false)} style={btnG}>Cancel</button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {apps.map((a, i) => (
+          <div key={i} style={card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, background: `${a.color}18`, border: `1px solid ${a.color}30`, flexShrink: 0 }}>{a.emoji}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#f8f8f0" }}>{a.name}</div>
+                <div style={{ fontSize: 11, color: a.color, textTransform: "uppercase", letterSpacing: "1px", marginTop: 2 }}>{a.category}</div>
+              </div>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={() => setOpen(open === i ? null : i)} style={open === i ? btnD : btnG}>{open === i ? "Close" : "Edit"}</button>
+                <button onClick={() => remove(i)} style={btnD}>Remove</button>
+              </div>
+            </div>
+            <AnimatePresence>
+              {open === i && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden" }}>
+                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16, display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
+                    <div><span style={label}>Name</span><input style={inp} value={a.name} onChange={e => upd(i, "name", e.target.value)} /></div>
+                    <div><span style={label}>Emoji</span><input style={inp} value={a.emoji} onChange={e => upd(i, "emoji", e.target.value)} /></div>
+                    <div><span style={label}>Category</span><input style={inp} value={a.category} onChange={e => upd(i, "category", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}><span style={label}>URL</span><input style={inp} value={a.url} onChange={e => upd(i, "url", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}><span style={label}>Description</span><input style={inp} value={a.desc} onChange={e => upd(i, "desc", e.target.value)} /></div>
+                    <div><span style={label}>Color</span><input style={inp} value={a.color} onChange={e => upd(i, "color", e.target.value)} /></div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+interface HeroPos { desktopX: number; desktopY: number; mobileX: number; mobileY: number; }
+const DEFAULT_POS: HeroPos = { desktopX: 55, desktopY: 30, mobileX: 35, mobileY: 20 };
+
+// Slider extracted outside Settings so it's a stable component reference
+function PosSlider({ lbl, field, value, onChange }: { lbl: string; field: keyof HeroPos; value: number; onChange: (f: keyof HeroPos, v: number) => void }) {
+  return (
+    <div style={{ marginBottom: 24 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)" }}>{lbl}</span>
+        <span style={{ fontSize: 20, fontWeight: 700, color: "#a78bfa", fontFamily: "monospace", minWidth: 52, textAlign: "right" as const }}>{value}%</span>
+      </div>
+      <input
+        type="range" min={0} max={100} value={value}
+        onChange={e => onChange(field, Number(e.target.value))}
+        style={{ width: "100%", accentColor: "#7c3aed", cursor: "pointer" }}
+      />
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: "rgba(248,248,240,0.25)", marginTop: 4 }}>
+        <span>0% — Left</span><span>50% — Center</span><span>100% — Right</span>
+      </div>
+    </div>
+  );
+}
+
+function Settings({ token }: { token: string }) {
+  const [pos, setPos] = useState<HeroPos>(DEFAULT_POS);
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
+  useEffect(() => {
+    fetch("/api/admin/content?key=hero-position", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => { if (d.data) setPos(d.data); })
+      .catch(() => {});
+  }, [token]);
+
+  const handleChange = (f: keyof HeroPos, v: number) => setPos(p => ({ ...p, [f]: v }));
+
+  const save = async () => {
+    setStatus("saving");
+    try {
+      const r = await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ key: "hero-position", data: pos }),
+      });
+      setStatus(r.ok ? "saved" : "error");
+    } catch {
+      setStatus("error");
+    }
+    setTimeout(() => setStatus("idle"), 3000);
+  };
+
+  return (
+    <div style={{ padding: 40, maxWidth: 680 }}>
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 6 }}>Hero Image Position</div>
+        <div style={{ fontSize: 13, color: "rgba(248,248,240,0.4)", lineHeight: 1.7 }}>
+          Control where the background photo is positioned on desktop and mobile.<br />
+          <strong style={{ color: "rgba(248,248,240,0.65)" }}>Lower X% → subject moves right. Higher X% → subject moves left.</strong>
+        </div>
+      </div>
+
+      <div style={{ ...card, marginBottom: 32, padding: "14px 20px", display: "flex", alignItems: "center", gap: 12 }}>
+        <span style={{ fontSize: 20 }}>💡</span>
+        <span style={{ fontSize: 12, color: "rgba(248,248,240,0.5)" }}>After saving, refresh the homepage to see the change live.</span>
+      </div>
+
+      {/* Desktop */}
+      <div style={{ ...card, marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#f8f8f0", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
+          🖥️ Desktop Position
+          <span style={{ fontSize: 10, color: "rgba(248,248,240,0.35)", fontWeight: 400 }}>(wider than 1024px)</span>
+        </div>
+        <PosSlider lbl="Horizontal (X)" field="desktopX" value={pos.desktopX} onChange={handleChange} />
+        <PosSlider lbl="Vertical (Y)"   field="desktopY" value={pos.desktopY} onChange={handleChange} />
+      </div>
+
+      {/* Mobile */}
+      <div style={{ ...card, marginBottom: 40 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#f8f8f0", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
+          📱 Mobile Position
+          <span style={{ fontSize: 10, color: "rgba(248,248,240,0.35)", fontWeight: 400 }}>(narrower than 1024px)</span>
+        </div>
+        <PosSlider lbl="Horizontal (X)" field="mobileX" value={pos.mobileX} onChange={handleChange} />
+        <PosSlider lbl="Vertical (Y)"   field="mobileY" value={pos.mobileY} onChange={handleChange} />
+      </div>
+
+      <button onClick={save} disabled={status === "saving"} style={{ ...btnP, padding: "14px 48px", fontSize: 13 }}>
+        {status === "saving" ? "Saving…" : status === "saved" ? "✓ Saved!" : status === "error" ? "✗ Error — try again" : "Save Position →"}
+      </button>
+    </div>
+  );
+}
+
+// ── Root ──────────────────────────────────────────────────────────────────────
+export default function AdminPage() {
+  const [token, setToken] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>("messages");
+  useEffect(() => { const t = sessionStorage.getItem("ranzo_admin"); if (t) setToken(t); }, []);
+  const login = (t: string) => { sessionStorage.setItem("ranzo_admin", t); setToken(t); };
+  const logout = () => { sessionStorage.removeItem("ranzo_admin"); setToken(null); };
+  if (!token) return <Login onLogin={login} />;
+  return (
+    <div style={{ display: "flex", minHeight: "100vh", background: "#060608", color: "#f8f8f0", fontFamily: "var(--font-ui)" }}>
+      <Sidebar tab={tab} setTab={setTab} onLogout={logout} />
+      <main style={{ flex: 1, overflowY: "auto" }}>
+        <AnimatePresence mode="wait">
+          <motion.div key={tab} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+            {tab === "messages"  && <Messages   token={token} />}
+            {tab === "countries" && <Countries  token={token} />}
+            {tab === "stories"   && <StoriesTab token={token} />}
+            {tab === "apps"      && <AppsTab    token={token} />}
+            {tab === "settings"  && <Settings   token={token} />}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+    </div>
+  );
 }

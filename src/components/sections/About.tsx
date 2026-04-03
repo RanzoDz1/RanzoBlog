@@ -1,167 +1,222 @@
 "use client";
-
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Code2, Layers, TrendingUp } from "lucide-react";
-import { smoothScrollTo } from "@/lib/smoothScroll";
-import { useCountUp } from "@/lib/usePremiumScroll";
-import { pmEase } from "@/lib/animations";
-import Image from "next/image";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { IMAGES } from "@/lib/images";
 
-// Premium workspace image — Unsplash
-const WORKSPACE_IMG = "https://images.unsplash.com/photo-1593642634524-b40b5baae6bb?w=800&q=80&fm=webp&auto=format&fit=crop";
+const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
-const stats = [
-    { value: "300+", label: "Projects Delivered" },
-    { value: "#1", label: "Google Rankings Achieved" },
-    { value: "8+", label: "Years Experience" },
-    { value: "100%", label: "Client Satisfaction" },
+const TIMELINE = [
+  { year: "Origin", title: "Born in Algeria", desc: "Where the hunger for the world began.", icon: "🇩🇿" },
+  { year: "The First Step", title: "First Solo Travel", desc: "Fear turned into freedom. The world opened up.", icon: "✈️" },
+  { year: "New Base", title: "Germany Becomes Home", desc: "A new chapter. Europe as the launchpad.", icon: "🇩🇪" },
+  { year: "Ongoing", title: "The World is the Destination", desc: "50+ countries. 6 continents. Still counting.", icon: "🌍" },
 ];
 
-const pills = [
-    { icon: <Code2 size={14} />, text: "Webflow Developer" },
-    { icon: <Layers size={14} />, text: "UI/UX Designer" },
-    { icon: <TrendingUp size={14} />, text: "SEO Strategist" },
+const TAGS = [
+  { label: "Travel Creator", accent: true },
+  { label: "IRL Streamer", accent: true },
+  { label: "Multilingual", accent: false },
+  { label: "50+ Countries", accent: false },
+  { label: "1M+ Followers", accent: false },
+  { label: "Arabic · English · German", accent: false },
 ];
 
-function StatCard({ stat, index, isInView }: { stat: typeof stats[0]; index: number; isInView: boolean }) {
-    const [display, countRef] = useCountUp(stat.value, 1.2);
-
-    return (
-        <motion.div
-            ref={countRef}
-            initial={{ opacity: 0, scale: 0.92, y: 16 }}
-            animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 + index * 0.06, duration: 0.4, ease: pmEase.entrance }}
-            className="relative p-6 rounded-2xl border border-[var(--border)] bg-[var(--card)] overflow-hidden group hover:border-blue-500/40 transition-all duration-300 pm-card"
-        >
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <p className="text-4xl font-extrabold text-gradient mb-1">
-                {display}
-            </p>
-            <p className="text-sm text-[var(--muted-foreground)] font-medium">
-                {stat.label}
-            </p>
-        </motion.div>
-    );
+function Tag({ label, accent }: { label: string; accent: boolean }) {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        padding: "8px 18px",
+        borderRadius: 999,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "1px",
+        textTransform: "uppercase" as const,
+        border: accent ? "1px solid var(--live-accent-30)" : "1px solid var(--border)",
+        color: accent ? "var(--live-accent-bright)" : "var(--muted)",
+        background: accent ? "var(--live-accent-08)" : "rgba(255,255,255,0.03)",
+      }}
+    >
+      {label}
+    </span>
+  );
 }
 
 export default function About() {
-    const ref = useRef<HTMLDivElement>(null);
-    const isInView = useInView(ref, { once: true, margin: "0px" });
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageRef   = useRef<HTMLDivElement>(null);
+  const isInView   = useInView(sectionRef, { once: true, margin: "-10% 0px" });
 
-    const containerVariants = {
-        hidden: {},
-        visible: { transition: { staggerChildren: 0.06 } },
-    };
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 18 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: pmEase.entrance } },
-    };
+  return (
+    <section id="about" ref={sectionRef} className="section" style={{ background: "var(--black)" }}>
+      {/* Background glow */}
+      <div
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(circle, var(--live-accent-08) 0%, transparent 70%)", filter: "blur(80px)" }}
+      />
 
-    return (
-        <section id="about" className="relative py-28 px-6 bg-[var(--background)]">
-            {/* Background accent */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/2 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
+      <div className="container">
+        <div className="grid lg:grid-cols-2 gap-16 xl:gap-24 items-center">
+
+          {/* ── Left: Image ── */}
+          <motion.div
+            ref={imageRef}
+            initial={{ opacity: 0, x: -40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.9, ease }}
+            className="relative"
+          >
+            {/* Main image */}
+            <motion.div
+              style={{ y: imgY }}
+              className="relative rounded-[20px] overflow-hidden"
+            >
+              <div style={{ aspectRatio: "3/4", position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid var(--border)" }}>
+                <img
+                  src={IMAGES.desertHelmet}
+                  alt="Abdullah Khalfi | RanzoDz"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.88) saturate(1.1)" }}
+                />
+                {/* Live-color bottom glow */}
+                <div
+                  className="absolute inset-0"
+                  style={{ background: "linear-gradient(to top, var(--live-accent-30) 0%, transparent 55%)" }}
+                />
+              </div>
+            </motion.div>
+
+            {/* Floating "Currently Exploring" badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 10 }}
+              animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+              transition={{ delay: 0.5, duration: 0.5, ease }}
+              className="absolute bottom-8 left-6 glass"
+              style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 20px" }}
+            >
+              <div
+                style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: "var(--amber-l)", boxShadow: "0 0 10px var(--amber)", animation: "pulse-glow 2s ease-in-out infinite" }}
+              />
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "var(--white)" }}>Currently Exploring</div>
+                <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 2 }}>Algeria → Germany → World</div>
+              </div>
+            </motion.div>
+
+            {/* Floating countries count */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: 10 }}
+              animate={isInView ? { opacity: 1, scale: 1, x: 0 } : {}}
+              transition={{ delay: 0.65, duration: 0.5, ease }}
+              className="absolute top-8 -right-4 glass float"
+              style={{ padding: "20px 24px", textAlign: "center" }}
+            >
+              <div
+                className="text-gradient-vivid"
+                style={{ fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 700, lineHeight: 1, marginBottom: 6 }}
+              >
+                50+
+              </div>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                Countries
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* ── Right: Text ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.9, ease, delay: 0.1 }}
+          >
+            <div className="eyebrow mb-6">About RanzoDz</div>
+
+            <h2
+              className="mb-6"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(38px, 5vw, 58px)",
+                fontWeight: 600,
+                lineHeight: 1.05,
+                color: "var(--white)",
+              }}
+            >
+              From Algeria,<br />
+              to <em className="text-gradient-vivid">everywhere.</em>
+            </h2>
+
+            <p className="mb-4" style={{ fontSize: "15px", lineHeight: 1.9, color: "rgba(248,248,240,0.5)", fontWeight: 300 }}>
+              I&apos;m Abdullah, a traveler, storyteller, and IRL streamer who left comfort behind to document the world&apos;s most raw and extraordinary moments.
+            </p>
+            <p className="mb-8" style={{ fontSize: "15px", lineHeight: 1.9, color: "rgba(248,248,240,0.5)", fontWeight: 300 }}>
+              What started as a solo trip driven by pure fear became a relentless pursuit of the unknown. 50+ countries. 6 continents. Stories that changed me forever.
+            </p>
+
+            {/* Tags */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 40 }}>
+              {TAGS.map(t => <Tag key={t.label} {...t} />)}
             </div>
 
-            <div className="max-w-6xl mx-auto" ref={ref}>
+            {/* Timeline */}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {TIMELINE.map((item, i) => (
                 <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
-                    className="grid md:grid-cols-2 gap-16 items-center"
+                  key={item.title}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.3 + i * 0.12, duration: 0.5, ease }}
+                  style={{ display: "flex", gap: 20, paddingBottom: 32, position: "relative" }}
                 >
-                    {/* Left: Text */}
-                    <div className="space-y-8">
-                        <motion.div variants={itemVariants}>
-                            <p className="text-blue-500 text-sm font-semibold tracking-widest uppercase mb-3">
-                                About Me
-                            </p>
-                            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--foreground)] leading-tight">
-                                Building the web&apos;s best{" "}
-                                <span className="text-gradient">digital experiences</span>
-                            </h2>
-                        </motion.div>
-
-                        <motion.div variants={itemVariants} className="space-y-4 text-[var(--muted-foreground)] text-base leading-relaxed">
-                            <p>
-                                I&apos;m <strong className="text-[var(--foreground)]">Ranzo</strong>, a web
-                                designer and developer with a sharp eye for what makes digital
-                                experiences convert. I specialize in crafting landing pages and
-                                websites that are not just beautiful, they are built to rank,
-                                load fast, and turn visitors into customers.
-                            </p>
-                            <p>
-                                From{" "}
-                                <strong className="text-[var(--foreground)]">winning Google rankings</strong>{" "}
-                                to full product launches, every project I take on is
-                                treated as a strategic product, not just a pretty page.
-                            </p>
-                        </motion.div>
-
-                        {/* Pills */}
-                        <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
-                            {pills.map((pill) => (
-                                <motion.span
-                                    key={pill.text}
-                                    whileHover={{ scale: 1.04, letterSpacing: "0.02em" }}
-                                    transition={{ duration: 0.25, ease: pmEase.smooth }}
-                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[var(--border)] bg-[var(--muted)] text-[var(--foreground)] text-sm font-medium cursor-default transition-all duration-300"
-                                >
-                                    <span className="text-blue-400">{pill.icon}</span>
-                                    {pill.text}
-                                </motion.span>
-                            ))}
-                        </motion.div>
-
-                        <motion.div variants={itemVariants}>
-                            <motion.button
-                                onClick={() => smoothScrollTo("#contact")}
-                                whileHover={{ scale: 1.03, boxShadow: "0 0 20px rgba(59, 130, 246, 0.2)" }}
-                                whileTap={{ scale: 0.98 }}
-                                className="px-6 py-3 rounded-full bg-[var(--accent)] text-white font-semibold text-sm hover:bg-[var(--accent-hover)] transition-all duration-300 pm-btn-primary"
-                            >
-                                Work With Me →
-                            </motion.button>
-                        </motion.div>
+                  {/* Vertical line */}
+                  {i < TIMELINE.length - 1 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: 15,
+                        top: 32,
+                        bottom: 0,
+                        width: 1,
+                        background: "linear-gradient(to bottom, var(--live-accent-30), transparent)",
+                      }}
+                    />
+                  )}
+                  {/* Dot/Icon */}
+                  <div
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: "50%",
+                      flexShrink: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 14,
+                      zIndex: 10,
+                      border: "1px solid var(--live-accent-50)",
+                      background: "var(--live-accent-08)",
+                    }}
+                  >
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--live-accent-bright)", marginBottom: 6 }}>
+                      {item.year}
                     </div>
-
-                    {/* Right: Workspace image + Stats */}
-                    <motion.div
-                        variants={itemVariants}
-                        className="flex flex-col gap-5"
-                    >
-                        {/* Premium workspace image — same subtle style as service cards */}
-                        <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden pm-img-zoom border border-[var(--border)]">
-                            <Image
-                                src={WORKSPACE_IMG}
-                                alt="Premium home office workspace"
-                                fill
-                                className="object-cover opacity-[0.55] mix-blend-luminosity"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                loading="lazy"
-                            />
-                            {/* Heavy brand-color overlay — matches service card darkness */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-[var(--card)]/70 via-[var(--card)]/40 to-blue-900/30 pointer-events-none" />
-                            {/* Badge overlay */}
-                            <div className="absolute bottom-3 left-3 flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                                <span className="text-xs text-white font-medium">Available for projects</span>
-                            </div>
-                        </div>
-
-                        {/* Stats grid */}
-                        <div className="grid grid-cols-2 gap-4">
-                            {stats.map((stat, i) => (
-                                <StatCard key={stat.label} stat={stat} index={i} isInView={isInView} />
-                            ))}
-                        </div>
-                    </motion.div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: "var(--white)", marginBottom: 6 }}>
+                      {item.title}
+                    </div>
+                    <div style={{ fontSize: 13, color: "var(--muted)", lineHeight: 1.6 }}>
+                      {item.desc}
+                    </div>
+                  </div>
                 </motion.div>
+              ))}
             </div>
-        </section>
-    );
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
 }

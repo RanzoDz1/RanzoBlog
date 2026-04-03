@@ -1,330 +1,423 @@
 "use client";
+import { useRef, useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
+import { IMAGES } from "@/lib/images";
+import { STATS } from "@/lib/data";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
-import { ArrowDown, Sparkles, BarChart3, CheckCircle2, Code2 } from "lucide-react";
-import { smoothScrollTo } from "@/lib/smoothScroll";
-import { trackEvent } from "@/components/Analytics";
-import { pmEase } from "@/lib/animations";
+const ParticleCanvas = dynamic(() => import("@/components/ui/ParticleCanvas"), { ssr: false });
 
-// Curated Unsplash hero background — dark workspace / premium office
-const HERO_BG_URL =
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&fm=webp&auto=format&fit=crop";
+const ease = [0.25, 0.46, 0.45, 0.94] as const;
+
+// ── Platform SVG Logos ────────────────────────────────────────────────────────
+function IconInstagram() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+    </svg>
+  );
+}
+
+function IconYouTube() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+    </svg>
+  );
+}
+
+function IconTikTok() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+    </svg>
+  );
+}
+
+function IconKick() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M2 2h4v6.5l4-6.5h5l-5 8 5.5 12H10L7 14.5 6 16v6H2V2zm14 0h4v20h-4V2z"/>
+    </svg>
+  );
+}
+
+function IconFacebook() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+    </svg>
+  );
+}
+
+function IconStreamlabs() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4a8 8 0 110 16A8 8 0 0112 4zm0 2a6 6 0 100 12A6 6 0 0012 6zm-1 3h2v2h2v2h-2v2h-2v-2H9v-2h2V9z"/>
+    </svg>
+  );
+}
+
+function IconPayPal() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+      <path d="M7.076 21.337H2.47a.641.641 0 01-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 00-.607-.541c-.013.076-.026.175-.041.26-.93 4.778-4.005 7.201-9.138 7.201h-2.19a.563.563 0 00-.556.479l-1.187 7.527h-.506l-.24 1.516a.56.56 0 00.554.647h3.882c.46 0 .85-.334.922-.788.06-.26.76-4.852.816-5.09a.932.932 0 01.923-.788h.58c3.76 0 6.705-1.528 7.565-5.946.36-1.847.174-3.388-.777-4.477z"/>
+    </svg>
+  );
+}
+
+const SOCIAL_LINKS = [
+  { name: "Instagram",      handle: "@RanzoDz",   url: "https://www.instagram.com/ranzodz",                                   Icon: IconInstagram,  color: "#E1306C",  bg: "rgba(225,48,108,0.12)" },
+  { name: "YouTube",        handle: "@RanzoDz",   url: "https://www.youtube.com/c/ranzodz",                                   Icon: IconYouTube,    color: "#FF0000",  bg: "rgba(255,0,0,0.1)" },
+  { name: "TikTok",         handle: "@RanzoDz",   url: "https://www.tiktok.com/@ranzodz",                                    Icon: IconTikTok,     color: "#f8f8f0",  bg: "rgba(248,248,240,0.08)" },
+  { name: "Kick",           handle: "@RanzoDz",   url: "https://kick.com/ranzodz",                                           Icon: IconKick,       color: "#53FC18",  bg: "rgba(83,252,24,0.1)" },
+  { name: "Facebook",       handle: "@RanzoDz",   url: "https://www.facebook.com/ranzodz",                                   Icon: IconFacebook,   color: "#1877F2",  bg: "rgba(24,119,242,0.12)" },
+  { name: "Facebook 2",     handle: "@RanzoDZA",  url: "https://www.facebook.com/RanzoDZA",                                  Icon: IconFacebook,   color: "#1877F2",  bg: "rgba(24,119,242,0.12)" },
+  { name: "YouTube Gaming", handle: "@Gaming",    url: "https://www.youtube.com/channel/UCY8BV1FLuJWY4aV6QSaQ35Q/featured", Icon: IconYouTube,    color: "#FF0000",  bg: "rgba(255,0,0,0.1)" },
+  { name: "Donate",         handle: "Streamlabs", url: "https://streamlabs.com/ranzolite/tip",                              Icon: IconStreamlabs, color: "#80F5D2",  bg: "rgba(128,245,210,0.1)" },
+  { name: "PayPal",         handle: "Donate",     url: "https://www.paypal.com/paypalme/AbdullahKhalfi",                    Icon: IconPayPal,     color: "#009cde",  bg: "rgba(0,156,222,0.1)" },
+];
 
 export default function Hero() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
-    const [bgLoaded, setBgLoaded] = useState(false);
-    const [heroTitle, setHeroTitle] = useState("Your Website.");
+  const containerRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const [bgLoaded, setBgLoaded] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [heroPos, setHeroPos] = useState<{ desktopX: number; desktopY: number; mobileX: number; mobileY: number } | null>(null);
 
-    useEffect(() => {
-        fetch("/api/settings")
-            .then(res => res.json())
-            .then(data => {
-                if (data.hero_title) {
-                    setHeroTitle(data.hero_title);
-                }
-            })
-            .catch(() => {});
-    }, []);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
-    }, []);
+  // Fetch custom hero position from admin settings
+  useEffect(() => {
+    fetch("/api/admin/content?key=hero-position")
+      .then(r => r.json())
+      .then(d => { if (d.data) setHeroPos(d.data); })
+      .catch(() => {});
+  }, []);
 
-    // Preload hero background
-    useEffect(() => {
-        if (isMobile) return; // skip on mobile for performance
-        const img = new window.Image();
-        img.src = HERO_BG_URL;
-        img.onload = () => setBgLoaded(true);
-    }, [isMobile]);
+  useEffect(() => {
+    const img = new Image();
+    img.src = IMAGES.auroraRoad;
+    img.onload = () => setBgLoaded(true);
+  }, []);
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end start"],
-    });
+  useEffect(() => {
+    const t = setTimeout(() => setShowStats(true), 1200);
+    return () => clearTimeout(t);
+  }, []);
 
-    // Add useSpring to absorb discrete scroll wheel ticks (makes parallax buttery smooth)
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
+  // Mouse follow glow — instant, direct DOM
+  useEffect(() => {
+    const el = glowRef.current;
+    if (!el) return;
+    const move = (e: MouseEvent) => {
+      el.style.left = `${e.clientX}px`;
+      el.style.top = `${e.clientY}px`;
+    };
+    window.addEventListener("mousemove", move, { passive: true });
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
 
-    // Use the smoothed progress for all parallax transforms
-    const y1 = useTransform(smoothProgress, [0, 1], ["0%", "20%"]);
-    const y2 = useTransform(smoothProgress, [0, 1], ["0%", "10%"]);
-    const y3 = useTransform(smoothProgress, [0, 1], ["0%", "40%"]);
-    const opacity = useTransform(smoothProgress, [0, 0.45], [1, 0]);
-    const bgScale = useTransform(smoothProgress, [0, 1], [1, 1.1]);
-    const bgY = useTransform(smoothProgress, [0, 1], ["0%", "-15%"]);
-    const gridOpacity = useTransform(smoothProgress, [0, 0.25], [0, 0.5]);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
+  const bgY      = useTransform(smoothProgress, [0, 1], ["0%", "20%"]);
+  const bgScale  = useTransform(smoothProgress, [0, 1], [1.05, 1.15]);
+  const contentY = useTransform(smoothProgress, [0, 1], ["0%", "12%"]);
+  const opacity  = useTransform(smoothProgress, [0, 0.5], [1, 0]);
+  const sidesOpacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
 
-    // Premium scroll effects
-    const contentBlur = useTransform(smoothProgress, [0, 0.4], [0, 16]);
-    const contentScale = useTransform(smoothProgress, [0, 0.4], [1, 0.92]);
-    const vignetteOpacity = useTransform(smoothProgress, [0, 0.5], [0, 0.7]);
+  const scrollDown = () => {
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+  };
 
-    // Reactive CSS filter for blur
-    const blurFilter = useMotionTemplate`blur(${contentBlur}px)`;
+  return (
+    <section
+      ref={containerRef}
+      id="hero"
+      className="relative h-screen min-h-[750px] flex items-start justify-center overflow-hidden"
+      style={{ background: "var(--black)" }}
+    >
+      {/* Background image with parallax */}
+      <motion.div className="absolute inset-0 z-0" style={{ y: bgY, scale: bgScale }}>
+        <div
+          className="absolute inset-0 transition-opacity duration-1000 hero-bg"
+          style={{
+            backgroundImage: bgLoaded ? `url(${IMAGES.auroraRoad})` : "none",
+            backgroundSize: "cover",
+            // If admin has saved a custom position, apply it (overrides the CSS class)
+            ...(heroPos ? { backgroundPosition: isMobile ? `${heroPos.mobileX}% ${heroPos.mobileY}%` : `${heroPos.desktopX}% ${heroPos.desktopY}%` } : {}),
+            opacity: bgLoaded ? 1 : 0,
+            filter: "brightness(0.40) saturate(1.25)",
+          }}
+        />
+        {!bgLoaded && (
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(124,58,237,0.3) 0%, rgba(37,99,235,0.15) 40%, var(--black) 80%)" }} />
+        )}
+      </motion.div>
 
-    return (
-        <section
-            ref={containerRef}
-            id="hero"
-            className="relative min-h-[140vh] flex items-start"
+      {/* Particles */}
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <ParticleCanvas />
+      </div>
+
+      {/* Cinematic overlay */}
+      <div className="absolute inset-0 z-[2] pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to bottom, rgba(6,6,8,0.55) 0%, transparent 20%, transparent 60%, rgba(6,6,8,0.85) 85%, rgba(6,6,8,1) 100%)",
+          }}
+        />
+        {/* Mouse glow */}
+        <div
+          ref={glowRef}
+          className="absolute w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{
+            transform: "translate(-50%, -50%)",
+            background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%)",
+            filter: "blur(40px)",
+            willChange: "left, top",
+          }}
+        />
+      </div>
+
+      {/* ── LEFT: Stats panel ── */}
+      <AnimatePresence>
+        {showStats && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease }}
+            className="absolute left-10 top-1/2 -translate-y-1/2 z-10 hidden lg:flex flex-col"
+            style={{ opacity: sidesOpacity as unknown as number, gap: 2 }}
+          >
+            <div className="w-px h-12 self-center opacity-20 mb-3" style={{ background: "linear-gradient(to bottom, transparent, var(--white))" }} />
+            {STATS.slice(0, 3).map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.1, duration: 0.5, ease }}
+                className="text-left"
+                style={{ padding: "10px 18px" }}
+              >
+                <div
+                  className="text-gradient font-bold leading-none"
+                  style={{ fontFamily: "var(--font-display)", fontSize: 22, marginBottom: 4 }}
+                >
+                  {stat.short}
+                </div>
+                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+            <div className="w-px h-12 self-center opacity-20 mt-3" style={{ background: "linear-gradient(to bottom, var(--white), transparent)" }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main content — CENTERED */}
+      <motion.div
+        className="relative z-10 flex flex-col items-center text-center"
+        style={{ y: contentY, opacity, padding: "0 20px", paddingTop: isMobile ? "22vh" : "16vh", maxWidth: 720, width: "100%" }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6, ease }}
+          className="eyebrow justify-center"
+          style={{ marginBottom: isMobile ? 16 : 28 }}
         >
-            <div
-                className="sticky top-0 w-full h-screen overflow-hidden text-[#f0f4ff] bg-[#0a0f1c]"
-                style={{ transform: "translateZ(0)" }}
-            >
-                {/* Premium vignette that deepens on scroll */}
-                <motion.div
-                    style={{ opacity: vignetteOpacity }}
-                    className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-black/60 via-transparent to-black/60"
-                />
-                {/* ── Premium Background Image with brand-color overlay ── */}
-                <motion.div
-                    style={{ scale: bgScale, y: bgY }}
-                    className="absolute inset-[-10%] w-[120%] h-[120%] pointer-events-none"
+          <span>Algeria · Germany · Everywhere</span>
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.8, ease }}
+          className="display-xl text-gradient"
+          style={{ marginBottom: isMobile ? 12 : 20, textAlign: "center" }}
+        >
+          RanzoDz
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.7, ease }}
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(20px, 3vw, 34px)",
+            fontWeight: 300,
+            fontStyle: "italic",
+            color: "rgba(248,248,240,0.65)",
+            lineHeight: 1.2,
+            marginBottom: isMobile ? 10 : 20,
+            textAlign: "center",
+          }}
+        >
+          <span className="text-gradient-vivid" style={{ fontStyle: "normal", fontWeight: 600 }}>Travel. Risk.</span>{" "}
+          Experience.
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65, duration: 0.6, ease }}
+          style={{
+            fontSize: 15,
+            lineHeight: 1.85,
+            color: "rgba(248,248,240,0.42)",
+            fontWeight: 300,
+            letterSpacing: "0.2px",
+            marginBottom: isMobile ? 20 : 36,
+            maxWidth: 420,
+            textAlign: "center",
+          }}
+        >
+          Exploring the world beyond comfort zones. One border, one story, one moment at a time.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5, ease }}
+          className="flex flex-wrap justify-center"
+          style={{ gap: 16 }}
+        >
+          <button onClick={() => document.getElementById("stories")?.scrollIntoView({ behavior: "smooth" })} className="btn-primary">
+            My Stories ↗
+          </button>
+          <button onClick={() => document.getElementById("travels")?.scrollIntoView({ behavior: "smooth" })} className="btn-ghost">
+            See My Travels
+          </button>
+        </motion.div>
+
+        {/* ── Mobile: Social links row ── */}
+        {isMobile && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.5, ease }}
+            style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 28 }}
+          >
+            {SOCIAL_LINKS.map((s) => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${s.name} — ${s.handle}`}
+                title={`${s.name} ${s.handle}`}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 40,
+                  height: 40,
+                  borderRadius: 10,
+                  border: `1px solid ${s.color}30`,
+                  background: s.bg,
+                  color: s.color,
+                  textDecoration: "none",
+                  flexShrink: 0,
+                }}
+              >
+                <s.Icon />
+              </a>
+            ))}
+          </motion.div>
+        )}
+
+        {/* ── Mobile: Stats row ── */}
+        {isMobile && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.3, duration: 0.5, ease }}
+            style={{ display: "flex", gap: 24, marginTop: 24, justifyContent: "center" }}
+          >
+            {STATS.slice(0, 3).map((stat) => (
+              <div key={stat.label} style={{ textAlign: "center" }}>
+                <div
+                  className="text-gradient font-bold"
+                  style={{ fontFamily: "var(--font-display)", fontSize: 20, lineHeight: 1 }}
                 >
-                    {/* Actual Unsplash image — fades in when loaded */}
-                    {!isMobile && (
-                        <div
-                            className={`absolute inset-0 transition-opacity duration-700 ${bgLoaded ? "opacity-100" : "opacity-0"}`}
-                            style={{
-                                backgroundImage: `url(${HERO_BG_URL})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                            }}
-                        />
-                    )}
+                  {stat.short}
+                </div>
+                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "var(--muted)", marginTop: 4 }}>
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </motion.div>
 
-                    {/* Brand-color overlay — preserves existing dark palette */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1c]/80 via-[#0a0f1c]/70 to-[#0a0f1c]/90" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f1c]/50 via-transparent to-[#0a0f1c]/50" />
+      {/* ── RIGHT: Social links panel ── */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.0, duration: 0.6, ease }}
+        className="absolute right-8 top-1/2 -translate-y-1/2 z-10 hidden lg:flex flex-col items-center"
+        style={{ opacity: sidesOpacity as unknown as number, gap: 6 }}
+      >
+        <div className="w-px h-10 opacity-20" style={{ background: "linear-gradient(to bottom, transparent, var(--white))" }} />
+        {SOCIAL_LINKS.map((s, i) => (
+          <motion.a
+            key={s.name}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${s.name} — ${s.handle}`}
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.1 + i * 0.07, duration: 0.4, ease }}
+            whileHover={{ scale: 1.12, x: -3 }}
+            title={`${s.name} ${s.handle}`}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              border: `1px solid ${s.color}30`,
+              background: s.bg,
+              color: s.color,
+              textDecoration: "none",
+              transition: "all 0.25s",
+              flexShrink: 0,
+            }}
+          >
+            <s.Icon />
+          </motion.a>
+        ))}
+        <div className="w-px h-10 opacity-20" style={{ background: "linear-gradient(to bottom, var(--white), transparent)" }} />
+      </motion.div>
 
-                    {/* Animated color orbs (on top of photo for depth) */}
-                    <div className="absolute top-[20%] left-[20%] w-[55vw] h-[55vw] rounded-full bg-blue-600/20 blur-[120px] mix-blend-screen pointer-events-none" />
-                    <div className="absolute bottom-[15%] right-[20%] w-[45vw] h-[45vw] rounded-full bg-purple-600/15 blur-[100px] mix-blend-screen pointer-events-none" />
-                </motion.div>
-
-                {/* Scroll grid */}
-                <motion.div
-                    style={{ opacity: gridOpacity }}
-                    className="absolute inset-0 pointer-events-none"
-                    aria-hidden="true"
-                >
-                    <div
-                        className="absolute inset-0"
-                        style={{
-                            backgroundImage: `
-                                linear-gradient(to right, rgba(59,130,246,0.06) 1px, transparent 1px),
-                                linear-gradient(to bottom, rgba(59,130,246,0.06) 1px, transparent 1px)
-                            `,
-                            backgroundSize: "60px 60px",
-                        }}
-                    />
-                </motion.div>
-
-                {/* ── Floating Decoration Cards ── */}
-                <motion.div style={{ y: y3, opacity }} className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0, y: [-15, 15, -15] }}
-                        transition={{
-                            opacity: { delay: 0.5, duration: 0.4 },
-                            x: { delay: 0.5, duration: 0.4, ease: pmEase.entrance },
-                            y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-                        }}
-                        className="hidden lg:flex absolute top-[25%] left-[8%] flex-col gap-2 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl"
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
-                                <BarChart3 size={20} />
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-400 font-medium">+140%</p>
-                                <p className="text-sm text-white font-bold">Conversion</p>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: [10, -10, 10] }}
-                        transition={{
-                            opacity: { delay: 0.6, duration: 0.4 },
-                            y: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 },
-                        }}
-                        className="hidden lg:flex absolute bottom-[28%] right-[12%] flex-col gap-2 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl"
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
-                                <Code2 size={20} />
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-400 font-medium">Built with</p>
-                                <p className="text-sm text-white font-bold">Next.js &amp; Webflow</p>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0, y: [-20, 20, -20] }}
-                        transition={{
-                            opacity: { delay: 0.7, duration: 0.4 },
-                            x: { delay: 0.7, duration: 0.4, ease: pmEase.entrance },
-                            y: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 },
-                        }}
-                        className="hidden md:flex absolute top-[15%] right-[8%] items-center gap-2 px-4 py-2.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md shadow-2xl"
-                    >
-                        <CheckCircle2 size={16} className="text-emerald-400" />
-                        <span className="text-sm text-emerald-100 font-medium">SEO Optimized</span>
-                    </motion.div>
-
-                    {/* Decorative rings */}
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-                        className="absolute top-[20%] right-[30%] w-64 h-64 border border-white/5 rounded-full border-dashed opacity-40 pointer-events-none"
-                    />
-                    <motion.div
-                        animate={{ rotate: -360 }}
-                        transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
-                        className="absolute bottom-[10%] left-[25%] w-96 h-96 border border-white/5 rounded-full border-dashed opacity-40 pointer-events-none"
-                    />
-                </motion.div>
-
-                {/* ── Main Content (blurs + scales as you scroll) ── */}
-                <motion.div
-                    style={{
-                        y: y1,
-                        opacity,
-                        filter: isMobile ? undefined : blurFilter,
-                        scale: contentScale,
-                    }}
-                    className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 sm:px-6 w-full pb-[15vh]"
-                >
-                    {/* Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 16, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ delay: 0.15, duration: 0.4, ease: pmEase.entrance }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-medium mb-8"
-                    >
-                        <Sparkles size={14} />
-                        Premium Web Design &amp; Development
-                    </motion.div>
-
-                    {/* Heading */}
-                    <motion.div style={{ y: y2 }} className="space-y-3 relative">
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-500/10 blur-[100px] -z-10 rounded-full pointer-events-none" />
-
-                        <motion.h1
-                            initial={{ opacity: 0, y: 24 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.42, ease: pmEase.entrance }}
-                            className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white leading-[1.1] sm:leading-none relative z-10"
-                        >
-                            Design. Build. Develop.
-                        </motion.h1>
-                        <motion.h1
-                            initial={{ opacity: 0, y: 24 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3, duration: 0.42, ease: pmEase.entrance }}
-                            className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] sm:leading-none text-gradient relative z-10"
-                        >
-                            {heroTitle}
-                        </motion.h1>
-                    </motion.div>
-
-                    {/* Subheadline */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.4, ease: pmEase.entrance }}
-                        className="mt-8 max-w-2xl text-lg sm:text-xl text-gray-300 leading-relaxed"
-                    >
-                        I&apos;m <span className="text-white font-semibold">Ranzo</span>, a premium freelance web developer crafting high-converting landing pages and custom websites.
-                        Elevate your digital presence with pixel-perfect design and a <strong className="text-blue-400 font-semibold">50% introductory discount</strong> on your first project.
-                    </motion.p>
-
-                    {/* CTAs */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.4, ease: pmEase.entrance }}
-                        className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center relative z-20 w-full px-2 sm:max-w-none mx-auto"
-                    >
-                        <motion.button
-                            onClick={() => {
-                                smoothScrollTo("#projects");
-                                trackEvent("hero_cta_work", { section: "hero" });
-                            }}
-                            whileHover={{ scale: 1.04, boxShadow: "0 0 30px rgba(59,130,246,0.4), 0 8px 24px rgba(59,130,246,0.25)" }}
-                            whileTap={{ scale: 0.97 }}
-                            transition={{ type: "tween", duration: 0.18, ease: pmEase.smooth }}
-                            className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-colors duration-200 shadow-lg shadow-blue-600/30 pm-btn-primary"
-                        >
-                            View My Work
-                        </motion.button>
-                        <motion.button
-                            onClick={() => {
-                                smoothScrollTo("#contact");
-                                trackEvent("hero_cta_talk", { section: "hero" });
-                            }}
-                            whileHover={{ scale: 1.04, borderColor: "rgba(255,255,255,0.4)" }}
-                            whileTap={{ scale: 0.97 }}
-                            transition={{ type: "tween", duration: 0.18, ease: pmEase.smooth }}
-                            className="w-full sm:w-auto px-7 py-3.5 rounded-full border border-white/20 text-white font-semibold text-sm hover:bg-white/5 transition-all duration-200"
-                        >
-                            Let&apos;s Talk
-                        </motion.button>
-                    </motion.div>
-                </motion.div>
-
-                {/* Tech strip */}
-                <motion.div
-                    style={{ opacity }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7, duration: 0.4 }}
-                    className="hidden md:flex absolute bottom-12 lg:bottom-24 left-0 w-full flex-col items-center opacity-60 pointer-events-none"
-                >
-                    <p className="text-xs text-gray-400 tracking-widest uppercase mb-4 font-medium">
-                        Crafting high-performance digital products
-                    </p>
-                    <div className="flex items-center justify-center gap-8 md:gap-16 text-gray-300">
-                        <span className="text-sm font-semibold opacity-80 flex items-center gap-2"><Code2 size={16} /> Webflow</span>
-                        <span className="text-sm font-semibold opacity-80">Figma</span>
-                        <span className="text-sm font-semibold opacity-80">Next.js</span>
-                        <span className="text-sm font-semibold opacity-80 hidden sm:flex">Framer</span>
-                    </div>
-                </motion.div>
-
-                {/* Scroll indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8, duration: 0.4 }}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 pointer-events-none"
-                    style={{ opacity }}
-                >
-                    <span className="text-[10px] tracking-widest uppercase font-semibold">Scroll</span>
-                    <motion.div
-                        animate={{ y: [0, 8, 0] }}
-                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                    >
-                        <ArrowDown size={14} />
-                    </motion.div>
-                </motion.div>
-            </div>
-        </section>
-    );
+      {/* Scroll indicator */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+        onClick={scrollDown}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
+        style={{ opacity: useTransform(smoothProgress, [0, 0.3], [1, 0]) as unknown as number }}
+        aria-label="Scroll down"
+      >
+        <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase" as const, color: "var(--muted)" }}>Scroll</span>
+        <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+          <div className="w-full h-full" style={{ background: "linear-gradient(to bottom, var(--purple-l), var(--blue-l))", animation: "scroll-line 2.5s ease-in-out infinite" }} />
+        </div>
+      </motion.button>
+    </section>
+  );
 }

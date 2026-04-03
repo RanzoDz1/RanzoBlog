@@ -1,243 +1,327 @@
-export interface Project {
-    id: string;
-    title: string;
-    industry: string;
-    description: string;
-    features: string[];
-    tags: string[];
-    category: "landing" | "website" | "webflow" | "app" | "dashboard" | "mobile";
-    gradient: string;
-    accentColor: string;
-    year: string;
-    type: string;
-}
+import { IMAGES } from './images';
 
-export const projects: Project[] = [
-    {
-        id: "website-redesign",
-        title: "Website Redesign",
-        type: "Website",
-        industry: "B2B Tech",
-        description:
-            "A complete visual and structural overhaul for an aging B2B website. Designed to modernize the brand, improve UX, and significantly boost lead generation.",
-        features: [
-            "Modernized brand identity system",
-            "Streamlined user journey",
-            "Component-based design system",
-            "Seamless CMS integration",
-        ],
-        tags: ["UX/UI Redesign", "B2B Tech", "Branding"],
-        category: "website",
-        gradient: "from-violet-600 via-purple-500 to-fuchsia-500",
-        accentColor: "#a855f7",
-        year: "2024",
-    },
-    {
-        id: "webflow-migration",
-        title: "Webflow Migration",
-        type: "Webflow",
-        industry: "Enterprise SaaS",
-        description:
-            "Transferred a slow WordPress site into a lightning-fast Webflow powerhouse. Zero downtime, perfectly preserved SEO rankings, and fully editable by the marketing team.",
-        features: [
-            "Pixel-perfect WordPress to Webflow",
-            "Zero SEO traffic drop during move",
-            "Advanced CMS collections setup",
-            "Custom client-first class naming",
-        ],
-        tags: ["Migration", "Webflow", "Enterprise"],
-        category: "webflow",
-        gradient: "from-blue-600 via-indigo-500 to-sky-400",
-        accentColor: "#3b82f6",
-        year: "2024",
-    },
-    {
-        id: "conversion-optimization",
-        title: "Conversion Optimization",
-        type: "Landing Page",
-        industry: "E-Commerce",
-        description:
-            "Deep CRO audit and redesign of a core product landing page. Addressed drop-off points, simplified checkout, and drove a 140% increase in monthly conversions.",
-        features: [
-            "Heatmap-driven UX improvements",
-            "A/B tested hero layouts",
-            "Frictionless checkout flow",
-            "Trust and social proof triggers",
-        ],
-        tags: ["CRO", "Landing Page", "E-Commerce"],
-        category: "landing",
-        gradient: "from-emerald-500 via-teal-400 to-cyan-500",
-        accentColor: "#10b981",
-        year: "2024",
-    },
-    {
-        id: "page-speed-optimization",
-        title: "Speed Optimization",
-        type: "Website",
-        industry: "Media & Publishing",
-        description:
-            "Technical refactoring and asset optimization that took a content-heavy media site from failing Core Web Vitals to a 99/100 Google Lighthouse score.",
-        features: [
-            "Next-Gen image formats & lazy loading",
-            "Critical CSS generation",
-            "Removed heavy third-party bloat",
-            "Achieved 99/100 Lighthouse score",
-        ],
-        tags: ["Performance", "Technical SEO", "Speed"],
-        category: "website",
-        gradient: "from-orange-500 via-amber-400 to-yellow-400",
-        accentColor: "#f59e0b",
-        year: "2024",
-    },
-    {
-        id: "saas-platform-ui",
-        title: "SaaS Platform UI",
-        type: "Dashboard",
-        industry: "B2B Software",
-        description:
-            "Complete user interface design for a complex B2B software tool. Turned overwhelming data tables into an intuitive, user-friendly, and visually engaging dashboard.",
-        features: [
-            "Intuitive data visualization",
-            "Dark mode first design system",
-            "Modular dashboard widgets",
-            "Comprehensive UI component kit",
-        ],
-        tags: ["SaaS UI", "Dashboard", "UX Design"],
-        category: "dashboard",
-        gradient: "from-cyan-600 via-sky-500 to-blue-400",
-        accentColor: "#06b6d4",
-        year: "2025",
-    },
-    {
-        id: "local-seo-funnel",
-        title: "Local SEO Funnel",
-        type: "Landing Page",
-        industry: "Home Services",
-        description:
-            "High-intent local funnel designed specifically to capture and convert high-value leads from Google Ads and local search results.",
-        features: [
-            "Dynamic location-based content",
-            "Sticky CTA mobile layout",
-            "Automated lead capture integration",
-            "Trust-building review section",
-        ],
-        tags: ["Local SEO", "Lead Gen", "Advertising"],
-        category: "landing",
-        gradient: "from-rose-500 via-pink-500 to-purple-500",
-        accentColor: "#ec4899",
-        year: "2025",
-    },
-    {
-        id: "fintech-mobile-app",
-        title: "FinTech Mobile App",
-        type: "Mobile App",
-        industry: "Finance",
-        description:
-            "Sleek, intuitive UI design for a mobile banking and investment application. Focused on secure feeling, clear typography, and buttery-smooth micro-interactions.",
-        features: [
-            "Secure biometric login flow",
-            "Interactive portfolio charts",
-            "One-tap transfer interface",
-            "Custom financial icon set",
-        ],
-        tags: ["Mobile App", "FinTech", "UI/UX"],
-        category: "mobile",
-        gradient: "from-lime-500 via-green-400 to-emerald-500",
-        accentColor: "#22c55e",
-        year: "2025",
-    },
-    {
-        id: "custom-crm-dashboard",
-        title: "Custom CRM Dashboard",
-        type: "Dashboard",
-        industry: "Logistics",
-        description:
-            "Bespoke internal tool and CRM for a logistics firm. Replaced three fragmented software subscriptions with one unified, blazing-fast, custom-built interface.",
-        features: [
-            "Real-time fleet tracking map link",
-            "Drag-and-drop pipeline management",
-            "Automated reporting exports",
-            "Role-based permission architecture",
-        ],
-        tags: ["Internal Tool", "CRM", "Dashboard"],
-        category: "dashboard",
-        gradient: "from-indigo-600 via-blue-600 to-violet-600",
-        accentColor: "#818cf8",
-        year: "2025",
-    },
-    {
-        id: "b2b-lead-gen",
-        title: "B2B Lead Generation",
-        type: "Webflow",
-        industry: "Professional Services",
-        description:
-            "A sophisticated Webflow site acting as an automated 24/7 sales machine. Features gated content, dynamic CMS case studies, and seamless CRM integrations.",
-        features: [
-            "Gated whitepaper funnel",
-            "Dynamic CMS case study architecture",
-            "Native HubSpot form integration",
-            "Scroll-triggered micro-animations",
-        ],
-        tags: ["Lead Gen", "B2B", "Webflow"],
-        category: "webflow",
-        gradient: "from-red-500 via-orange-400 to-amber-400",
-        accentColor: "#f43f5e",
-        year: "2025",
-    },
+// ─── STORIES ─────────────────────────────────────────────────────────────────
+export const STORIES = [
+  {
+    id: 1,
+    number: '01',
+    tag: 'Origin Story',
+    title: 'The Day I Chose Fear',
+    subtitle: 'First Solo Travel',
+    image: IMAGES.airportSelfie,
+    color: '#7c3aed',
+    location: 'Algeria',
+    excerpt: "No plan. No experience. Just a bag, a ticket, and the decision to stop waiting.",
+    body: [
+      "Everyone told me it was a bad idea. Travel alone? From Algeria? Where would I go? Who would I know?",
+      "I didn't have answers. I just had the unbearable feeling that staying would be worse.",
+      "That first journey was clumsy, anxious, and completely transformative. I got lost. I missed buses. I slept in places I'd never have chosen with more experience.",
+      "And I loved every second of it. Because fear, when you move through it, becomes something else entirely.",
+    ],
+  },
+  {
+    id: 2,
+    number: '02',
+    tag: 'Budget Travel',
+    title: 'Everything. Zero Money.',
+    subtitle: 'Hitchhiking & Free Stays',
+    image: IMAGES.budgetRoom,
+    color: '#d97706',
+    location: 'Across Europe',
+    excerpt: "Hitchhiking across continents, sleeping on strangers' couches. Connection over comfort — every time.",
+    body: [
+      "There's a version of travel that costs nothing except pride. You ask for rides. You sleep on couches. You eat what people offer.",
+      "People think budget travel means suffering. It's the opposite. It forces connection.",
+      "Every host taught me something. Every hitchhiked kilometer had a story behind the windshield.",
+      "Money doesn't buy experience. Openness does.",
+    ],
+  },
+  {
+    id: 3,
+    number: '03',
+    tag: 'Africa',
+    title: 'Living with the Maasai',
+    subtitle: 'Kenya & Tanzania',
+    image: IMAGES.tentMarket,
+    color: '#dc2626',
+    location: 'East Africa',
+    excerpt: "Three days. No signal, no running water. A complete reset of what the word 'enough' actually means.",
+    body: [
+      "The Maasai don't measure wealth in money. They measure it in cattle, in community, in the depth of knowledge passed through generations.",
+      "I arrived as a visitor. I left questioning everything I'd built my life around.",
+      "They welcomed me into their world without hesitation. A stranger from a continent they'd never visited, who spoke none of their language.",
+      "I've never felt more welcomed. Or more humbled.",
+    ],
+  },
+  {
+    id: 4,
+    number: '04',
+    tag: 'Ancient Living',
+    title: 'The Cave Was Home',
+    subtitle: 'Cavemen Experience',
+    image: IMAGES.caveInterior,
+    color: '#059669',
+    location: 'Undisclosed',
+    excerpt: "Stone walls. No electricity. Cooking over fire. Three days living exactly as humans did for ten thousand years.",
+    body: [
+      "Some people build smart homes. This family had carved their home from the earth itself, the same way their ancestors had ten thousand years ago.",
+      "At first it felt like a step backward. By the second day, it felt like the most rational way to live.",
+      "The silence was absolute. The stars were blinding. The food, cooked over wood and flame, was some of the best I've ever tasted.",
+      "We've complicated everything that was once simple.",
+    ],
+  },
+  {
+    id: 5,
+    number: '05',
+    tag: 'Northern Lights',
+    title: 'The Night the Sky Caught Fire',
+    subtitle: 'Aurora Borealis',
+    image: IMAGES.auroraArms,
+    color: '#0891b2',
+    location: 'Lapland, Finland',
+    excerpt: "Minus twenty degrees, completely alone. Then the sky erupted in green and violet — the most spectacular thing I've ever seen.",
+    body: [
+      "My local host, a Finnish man of sixty who spoke in sentences no longer than four words, drove me thirty kilometers from the nearest town and left me in the dark.",
+      '"Wait," he said. And drove away.',
+      "Forty minutes later, the sky erupted. Green and violet light, moving like something alive, like the universe breathing.",
+      "I cried. I don't know when it started. I just know that when he came back, I wasn't the same person he'd dropped off.",
+    ],
+  },
+  {
+    id: 6,
+    number: '06',
+    tag: 'Danger',
+    title: "Uganda. I Almost Didn't Come Back.",
+    subtitle: 'Real Danger Story',
+    image: IMAGES.ugandaHospital,
+    color: '#be123c',
+    location: 'Uganda',
+    excerpt: "There are moments where your life depends on your next decision. Uganda gave me one of those moments.",
+    body: [
+      "There are moments in travel where you understand, with absolute clarity, that your life depends on the next decision you make.",
+      "Uganda gave me one of those moments.",
+      "I ended up in a hospital bed in a city where I knew no one, with no working phone, and a situation I couldn't explain in the local language.",
+      "What followed was an act of human kindness so overwhelming that I still can't talk about it without my voice breaking.",
+      "I made it back. Not alone.",
+    ],
+  },
 ];
 
-export const services = [
-    {
-        icon: "layout",
-        title: "Landing Pages",
-        description:
-            "High-converting, scroll-stopping landing pages designed to turn visitors into customers. Every pixel serves a purpose.",
-        highlights: ["A/B Test Ready", "SEO Optimized", "Mobile-First"],
-    },
-    {
-        icon: "monitor",
-        title: "Website Design",
-        description:
-            "Full websites built around your brand story, from strategy and wireframes to polished, responsive design.",
-        highlights: ["Brand-Aligned", "Performance Focused", "Scalable"],
-    },
-    {
-        icon: "zap",
-        title: "Webflow Development",
-        description:
-            "Pixel-perfect Webflow builds from Figma designs. Clean CMS structure, smooth animations, and no-code editable.",
-        highlights: ["Figma-to-Webflow", "CMS Setup", "Animation Polish"],
-    },
-    {
-        icon: "smartphone",
-        title: "Mobile App Design",
-        description:
-            "Full mobile app UI design across multiple screens and flows. Intuitive, polished, and ready for development handoff.",
-        highlights: ["Multi-Screen Flows", "Figma Handoff", "App Store Ready"],
-    },
-    {
-        icon: "bar-chart",
-        title: "Dashboard Design",
-        description:
-            "Data-heavy admin dashboards and analytics UIs designed for clarity, speed, and real-world usability.",
-        highlights: ["Data Visualization", "Admin Panels", "Dark Mode First"],
-    },
-    {
-        icon: "bot",
-        title: "Automations",
-        description:
-            "No-code and low-code automations that save hours each week. From CRM flows to email sequences and API connections.",
-        highlights: ["Zapier / Make", "Email Flows", "API Integrations"],
-    },
+// ─── COUNTRIES BY CONTINENT ───────────────────────────────────────────────────
+export const CONTINENTS = [
+  {
+    id: 'europe',
+    name: 'Europe',
+    emoji: '🇪🇺',
+    color: '#6366f1',
+    countries: [
+      { name: 'Austria',                flag: '🇦🇹' },
+      { name: 'Belgium',                flag: '🇧🇪' },
+      { name: 'Bosnia and Herzegovina', flag: '🇧🇦' },
+      { name: 'Bulgaria',               flag: '🇧🇬' },
+      { name: 'Croatia',                flag: '🇭🇷' },
+      { name: 'Denmark',                flag: '🇩🇰' },
+      { name: 'Finland',                flag: '🇫🇮' },
+      { name: 'France',                 flag: '🇫🇷' },
+      { name: 'Germany',                flag: '🇩🇪' },
+      { name: 'Greece',                 flag: '🇬🇷' },
+      { name: 'Hungary',                flag: '🇭🇺' },
+      { name: 'Italy',                  flag: '🇮🇹' },
+      { name: 'Liechtenstein',          flag: '🇱🇮' },
+      { name: 'Luxembourg',             flag: '🇱🇺' },
+      { name: 'Netherlands',            flag: '🇳🇱' },
+      { name: 'Norway',                 flag: '🇳🇴' },
+      { name: 'Poland',                 flag: '🇵🇱' },
+      { name: 'Portugal',               flag: '🇵🇹' },
+      { name: 'Romania',                flag: '🇷🇴' },
+      { name: 'Slovakia',               flag: '🇸🇰' },
+      { name: 'Slovenia',               flag: '🇸🇮' },
+      { name: 'Spain',                  flag: '🇪🇸' },
+      { name: 'Sweden',                 flag: '🇸🇪' },
+      { name: 'Switzerland',            flag: '🇨🇭' },
+    ],
+  },
+  {
+    id: 'africa',
+    name: 'Africa',
+    emoji: '🌍',
+    color: '#dc2626',
+    countries: [
+      { name: 'Algeria',  flag: '🇩🇿' },
+      { name: 'Botswana', flag: '🇧🇼' },
+      { name: 'Kenya',    flag: '🇰🇪' },
+      { name: 'Morocco',  flag: '🇲🇦' },
+      { name: 'Rwanda',   flag: '🇷🇼' },
+      { name: 'Tanzania', flag: '🇹🇿' },
+      { name: 'Tunisia',  flag: '🇹🇳' },
+      { name: 'Uganda',   flag: '🇺🇬' },
+      { name: 'Zambia',   flag: '🇿🇲' },
+      { name: 'Zimbabwe', flag: '🇿🇼' },
+    ],
+  },
+  {
+    id: 'middleeast',
+    name: 'Middle East',
+    emoji: '🌙',
+    color: '#d97706',
+    countries: [
+      { name: 'Qatar',        flag: '🇶🇦' },
+      { name: 'Saudi Arabia', flag: '🇸🇦' },
+      { name: 'Turkey',       flag: '🇹🇷' },
+    ],
+  },
+  {
+    id: 'asia',
+    name: 'Asia',
+    emoji: '🌏',
+    color: '#0891b2',
+    countries: [
+      { name: 'China',     flag: '🇨🇳' },
+      { name: 'Indonesia', flag: '🇮🇩' },
+      { name: 'Malaysia',  flag: '🇲🇾' },
+      { name: 'Thailand',  flag: '🇹🇭' },
+    ],
+  },
 ];
 
-export const skills = [
-    { name: "Webflow", level: 95, category: "tool" },
-    { name: "Figma", level: 92, category: "tool" },
-    { name: "Next.js", level: 85, category: "code" },
-    { name: "Tailwind CSS", level: 90, category: "code" },
-    { name: "Framer Motion", level: 80, category: "code" },
-    { name: "SEO Strategy", level: 88, category: "marketing" },
-    { name: "UI/UX Design", level: 90, category: "design" },
-    { name: "Conversion Rate Opt.", level: 85, category: "marketing" },
+// ─── GALLERY ITEMS ────────────────────────────────────────────────────────────
+export const GALLERY_ITEMS = [
+  { id: 1,  src: IMAGES.auroraArms,     category: 'nature',     location: 'Lapland, Finland',    title: 'Aurora Borealis',     aspect: 'portrait'  },
+  { id: 2,  src: IMAGES.auroraRoad,     category: 'nature',     location: 'Scandinavia',          title: 'Road to the Lights',  aspect: 'landscape' },
+  { id: 3,  src: IMAGES.fjord1,         category: 'nature',     location: 'Norway',               title: 'Into the Fjord',      aspect: 'portrait'  },
+  { id: 4,  src: IMAGES.fjord2,         category: 'nature',     location: 'Norway',               title: 'Canyon Waters',       aspect: 'portrait'  },
+  { id: 5,  src: IMAGES.waterfall,      category: 'nature',     location: 'Unknown',              title: 'The Falls',           aspect: 'portrait'  },
+  { id: 6,  src: IMAGES.desertSand,     category: 'nature',     location: 'Sahara Desert',        title: 'Sea of Sand',         aspect: 'portrait'  },
+  { id: 7,  src: IMAGES.viennaGold,     category: 'cities',     location: 'Vienna, Austria',      title: 'Golden Vienna',       aspect: 'portrait'  },
+  { id: 8,  src: IMAGES.viennaCathedral,category: 'cities',     location: 'Vienna, Austria',      title: 'Stephansdom',         aspect: 'portrait'  },
+  { id: 9,  src: IMAGES.copenhagen,     category: 'cities',     location: 'Copenhagen, Denmark',  title: 'Nyhavn Harbor',       aspect: 'landscape' },
+  { id: 10, src: IMAGES.colorBuildings, category: 'cities',     location: 'Europe',               title: 'Painted Streets',     aspect: 'landscape' },
+  { id: 11, src: IMAGES.colorMarket,    category: 'cities',     location: 'Europe',               title: 'Market Day',          aspect: 'landscape' },
+  { id: 12, src: IMAGES.cityNight,      category: 'cities',     location: 'Europe',               title: 'City After Dark',     aspect: 'landscape' },
+  { id: 13, src: IMAGES.mecca1,         category: 'culture',    location: 'Mecca, Saudi Arabia',  title: 'The Pilgrimage',      aspect: 'portrait'  },
+  { id: 14, src: IMAGES.mecca2,         category: 'culture',    location: 'Mecca, Saudi Arabia',  title: 'The Sacred House',    aspect: 'landscape' },
+  { id: 15, src: IMAGES.desertArab,     category: 'culture',    location: 'Middle East',          title: 'Desert Traditions',   aspect: 'portrait'  },
+  { id: 16, src: IMAGES.reindeer,       category: 'culture',    location: 'Lapland, Finland',     title: 'Arctic Friends',      aspect: 'landscape' },
+  { id: 17, src: IMAGES.hotAirBalloon,  category: 'adventures', location: 'Qatar',                title: 'Above It All',        aspect: 'portrait'  },
+  { id: 18, src: IMAGES.desertHelmet,   category: 'adventures', location: 'Desert',               title: 'Dust & Speed',        aspect: 'portrait'  },
+  { id: 19, src: IMAGES.stadium1,       category: 'adventures', location: 'Qatar',                title: 'World Cup Moments',   aspect: 'landscape' },
+  { id: 20, src: IMAGES.airplane2,      category: 'adventures', location: 'Maho Beach',           title: 'Jet Blast',           aspect: 'landscape' },
+];
+
+// ─── SOCIAL STATS ─────────────────────────────────────────────────────────────
+export const STATS = [
+  { value: 1000000, suffix: '+', label: 'Total Followers', short: '1M+' },
+  { value: 50,      suffix: '+', label: 'Countries',       short: '50+' },
+  { value: 6,       suffix: '',  label: 'Continents',      short: '6'   },
+  { value: 100,     suffix: 'M+',label: 'Total Views',     short: '100M+'},
+];
+
+// ─── NAV LINKS ────────────────────────────────────────────────────────────────
+export const NAV_LINKS = [
+  { href: '#about',   label: 'About'   },
+  { href: '#travels', label: 'Travels' },
+  { href: '#stories', label: 'Stories' },
+  { href: '#gallery', label: 'Gallery' },
+  { href: '#collab',  label: 'Collab'  },
+];
+
+// ─── SOCIAL LINKS ────────────────────────────────────────────────────────────
+export const SOCIALS = [
+  { name: 'Instagram',      handle: '@RanzoDz',  url: 'https://www.instagram.com/ranzodz',                                   abbr: 'IG', color: '#E1306C' },
+  { name: 'YouTube',        handle: '@RanzoDz',  url: 'https://www.youtube.com/c/ranzodz',                                   abbr: 'YT', color: '#FF0000' },
+  { name: 'TikTok',         handle: '@RanzoDz',  url: 'https://www.tiktok.com/@ranzodz',                                    abbr: 'TK', color: '#010101' },
+  { name: 'Kick',           handle: '@RanzoDz',  url: 'https://kick.com/ranzodz',                                           abbr: 'KC', color: '#53FC18' },
+  { name: 'Facebook',       handle: '@RanzoDz',  url: 'https://www.facebook.com/ranzodz',                                   abbr: 'FB', color: '#1877F2' },
+  { name: 'Facebook 2',     handle: '@RanzoDZA', url: 'https://www.facebook.com/RanzoDZA',                                  abbr: 'FB', color: '#1877F2' },
+  { name: 'YouTube Gaming', handle: '@RanzoDz',  url: 'https://www.youtube.com/channel/UCY8BV1FLuJWY4aV6QSaQ35Q/featured', abbr: 'YG', color: '#FF0000' },
+  { name: 'Donate',         handle: 'Streamlabs', url: 'https://streamlabs.com/ranzolite/tip',                              abbr: 'TIP', color: '#80F5D2' },
+  { name: 'PayPal',         handle: 'Donate',    url: 'https://www.paypal.com/paypalme/AbdullahKhalfi',                     abbr: 'PP', color: '#003087' },
+];
+
+// ─── ALL LINKS (for footer / link tree) ──────────────────────────────────────
+export const ALL_LINKS = [
+  { name: 'Instagram', url: 'https://www.instagram.com/ranzodz' },
+  { name: 'YouTube', url: 'https://www.youtube.com/c/ranzodz' },
+  { name: 'TikTok', url: 'https://www.tiktok.com/@ranzodz' },
+  { name: 'Kick', url: 'https://kick.com/ranzodz' },
+  { name: 'Facebook', url: 'https://www.facebook.com/ranzodz' },
+  { name: 'YouTube Gaming', url: 'https://www.youtube.com/channel/UCY8BV1FLuJWY4aV6QSaQ35Q/featured' },
+  { name: 'Donate', url: 'https://streamlabs.com/ranzolite/tip' },
+  { name: 'PayPal', url: 'https://www.paypal.com/paypalme/AbdullahKhalfi' },
+];
+
+// ─── TRAVEL APPS ─────────────────────────────────────────────────────────────
+export const TRAVEL_APPS = [
+  {
+    name: 'Skyscanner',
+    category: 'Flights',
+    desc: 'Find the cheapest flights worldwide',
+    url: 'https://www.skyscanner.com',
+    emoji: '✈️',
+    color: '#0770e3',
+  },
+  {
+    name: 'Booking.com',
+    category: 'Hotels',
+    desc: 'Best hotel deals and reviews',
+    url: 'https://www.booking.com',
+    emoji: '🏨',
+    color: '#003580',
+  },
+  {
+    name: 'Hostelworld',
+    category: 'Hostels',
+    desc: 'Budget-friendly hostels globally',
+    url: 'https://www.hostelworld.com',
+    emoji: '🛏️',
+    color: '#f47b20',
+  },
+  {
+    name: 'Couchsurfing',
+    category: 'Free Stays',
+    desc: 'Stay with locals for free',
+    url: 'https://www.couchsurfing.com',
+    emoji: '🛋️',
+    color: '#e0534f',
+  },
+  {
+    name: 'GetYourGuide',
+    category: 'Activities',
+    desc: 'Tours, attractions and experiences',
+    url: 'https://www.getyourguide.com',
+    emoji: '🎯',
+    color: '#ff5533',
+  },
+  {
+    name: 'Rome2Rio',
+    category: 'Transport',
+    desc: 'Get from A to B anywhere in the world',
+    url: 'https://www.rome2rio.com',
+    emoji: '🚂',
+    color: '#00b0ff',
+  },
+  {
+    name: 'MobiMatter',
+    category: 'eSIM',
+    desc: 'Affordable eSIM for international travel',
+    url: 'https://www.mobimatter.com',
+    emoji: '📱',
+    color: '#4caf50',
+  },
+  {
+    name: 'XE Currency',
+    category: 'Converter',
+    desc: 'Real-time currency converter',
+    url: 'https://www.xe.com',
+    emoji: '💱',
+    color: '#00458b',
+  },
+  {
+    name: 'Numbeo',
+    category: 'Cost of Living',
+    desc: 'Compare cost of living worldwide',
+    url: 'https://www.numbeo.com',
+    emoji: '📊',
+    color: '#2e7d32',
+  },
 ];

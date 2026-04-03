@@ -1,208 +1,185 @@
-"use client"; // Deployment trigger
-
-
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Moon, Sun, Menu, X, Sparkles } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
-import { smoothScrollTo } from "@/lib/smoothScroll";
-
-const navLinks = [
-    { href: "#about", label: "About" },
-    { href: "#projects", label: "Projects" },
-    { href: "#services", label: "Services" },
-    { href: "#skills", label: "Skills" },
-    { href: "#contact", label: "Contact" },
-];
+"use client";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { NAV_LINKS, SOCIALS } from "@/lib/data";
 
 export default function Navbar() {
-    const { theme, toggleTheme } = useTheme();
-    const [scrolled, setScrolled] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden]   = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const lastY = useRef(0);
 
-    useEffect(() => {
-        const onScroll = () => {
-            setScrolled(window.scrollY > 40);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled(y > 60);
+    setHidden(y > 200 && y > lastY.current);
+    lastY.current = y;
+  });
 
-            // Determine active section
-            const sections = navLinks.map(l => l.href.replace("#", ""));
-            let current = "";
-            for (const id of sections) {
-                const el = document.getElementById(id);
-                if (el) {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top <= 150) current = id;
-                }
-            }
-            setActiveSection(current);
-        };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
-
-    const handleNavClick = useCallback((href: string) => {
-        setMenuOpen(false);
-        // Small delay to let mobile menu closing layout settle
-        setTimeout(() => {
-            smoothScrollTo(href);
-        }, 10);
-    }, []);
-
-    return (
-        <>
-            <motion.div
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: scrolled ? -50 : 0, opacity: scrolled ? 0 : 1 }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="fixed top-0 left-0 right-0 z-[60] bg-[var(--card)]/90 backdrop-blur-md border-b border-[var(--border)] text-[var(--foreground)] text-xs sm:text-sm font-medium py-2.5 px-4 text-center flex items-center justify-center gap-2 sm:gap-3 shadow-sm"
-            >
-                <Sparkles size={14} className="text-[var(--accent)] hidden sm:block" />
-                <span>
-                    <span className="hidden sm:inline text-[var(--muted-foreground)]">Exclusive Offer: </span>
-                    Enjoy a <strong className="text-[var(--accent)] font-semibold">50% discount</strong> on your first premium web design project.
-                </span>
-                <button
-                    onClick={() => handleNavClick("#services")}
-                    className="ml-2 bg-[var(--accent)] text-white px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold hover:bg-[var(--accent-hover)] transition-all shadow-sm shadow-[var(--accent)]/20 pm-btn-primary"
-                >
-                    Get Started
-                </button>
-            </motion.div>
-
-            <motion.nav
-                initial={{ y: -100, opacity: 0 }}
-                animate={{ y: scrolled ? -36 : 0, opacity: 1 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: 0.05, y: { duration: 0.2, ease: "easeInOut" } }}
-                className={`fixed top-[36px] sm:top-[36px] left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                    ? "py-3 bg-[var(--background)]/80 backdrop-blur-xl border-b border-[var(--border)] shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
-                    : "py-5"
-                    }`}
-            >
-                <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-                    {/* Logo */}
-                    <motion.a
-                        href="#"
-                        onClick={(e) => { e.preventDefault(); smoothScrollTo("top"); }}
-                        className="text-xl font-bold tracking-tight"
-                        whileHover={{ scale: 1.02 }}
-                    >
-                        <span className="text-gradient">Ranzo</span>
-                        <span className="text-[var(--muted-foreground)] font-light">.dev</span>
-                    </motion.a>
-
-                    {/* Desktop nav */}
-                    <ul className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
-                            <li key={link.href}>
-                                <button
-                                    onClick={() => handleNavClick(link.href)}
-                                    className={`relative text-sm font-medium transition-colors duration-300 cursor-pointer pm-underline ${activeSection === link.href.replace("#", "")
-                                            ? "text-[var(--foreground)]"
-                                            : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                                        }`}
-                                >
-                                    {link.label}
-                                    {activeSection === link.href.replace("#", "") && (
-                                        <motion.span
-                                            layoutId="nav-indicator"
-                                            className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-[var(--accent)] rounded-full"
-                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                                        />
-                                    )}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* Right actions */}
-                    <div className="flex items-center gap-3">
-                        <motion.button
-                            onClick={toggleTheme}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="w-9 h-9 rounded-full flex items-center justify-center border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-[var(--accent)] transition-all duration-300"
-                            aria-label="Toggle theme"
-                        >
-                            <AnimatePresence mode="wait">
-                                <motion.span
-                                    key={theme}
-                                    initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
-                                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                                    exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
-                                    transition={{ duration: 0.25 }}
-                                >
-                                    {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
-                                </motion.span>
-                            </AnimatePresence>
-                        </motion.button>
-
-                        <motion.button
-                            onClick={() => handleNavClick("#contact")}
-                            whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(59, 130, 246, 0.25)" }}
-                            whileTap={{ scale: 0.98 }}
-                            className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] transition-all duration-300 pm-btn-primary"
-                        >
-                            Let&apos;s Talk
-                        </motion.button>
-
-                        {/* Mobile menu toggle */}
-                        <button
-                            onClick={() => setMenuOpen(!menuOpen)}
-                            className="md:hidden w-9 h-9 flex items-center justify-center text-[var(--foreground)]"
-                            aria-label="Toggle menu"
-                        >
-                            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-                        </button>
-                    </div>
-                </div>
-            </motion.nav>
-
-            {/* Mobile menu */}
-            <AnimatePresence>
-                {menuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        className="fixed inset-x-0 top-[60px] z-40 bg-[var(--background)]/95 backdrop-blur-xl border-b border-[var(--border)] md:hidden"
-                    >
-                        <ul className="flex flex-col px-6 py-6 gap-5">
-                            {navLinks.map((link, i) => (
-                                <motion.li
-                                    key={link.href}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: i * 0.05, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                                >
-                                    <button
-                                        onClick={() => handleNavClick(link.href)}
-                                        className={`text-base font-medium w-full text-left transition-colors duration-200 ${activeSection === link.href.replace("#", "")
-                                                ? "text-[var(--accent)]"
-                                                : "text-[var(--foreground)]"
-                                            }`}
-                                    >
-                                        {link.label}
-                                    </button>
-                                </motion.li>
-                            ))}
-                            <motion.li
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: navLinks.length * 0.05, duration: 0.3 }}
-                            >
-                                <button
-                                    onClick={() => handleNavClick("#contact")}
-                                    className="w-full px-4 py-2.5 rounded-full text-sm font-semibold bg-[var(--accent)] text-white text-center"
-                                >
-                                    Let&apos;s Talk
-                                </button>
-                            </motion.li>
-                        </ul>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </>
+  useEffect(() => {
+    const ids = NAV_LINKS.map(l => l.href.replace("#", ""));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); });
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
     );
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollTo = (href: string) => {
+    setMobileOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <>
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: hidden ? -100 : 0, opacity: 1 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{
+          transition: "background 0.5s, border-color 0.5s, backdrop-filter 0.5s",
+          padding: scrolled ? "12px clamp(16px, 5vw, 40px)" : "16px clamp(16px, 5vw, 40px)",
+          background: scrolled ? "rgba(6,6,8,0.90)" : "transparent",
+          backdropFilter: scrolled ? "blur(24px)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+        }}
+      >
+        {/* ── LAYER 1: Logo left + CTA right ── */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          {/* Logo */}
+          <motion.a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            className="text-[20px] font-bold tracking-[4px] text-gradient"
+            style={{ fontFamily: "var(--font-display)", flexShrink: 0 }}
+            whileHover={{ letterSpacing: "6px" }}
+            transition={{ duration: 0.3 }}
+          >
+            RANZODZ
+          </motion.a>
+
+          {/* CTA + Hamburger */}
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
+            <button
+              onClick={() => scrollTo("#collab")}
+              className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full transition-all duration-300"
+              style={{
+                padding: "10px 24px",
+                background: "linear-gradient(135deg, var(--live-accent), var(--live-accent-bright))",
+                boxShadow: "0 4px 20px var(--live-glow)",
+                color: "#fff",
+                transition: "background 0.6s, box-shadow 0.6s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.transform = "translateY(-1px)")}
+              onMouseLeave={e => (e.currentTarget.style.transform = "translateY(0)")}
+            >
+              Work With Me
+            </button>
+
+            <button
+              className="md:hidden flex flex-col gap-[5px] p-2"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              <motion.span animate={{ rotate: mobileOpen ? 45 : 0, y: mobileOpen ? 7 : 0 }} className="block w-6 h-[1.5px] bg-white origin-center" />
+              <motion.span animate={{ opacity: mobileOpen ? 0 : 1, scaleX: mobileOpen ? 0 : 1 }} className="block w-6 h-[1.5px] bg-white" />
+              <motion.span animate={{ rotate: mobileOpen ? -45 : 0, y: mobileOpen ? -7 : 0 }} className="block w-6 h-[1.5px] bg-white origin-center" />
+            </button>
+          </div>
+        </div>
+
+        {/* ── LAYER 2: Nav links — position:absolute on the full nav, centered on viewport ── */}
+        <div
+          className="hidden md:flex items-center gap-8"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "auto",
+          }}
+        >
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.href}
+              onClick={() => scrollTo(link.href)}
+              className="relative text-[11px] font-semibold tracking-[2px] uppercase transition-colors duration-200"
+              style={{
+                color: activeSection === link.href.replace("#", "") ? "var(--white)" : "var(--muted)",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px 0",
+              }}
+            >
+              {link.label}
+              {activeSection === link.href.replace("#", "") && (
+                <motion.div
+                  layoutId="nav-indicator"
+                  className="absolute -bottom-1 left-0 right-0 h-[1px]"
+                  style={{ background: "linear-gradient(to right, var(--live-accent), var(--live-accent-bright))", transition: "background 0.6s" }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 flex flex-col justify-center items-center"
+            style={{ background: "rgba(6,6,8,0.97)", backdropFilter: "blur(24px)" }}
+          >
+            <nav className="flex flex-col items-center gap-8">
+              {NAV_LINKS.map((link, i) => (
+                <motion.button
+                  key={link.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07 }}
+                  onClick={() => scrollTo(link.href)}
+                  className="text-[32px] font-light tracking-widest uppercase"
+                  style={{ fontFamily: "var(--font-display)", color: "var(--white)" }}
+                >
+                  {link.label}
+                </motion.button>
+              ))}
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                onClick={() => scrollTo("#collab")}
+                className="mt-4 btn-primary"
+              >
+                Work With Me
+              </motion.button>
+            </nav>
+            <div className="absolute bottom-12 flex gap-6">
+              {SOCIALS.map(s => (
+                <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
+                  className="text-[12px] font-semibold tracking-[1px]" style={{ color: "var(--muted)" }}>
+                  {s.name}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }

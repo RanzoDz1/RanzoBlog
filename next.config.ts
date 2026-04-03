@@ -33,8 +33,8 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       // Allow data URIs (blur placeholders), blob URIs, and Unsplash images
-      "img-src 'self' data: blob: https://www.google-analytics.com https://images.unsplash.com https://plus.unsplash.com",
-      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://vitals.vercel-insights.com https://images.unsplash.com",
+      "img-src 'self' data: blob: https://www.google-analytics.com https://images.unsplash.com https://plus.unsplash.com https://lh3.googleusercontent.com",
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://vitals.vercel-insights.com https://images.unsplash.com https://lh3.googleusercontent.com https://fonts.googleapis.com https://fonts.gstatic.com",
       "frame-ancestors 'self'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "plus.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
         pathname: "/**",
       },
     ],
