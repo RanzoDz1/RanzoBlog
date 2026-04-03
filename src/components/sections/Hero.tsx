@@ -155,16 +155,30 @@ export default function Hero() {
       {/* Background image with parallax */}
       <motion.div className="absolute inset-0 z-0" style={{ y: bgY, scale: bgScale }}>
         <div
-          className="absolute inset-0 transition-opacity duration-1000 hero-bg"
-          style={{
-            backgroundImage: bgLoaded ? `url(${bgImageUrl})` : "none",
-            backgroundSize: "cover",
-            // If admin has saved a custom position, apply it (overrides the CSS class)
-            ...(heroPos ? { backgroundPosition: isMobile ? `${heroPos.mobileX}% ${heroPos.mobileY}%` : `${heroPos.desktopX}% ${heroPos.desktopY}%` } : {}),
-            opacity: bgLoaded ? 1 : 0,
-            filter: "brightness(0.40) saturate(1.25)",
-          }}
-        />
+          className="absolute inset-0"
+          style={{ opacity: bgLoaded ? 1 : 0, transition: "opacity 1s", overflow: "hidden" }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: bgLoaded ? `url(${bgImageUrl})` : "none",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "brightness(0.40) saturate(1.25)",
+              // scale(1.5) creates 25% overflow on all sides so translate always has room
+              // translate converts 0-100 slider → -15% to +15% shift
+              transform: (() => {
+                const px = heroPos ? (isMobile ? heroPos.mobileX : heroPos.desktopX) : (isMobile ? 35 : 55);
+                const py = heroPos ? (isMobile ? heroPos.mobileY : heroPos.desktopY) : (isMobile ? 20 : 30);
+                const tx = (50 - px) / 50 * 15;
+                const ty = (50 - py) / 50 * 10;
+                return `scale(1.5) translate(${tx}%, ${ty}%)`;
+              })(),
+              transition: "transform 0.3s ease",
+            }}
+          />
+        </div>
         {!bgLoaded && (
           <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(124,58,237,0.3) 0%, rgba(37,99,235,0.15) 40%, var(--black) 80%)" }} />
         )}

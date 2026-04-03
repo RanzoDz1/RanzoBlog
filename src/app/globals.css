@@ -262,20 +262,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .form-input:focus { border-color: var(--live-accent); }
 .form-input::placeholder { color: var(--muted); }
 
-/* ── HERO BACKGROUND POSITION (responsive, no JS needed) ── */
-.hero-bg {
-  background-position: 55% 30%; /* desktop */
-}
-@media (max-width: 1023px) {
-  .hero-bg {
-    background-position: 35% 25%; /* tablet / mobile */
-  }
-}
-@media (max-width: 640px) {
-  .hero-bg {
-    background-position: 35% 20%; /* small phones */
-  }
-}
 
 /* ── SKIP LINK ── */
 .skip-link {
