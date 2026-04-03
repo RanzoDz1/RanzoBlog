@@ -481,8 +481,8 @@ function AppsTab({ token }: { token: string }) {
 }
 
 // ── Settings ──────────────────────────────────────────────────────────────────
-interface HeroPos { desktopX: number; desktopY: number; mobileX: number; mobileY: number; }
-const DEFAULT_POS: HeroPos = { desktopX: 55, desktopY: 30, mobileX: 35, mobileY: 20 };
+interface HeroPos { desktopX: number; desktopY: number; mobileX: number; mobileY: number; imageUrl: string; }
+const DEFAULT_POS: HeroPos = { desktopX: 55, desktopY: 30, mobileX: 35, mobileY: 20, imageUrl: "" };
 
 // Slider extracted outside Settings so it's a stable component reference
 function PosSlider({ lbl, field, value, onChange }: { lbl: string; field: keyof HeroPos; value: number; onChange: (f: keyof HeroPos, v: number) => void }) {
@@ -549,11 +549,32 @@ function Settings({ token }: { token: string }) {
   return (
     <div style={{ padding: 40, maxWidth: 680 }}>
       <div style={{ marginBottom: 32 }}>
-        <div style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 6 }}>Hero Image Position</div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 6 }}>Hero Background</div>
         <div style={{ fontSize: 13, color: "rgba(248,248,240,0.4)", lineHeight: 1.7 }}>
-          Control where the background photo is positioned on desktop and mobile.<br />
+          Set the background photo and control its position.<br />
           <strong style={{ color: "rgba(248,248,240,0.65)" }}>Lower X% → subject moves right. Higher X% → subject moves left.</strong>
         </div>
+      </div>
+
+      {/* Background Image */}
+      <div style={{ ...card, marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#f8f8f0", marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+          🖼️ Background Image URL
+        </div>
+        <div style={{ fontSize: 12, color: "rgba(248,248,240,0.4)", marginBottom: 12 }}>
+          Paste a direct image URL (Google Drive, Imgur, etc.). Leave empty to use the default aurora photo.
+        </div>
+        <input
+          style={inp}
+          placeholder="https://lh3.googleusercontent.com/d/..."
+          value={pos.imageUrl}
+          onChange={e => setPos(p => ({ ...p, imageUrl: e.target.value }))}
+        />
+        {pos.imageUrl && (
+          <div style={{ marginTop: 12, borderRadius: 8, overflow: "hidden", height: 140, border: "1px solid rgba(255,255,255,0.08)" }}>
+            <img src={pos.imageUrl} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
+          </div>
+        )}
       </div>
 
       <div style={{ ...card, marginBottom: 32, padding: "14px 20px", display: "flex", alignItems: "center", gap: 12 }}>

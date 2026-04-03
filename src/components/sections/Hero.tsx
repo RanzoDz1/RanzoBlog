@@ -84,7 +84,7 @@ export default function Hero() {
   const [bgLoaded, setBgLoaded] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [heroPos, setHeroPos] = useState<{ desktopX: number; desktopY: number; mobileX: number; mobileY: number } | null>(null);
+  const [heroPos, setHeroPos] = useState<{ desktopX: number; desktopY: number; mobileX: number; mobileY: number; imageUrl?: string } | null>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -108,11 +108,13 @@ export default function Hero() {
       });
   }, []);
 
+  // Preload whichever image will be used
+  const bgImageUrl = heroPos?.imageUrl || IMAGES.auroraRoad;
   useEffect(() => {
     const img = new Image();
-    img.src = IMAGES.auroraRoad;
+    img.src = bgImageUrl;
     img.onload = () => setBgLoaded(true);
-  }, []);
+  }, [bgImageUrl]);
 
   useEffect(() => {
     const t = setTimeout(() => setShowStats(true), 1200);
@@ -155,7 +157,7 @@ export default function Hero() {
         <div
           className="absolute inset-0 transition-opacity duration-1000 hero-bg"
           style={{
-            backgroundImage: bgLoaded ? `url(${IMAGES.auroraRoad})` : "none",
+            backgroundImage: bgLoaded ? `url(${bgImageUrl})` : "none",
             backgroundSize: "cover",
             // If admin has saved a custom position, apply it (overrides the CSS class)
             ...(heroPos ? { backgroundPosition: isMobile ? `${heroPos.mobileX}% ${heroPos.mobileY}%` : `${heroPos.desktopX}% ${heroPos.desktopY}%` } : {}),
