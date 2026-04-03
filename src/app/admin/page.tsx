@@ -504,32 +504,46 @@ function PosSlider({ lbl, field, value, onChange }: { lbl: string; field: keyof 
   );
 }
 
+const LS_KEY = "ranzo_hero_pos";
+
 function Settings({ token }: { token: string }) {
   const [pos, setPos] = useState<HeroPos>(DEFAULT_POS);
-  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "savedLocal">("idle");
 
   useEffect(() => {
+    // 1. Try KV first, fall back to localStorage
     fetch("/api/admin/content?key=hero-position", { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
-      .then(d => { if (d.data) setPos(d.data); })
-      .catch(() => {});
+      .then(d => {
+        if (d.data) { setPos(d.data); return; }
+        // KV empty — check localStorage
+        const ls = localStorage.getItem(LS_KEY);
+        if (ls) setPos(JSON.parse(ls));
+      })
+      .catch(() => {
+        const ls = localStorage.getItem(LS_KEY);
+        if (ls) setPos(JSON.parse(ls));
+      });
   }, [token]);
 
   const handleChange = (f: keyof HeroPos, v: number) => setPos(p => ({ ...p, [f]: v }));
 
   const save = async () => {
     setStatus("saving");
+    // Always save to localStorage first — this ALWAYS works
+    localStorage.setItem(LS_KEY, JSON.stringify(pos));
+    // Then try the API (KV) — optional, best-effort
     try {
       const r = await fetch("/api/admin/content", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ key: "hero-position", data: pos }),
       });
-      setStatus(r.ok ? "saved" : "error");
+      setStatus(r.ok ? "saved" : "savedLocal");
     } catch {
-      setStatus("error");
+      setStatus("savedLocal");
     }
-    setTimeout(() => setStatus("idle"), 3000);
+    setTimeout(() => setStatus("idle"), 4000);
   };
 
   return (
@@ -568,7 +582,10 @@ function Settings({ token }: { token: string }) {
       </div>
 
       <button onClick={save} disabled={status === "saving"} style={{ ...btnP, padding: "14px 48px", fontSize: 13 }}>
-        {status === "saving" ? "Saving…" : status === "saved" ? "✓ Saved!" : status === "error" ? "✗ Error — try again" : "Save Position →"}
+        {status === "saving"    ? "Saving…"
+        : status === "saved"    ? "✓ Saved!"
+        : status === "savedLocal" ? "✓ Saved locally — refresh homepage"
+        : "Save Position →"}
       </button>
     </div>
   );

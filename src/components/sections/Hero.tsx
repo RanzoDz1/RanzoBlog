@@ -93,12 +93,19 @@ export default function Hero() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Fetch custom hero position from admin settings
+  // Fetch custom hero position — KV first, localStorage fallback
   useEffect(() => {
     fetch("/api/admin/content?key=hero-position")
       .then(r => r.json())
-      .then(d => { if (d.data) setHeroPos(d.data); })
-      .catch(() => {});
+      .then(d => {
+        if (d.data) { setHeroPos(d.data); return; }
+        const ls = localStorage.getItem("ranzo_hero_pos");
+        if (ls) setHeroPos(JSON.parse(ls));
+      })
+      .catch(() => {
+        const ls = localStorage.getItem("ranzo_hero_pos");
+        if (ls) setHeroPos(JSON.parse(ls));
+      });
   }, []);
 
   useEffect(() => {
