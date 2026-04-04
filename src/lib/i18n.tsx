@@ -26,7 +26,7 @@ const EN = {
     countries: "Countries",
     tags: ["Travel Creator", "IRL Streamer", "Multilingual", "50+ Countries", "1M+ Followers", "Arabic · English · German"],
     timeline: [
-      { year: "Origin",        title: "Born in Algeria",            desc: "Where the hunger for the world began." },
+      { year: "Origin",        title: "Raised in Algeria",           desc: "Where the hunger for the world began." },
       { year: "The First Step", title: "First Solo Travel",         desc: "Fear turned into freedom. The world opened up." },
       { year: "New Base",      title: "Germany Becomes Home",       desc: "A new chapter. Europe as the launchpad." },
       { year: "Ongoing",       title: "The World is the Destination", desc: "50+ countries. 6 continents. Still counting." },
@@ -186,12 +186,12 @@ const AR: typeof EN = {
     headline1: "من الجزائر،", headline2: "لكل بلاد.",
     bio1: "أنا عبدالله، مسافر، حاكي قصص، وIRL سترامر. خليت الراحة وراي باش نوثّق أجمل وأقسى لحظات العالم.",
     bio2: "اللي بدا برحلة وحدي خوّفتني بزاف، تحوّل لمسيرة ما تقفش نحو المجهول. أكثر من 50 دولة. 6 قارات. قصص غيّرت حياتي للأبد.",
-    currentlyExploring: "دروك راني نكشف",
+    currentlyExploring: "درك راني نكشف",
     route: "الجزائر ← ألمانيا ← العالم",
     countries: "دولة",
     tags: ["صانع محتوى سفر", "IRL سترامر", "متعدد لغات", "50+ دولة", "+مليون متابع", "عربية · دارجة · فرنسية · ألمانية"],
     timeline: [
-      { year: "البداية",        title: "ولدت في الجزائر",      desc: "من هنا بدات شهوة العالم." },
+      { year: "البداية",        title: "الجزائر — من هنا بدا كل شيء",  desc: "من هنا بدات شهوة العالم." },
       { year: "الخطوة الأولى", title: "أول سفرة وحدي",          desc: "الخوف تحوّل لحرية. العالم فتح." },
       { year: "دار جديدة",     title: "ألمانيا صارت الدار",     desc: "صفحة جديدة. أوروبا كنقطة انطلاق." },
       { year: "مستمر",          title: "العالم هو الوجهة",       desc: "أكثر من 50 دولة. 6 قارات. وما وقفناش." },
