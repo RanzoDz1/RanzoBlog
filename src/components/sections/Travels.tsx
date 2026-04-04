@@ -212,7 +212,12 @@ export default function Travels() {
                                 src={photo.src}
                                 alt={photo.caption}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                style={{ filter: "brightness(0.85) saturate(1.1)" }}
+                                style={{
+                                  objectPosition: `${(photo as any).x ?? 50}% ${(photo as any).y ?? 50}%`,
+                                  transform: `scale(${(photo as any).zoom ?? 1})`,
+                                  transformOrigin: `${(photo as any).x ?? 50}% ${(photo as any).y ?? 50}%`,
+                                  filter: "brightness(0.85) saturate(1.1)",
+                                }}
                                 loading="lazy"
                               />
                               <div
@@ -252,7 +257,7 @@ export default function Travels() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[300] flex items-center justify-center"
-            style={{ background: "rgba(6,6,8,0.96)", backdropFilter: "blur(32px)", padding: 24 }}
+            style={{ background: "rgba(6,6,8,0.98)", padding: 24 }}
             onClick={() => setLightbox(null)}
           >
             <motion.div

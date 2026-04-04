@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { STORIES } from "@/lib/data";
 import { useT } from "@/lib/i18n";
-import { STORY_TAGS_AR, STORY_LOCATIONS_AR, STORY_TITLES_AR, STORY_EXCERPTS_AR, tr } from "@/lib/dataTranslations";
+import { STORY_TAGS_AR, STORY_LOCATIONS_AR, STORY_TITLES_AR, STORY_EXCERPTS_AR, STORY_SUBTITLES_AR, STORY_BODIES_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -213,8 +213,8 @@ export default function Stories() {
                 </h2>
 
                 {/* Subtitle */}
-                <p style={{ fontSize: 13, color: open.color, fontWeight: 600, marginBottom: 32, letterSpacing: lang === "ar" ? "0" : "1px", textTransform: "uppercase" as const }}>
-                  {open.subtitle}
+                <p style={{ fontSize: 13, color: open.color, fontWeight: 600, marginBottom: 32, letterSpacing: lang === "ar" ? "0" : "1px", textTransform: lang === "ar" ? "none" as const : "uppercase" as const }}>
+                  {lang === "ar" ? (STORY_SUBTITLES_AR[open.id] ?? open.subtitle) : open.subtitle}
                 </p>
 
                 {/* Divider */}
@@ -222,7 +222,7 @@ export default function Stories() {
 
                 {/* Body paragraphs */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                  {(open.body ?? []).map((para, i) => (
+                  {(lang === "ar" ? (STORY_BODIES_AR[open.id] ?? open.body ?? []) : (open.body ?? [])).map((para, i) => (
                     <p key={i} style={{ fontSize: 15, lineHeight: 1.9, color: "rgba(248,248,240,0.72)", fontWeight: 300 }}>
                       {para}
                     </p>

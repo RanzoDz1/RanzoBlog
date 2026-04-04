@@ -149,7 +149,7 @@ function Messages({ token }: { token: string }) {
 }
 
 // ── Countries ─────────────────────────────────────────────────────────────────
-type Photo = { src: string; caption: string };
+type Photo = { src: string; caption: string; x?: number; y?: number; zoom?: number };
 type CountryEntry = { name: string; flag: string; photos?: Photo[] };
 type ContinentEntry = { id: string; name: string; emoji: string; color: string; countries: CountryEntry[] };
 
@@ -180,6 +180,7 @@ function Countries({ token }: { token: string }) {
   const [uploading, setUploading] = useState(false);
   const [uploadErr, setUploadErr] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [editPhotoIdx, setEditPhotoIdx] = useState<number | null>(null);
 
   // Load from KV on mount, fall back to CONTINENTS defaults
   useEffect(() => {
@@ -226,6 +227,11 @@ function Countries({ token }: { token: string }) {
   };
   const toggleSelect = (pi: number) => setSelectedPhotos(s => { const n = new Set(s); n.has(pi) ? n.delete(pi) : n.add(pi); return n; });
 
+  const updatePhotoPos = (pi: number, x: number, y: number, zoom: number) => {
+    if (!editCountry) return;
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).map((p, i) => i === pi ? { ...p, x, y, zoom } : p) } : co) } : c));
+  };
+
   const uploadFile = async (file: File) => {
     if (!editCountry) return;
     setUploading(true); setUploadErr("");
@@ -235,7 +241,13 @@ function Countries({ token }: { token: string }) {
       const r = await fetch("/api/admin/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
       const d = await r.json();
       if (!r.ok || !d.url) { setUploadErr(d.error || "Upload failed"); return; }
-      setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: [...(co.photos || []), { src: d.url, caption: newPhoto.caption.trim() }] } : co) } : c));
+      // Update state then immediately auto-save
+      setContinents(cs => {
+        const updated = cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: [...(co.photos || []), { src: d.url, caption: newPhoto.caption.trim(), x: 50, y: 50, zoom: 1 }] } : co) } : c);
+        // Auto-save to database
+        fetch("/api/admin/content", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ key: "countries", data: updated }) }).catch(() => {});
+        return updated;
+      });
       setNewPhoto(p => ({ ...p, caption: "" }));
     } catch { setUploadErr("Network error"); }
     finally { setUploading(false); }
@@ -382,47 +394,51 @@ function Countries({ token }: { token: string }) {
                   {(editingCountry.photos || []).map((photo, pi) => {
                     const isDraggingThis = dragPhoto?.fromCountry === editCountry && dragPhoto?.photoIndex === pi;
                     const isChecked = selectedPhotos.has(pi);
+                    const isEditingPos = editPhotoIdx === pi;
                     return (
-                      <div
-                        key={pi}
-                        draggable
-                        onDragStart={() => setDragPhoto({ fromCountry: editCountry!, photoIndex: pi })}
-                        onDragEnd={() => { setDragPhoto(null); setDropTarget(null); }}
-                        style={{
-                          display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
-                          borderRadius: 8,
-                          background: isChecked ? "rgba(239,68,68,0.08)" : isDraggingThis ? "rgba(124,58,237,0.12)" : "rgba(255,255,255,0.04)",
-                          border: `1px solid ${isChecked ? "rgba(239,68,68,0.3)" : isDraggingThis ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.07)"}`,
-                          cursor: "grab", opacity: isDraggingThis ? 0.5 : 1, transition: "all 0.15s",
-                        }}
-                      >
-                        {/* Checkbox */}
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleSelect(pi)}
-                          onClick={e => e.stopPropagation()}
-                          style={{ width: 15, height: 15, flexShrink: 0, accentColor: "#ef4444", cursor: "pointer" }}
-                        />
-                        {/* Drag handle */}
-                        <span style={{ fontSize: 15, color: "rgba(255,255,255,0.2)", flexShrink: 0, userSelect: "none" }}>⠿</span>
-                        {/* Thumbnail */}
-                        <div style={{ width: 56, height: 40, borderRadius: 5, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
-                          <img src={photo.src} alt={photo.caption} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
+                      <div key={pi} style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${isChecked ? "rgba(239,68,68,0.3)" : isDraggingThis ? "rgba(124,58,237,0.4)" : isEditingPos ? "rgba(124,58,237,0.5)" : "rgba(255,255,255,0.07)"}`, transition: "all 0.15s" }}>
+                        {/* Main row */}
+                        <div
+                          draggable={!isEditingPos}
+                          onDragStart={() => !isEditingPos && setDragPhoto({ fromCountry: editCountry!, photoIndex: pi })}
+                          onDragEnd={() => { setDragPhoto(null); setDropTarget(null); }}
+                          style={{
+                            display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
+                            background: isChecked ? "rgba(239,68,68,0.08)" : isDraggingThis ? "rgba(124,58,237,0.12)" : isEditingPos ? "rgba(124,58,237,0.08)" : "rgba(255,255,255,0.04)",
+                            cursor: isEditingPos ? "default" : "grab", opacity: isDraggingThis ? 0.5 : 1,
+                          }}
+                        >
+                          <input type="checkbox" checked={isChecked} onChange={() => toggleSelect(pi)} onClick={e => e.stopPropagation()} style={{ width: 15, height: 15, flexShrink: 0, accentColor: "#ef4444", cursor: "pointer" }} />
+                          <span style={{ fontSize: 15, color: "rgba(255,255,255,0.2)", flexShrink: 0, userSelect: "none" }}>⠿</span>
+                          <div style={{ width: 56, height: 40, borderRadius: 5, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
+                            <img
+                              src={photo.src} alt={photo.caption}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`, transform: `scale(${photo.zoom ?? 1})`, transformOrigin: `${photo.x ?? 50}% ${photo.y ?? 50}%`, pointerEvents: "none" }}
+                              onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }}
+                            />
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ fontSize: 11, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
+                            <div style={{ fontSize: 10, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
+                          </div>
+                          {/* Crop/position toggle */}
+                          <button
+                            onClick={e => { e.stopPropagation(); setEditPhotoIdx(isEditingPos ? null : pi); }}
+                            style={{ background: isEditingPos ? "rgba(124,58,237,0.3)" : "rgba(255,255,255,0.06)", border: `1px solid ${isEditingPos ? "rgba(124,58,237,0.6)" : "rgba(255,255,255,0.1)"}`, color: isEditingPos ? "#a78bfa" : "rgba(248,248,240,0.4)", cursor: "pointer", fontSize: 11, padding: "4px 9px", borderRadius: 6, flexShrink: 0, transition: "all 0.15s" }}
+                            title="Adjust position & zoom"
+                          >✥ Crop</button>
+                          <button onClick={e => { e.stopPropagation(); removePhoto(pi); }} style={{ background: "none", border: "none", color: "rgba(248,248,240,0.25)", cursor: "pointer", fontSize: 18, padding: "0 4px", lineHeight: 1, flexShrink: 0, transition: "color 0.15s" }} onMouseEnter={e => (e.currentTarget.style.color = "#f87171")} onMouseLeave={e => (e.currentTarget.style.color = "rgba(248,248,240,0.25)")} title="Remove">×</button>
                         </div>
-                        {/* Info */}
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: 11, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
-                          <div style={{ fontSize: 10, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
-                        </div>
-                        {/* Single delete */}
-                        <button
-                          onClick={e => { e.stopPropagation(); removePhoto(pi); }}
-                          style={{ background: "none", border: "none", color: "rgba(248,248,240,0.25)", cursor: "pointer", fontSize: 18, padding: "0 4px", lineHeight: 1, flexShrink: 0, transition: "color 0.15s" }}
-                          onMouseEnter={e => (e.currentTarget.style.color = "#f87171")}
-                          onMouseLeave={e => (e.currentTarget.style.color = "rgba(248,248,240,0.25)")}
-                          title="Remove"
-                        >×</button>
+                        {/* Inline ImagePositioner */}
+                        {isEditingPos && (
+                          <div style={{ padding: "0 12px 12px", background: "rgba(124,58,237,0.05)" }}>
+                            <ImagePositioner
+                              image={photo.src}
+                              x={photo.x ?? 50} y={photo.y ?? 50} zoom={photo.zoom ?? 1}
+                              onChange={(x, y, zoom) => updatePhotoPos(pi, x, y, zoom)}
+                            />
+                          </div>
+                        )}
                       </div>
                     );
                   })}
