@@ -247,7 +247,7 @@ export default function Hero() {
             style={{ opacity: sidesOpacity as unknown as number, gap: 2 }}
           >
             <div className="w-px h-12 self-center opacity-20 mb-3" style={{ background: "linear-gradient(to bottom, transparent, var(--white))" }} />
-            {STATS.slice(0, 3).map((stat, i) => (
+            {[STATS[0], STATS[1], STATS[3]].map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, x: -16 }}
@@ -342,7 +342,7 @@ export default function Hero() {
           className="flex flex-wrap justify-center"
           style={{ gap: 10, marginBottom: isMobile ? 20 : 28 }}
         >
-          {STATS.slice(0, 3).map((stat) => (
+          {[STATS[0], STATS[1], STATS[3]].map((stat) => (
             <div key={stat.label} style={{
               display: "flex", alignItems: "center", gap: 8,
               padding: "7px 18px", borderRadius: 999,
