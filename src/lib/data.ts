@@ -221,7 +221,6 @@ export const NAV_LINKS = [
   { href: '#about',   label: 'About'   },
   { href: '#travels', label: 'Travels' },
   { href: '#stories', label: 'Stories' },
-  { href: '#gallery', label: 'Gallery' },
   { href: '#collab',  label: 'Collab'  },
 ];
 

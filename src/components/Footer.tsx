@@ -6,6 +6,7 @@ import { useT } from "@/lib/i18n";
 const FOOTER_NAV_AR: Record<string, string> = {
   "#about": "عني", "#travels": "رحلاتي", "#stories": "قصصي", "#collab": "تعاون",
 };
+const FOOTER_NAV_LINKS = ["#about", "#travels", "#stories", "#collab"];
 
 // ── Full SVG icon set for all platforms ──────────────────────────────────────
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
@@ -91,7 +92,7 @@ export default function Footer() {
 
           {/* Nav links */}
           <div className="flex gap-8">
-            {["#about","#travels","#stories","#collab"].map(href => (
+            {FOOTER_NAV_LINKS.map(href => (
               <button
                 key={href}
                 onClick={() => scrollTo(href)}

@@ -8,7 +8,7 @@ export type Lang = "en" | "ar";
 const EN = {
   nav: {
     about: "About", travels: "Travels", stories: "Stories",
-    gallery: "Gallery", collab: "Collab", workWithMe: "Work With Me",
+    collab: "Collab", workWithMe: "Work With Me",
   },
   hero: {
     eyebrow: "Algeria · Germany · Everywhere",
@@ -173,7 +173,7 @@ const EN = {
 const AR: typeof EN = {
   nav: {
     about: "عني", travels: "رحلاتي", stories: "قصصي",
-    gallery: "المعرض", collab: "تعاون", workWithMe: "تواصل معي",
+    collab: "تعاون", workWithMe: "تواصل معي",
   },
   hero: {
     eyebrow: "الجزائر · ألمانيا · في كل مكان",
