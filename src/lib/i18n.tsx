@@ -11,9 +11,9 @@ const EN = {
     collab: "Collab", workWithMe: "Work With Me",
   },
   hero: {
-    eyebrow: "Algeria · Germany · Everywhere",
+    eyebrow: "Travel Creator · 1M+ Followers · 50+ Countries",
     tagline: "Travel. Risk.", taglineEnd: "Experience.",
-    description: "Exploring the world beyond comfort zones. One border, one story, one moment at a time.",
+    description: "Travel creator with 1M+ followers. Authentic storytelling from 50+ countries on Instagram, YouTube, TikTok and more.",
     storiesBtn: "My Stories ↗", travelsBtn: "See My Travels", scroll: "Scroll",
   },
   about: {
@@ -88,6 +88,21 @@ const EN = {
   footer: {
     tagline: "Travel · Risk · Experience",
     copyright: "© 2026 Abdullah Khalfi · @RanzoDz · All rights reserved",
+  },
+  platforms: {
+    eyebrow: "Find Me On",
+    headline1: "Follow the",
+    headline2: "Journey.",
+    description: "New content every week. Follow on your favourite platform and stay connected.",
+    followBtn: "Follow →",
+    types: {
+      instagram:    "Travel & Lifestyle",
+      youtube:      "Long-form Stories",
+      tiktok:       "Short Clips & Viral",
+      kick:         "IRL Live Streams",
+      facebook:     "DZ Community",
+      youtubeGaming:"Gaming Content",
+    },
   },
   // ── Data-level translation maps ────────────────────────────────────────────
   data: {
@@ -176,9 +191,9 @@ const AR: typeof EN = {
     collab: "تعاون", workWithMe: "تواصل معايا",
   },
   hero: {
-    eyebrow: "الجزائر · ألمانيا · في كل بلاد",
+    eyebrow: "صانع محتوى سفر · مليون+ متابع · 50+ دولة",
     tagline: "سفر. مجازفة.", taglineEnd: "تجربة.",
-    description: "راني نكشف العالم بعيد على منطقة الراحة. حدود، قصة، ولحظة كل مرة.",
+    description: "صانع محتوى سفر بأكثر من مليون متابع. قصص حقيقية من أكثر من 50 دولة على إنستغرام، يوتيوب، تيك توك وأكثر.",
     storiesBtn: "قصصي ↗", travelsBtn: "شوف رحلاتي", scroll: "انزل",
   },
   about: {
@@ -253,6 +268,21 @@ const AR: typeof EN = {
   footer: {
     tagline: "سفر · مجازفة · تجربة",
     copyright: "© 2026 عبدالله خلفي · @RanzoDz · جميع الحقوق محفوظة",
+  },
+  platforms: {
+    eyebrow: "تلقاني على",
+    headline1: "تابع",
+    headline2: "المسيرة.",
+    description: "محتوى جديد كل أسبوع. اختار البلاتفورم وتابع.",
+    followBtn: "← تابعني",
+    types: {
+      instagram:    "سفر ومعيشة",
+      youtube:      "محتوى طويل",
+      tiktok:       "كليبات قصيرة وفيروسية",
+      kick:         "بث مباشر IRL",
+      facebook:     "مجتمع DZ",
+      youtubeGaming:"محتوى قيمنغ",
+    },
   },
   // ── Data-level translation maps ────────────────────────────────────────────
   data: {

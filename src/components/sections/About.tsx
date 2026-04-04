@@ -44,6 +44,9 @@ export default function About() {
   const [slideIdx, setSlideIdx] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  const goPrev = () => { setSlideIdx(i => (i - 1 + SLIDE_IMAGES.length) % SLIDE_IMAGES.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
+  const goNext = () => { setSlideIdx(i => (i + 1) % SLIDE_IMAGES.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
+
   useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
@@ -77,6 +80,30 @@ export default function About() {
                   />
                 </AnimatePresence>
                 <div className="absolute inset-0" style={{ background: "linear-gradient(to top, var(--live-accent-30) 0%, transparent 55%)", zIndex: 2 }} />
+
+                {/* Left click zone — go prev */}
+                <div
+                  onClick={goPrev}
+                  className="group absolute left-0 top-0 bottom-0 flex items-center justify-start"
+                  style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingLeft: 14 }}
+                >
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16 }}>
+                    ←
+                  </div>
+                </div>
+
+                {/* Right click zone — go next */}
+                <div
+                  onClick={goNext}
+                  className="group absolute right-0 top-0 bottom-0 flex items-center justify-end"
+                  style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingRight: 14 }}
+                >
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16 }}>
+                    →
+                  </div>
+                </div>
 
                 {/* Dot indicators */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 3 }}>

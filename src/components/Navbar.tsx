@@ -29,10 +29,28 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  const smoothScroll = (targetY: number, duration = 750) => {
+    const startY = window.scrollY;
+    const diff = targetY - startY;
+    if (diff === 0) return;
+    let start: number | null = null;
+    const ease = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      window.scrollTo(0, startY + diff * ease(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
   const scrollTo = (href: string) => {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const el = document.querySelector(href) as HTMLElement | null;
+    if (!el) return;
+    const navH = 72;
+    const top = el.getBoundingClientRect().top + window.scrollY - navH;
+    smoothScroll(top);
   };
 
   // Map NAV_LINKS to translated labels

@@ -2,11 +2,15 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CONTINENTS, STORIES, TRAVEL_APPS } from "@/lib/data";
+import { STORY_TITLES_AR, STORY_LOCATIONS_AR, STORY_BODIES_AR, STORY_EXCERPTS_AR } from "@/lib/dataTranslations";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Msg { id: string; name: string; email: string; brand?: string; message: string; date: string; read: boolean; }
 type Tab = "messages" | "countries" | "stories" | "apps" | "settings";
-type Story = (typeof STORIES)[0] & { imageX?: number; imageY?: number; imageZoom?: number };
+type Story = (typeof STORIES)[0] & {
+  imageX?: number; imageY?: number; imageZoom?: number;
+  titleAr?: string; locationAr?: string; tagAr?: string; excerptAr?: string; bodyAr?: string[];
+};
 type App   = (typeof TRAVEL_APPS)[0];
 
 // ── Shared Styles ─────────────────────────────────────────────────────────────
@@ -50,14 +54,14 @@ function Login({ onLogin }: { onLogin: (t: string) => void }) {
 }
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
-const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: "messages",  label: "Messages",    icon: "✉" },
-  { id: "countries", label: "Countries",   icon: "🌍" },
-  { id: "stories",   label: "Stories",     icon: "📖" },
-  { id: "apps",      label: "Travel Apps", icon: "📱" },
-  { id: "settings",  label: "⚙ Settings",    icon: "🎛️" },
+const TABS: { id: Tab; label: string; labelAr: string; icon: string }[] = [
+  { id: "messages",  label: "Messages",    labelAr: "الرسائل",    icon: "✉" },
+  { id: "countries", label: "Countries",   labelAr: "الدول",      icon: "🌍" },
+  { id: "stories",   label: "Stories",     labelAr: "القصص",      icon: "📖" },
+  { id: "apps",      label: "Travel Apps", labelAr: "تطبيقات",    icon: "📱" },
+  { id: "settings",  label: "⚙ Settings",  labelAr: "الإعدادات",  icon: "🎛️" },
 ];
-function Sidebar({ tab, setTab, onLogout }: { tab: Tab; setTab: (t: Tab) => void; onLogout: () => void }) {
+function Sidebar({ tab, setTab, onLogout, lang, setLang }: { tab: Tab; setTab: (t: Tab) => void; onLogout: () => void; lang: "en" | "ar"; setLang: (l: "en" | "ar") => void }) {
   return (
     <div style={{ width: 220, background: "#0d0d12", borderRight: "1px solid rgba(255,255,255,0.07)", display: "flex", flexDirection: "column", padding: "0", flexShrink: 0, minHeight: "100vh" }}>
       <div style={{ padding: "28px 24px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
@@ -67,12 +71,17 @@ function Sidebar({ tab, setTab, onLogout }: { tab: Tab; setTab: (t: Tab) => void
       <div style={{ flex: 1, padding: "16px 12px", display: "flex", flexDirection: "column", gap: 4 }}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 10, border: "none", cursor: "pointer", width: "100%", textAlign: "left", transition: "all 0.2s", background: tab === t.id ? "rgba(124,58,237,0.18)" : "transparent", color: tab === t.id ? "#a78bfa" : "rgba(248,248,240,0.45)", fontWeight: tab === t.id ? 600 : 400, fontSize: 13 }}>
-            <span style={{ fontSize: 17 }}>{t.icon}</span>{t.label}
+            <span style={{ fontSize: 17 }}>{t.icon}</span>{lang === "ar" ? t.labelAr : t.label}
           </button>
         ))}
       </div>
-      <div style={{ padding: "16px 12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <button onClick={onLogout} style={{ ...btnG, width: "100%", textAlign: "center" as const, padding: "10px 0" }}>Sign Out</button>
+      <div style={{ padding: "12px", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: 8 }}>
+        {/* Language toggle */}
+        <div style={{ display: "flex", borderRadius: 8, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
+          <button onClick={() => setLang("en")} style={{ flex: 1, padding: "8px 0", fontSize: 11, fontWeight: 600, cursor: "pointer", border: "none", background: lang === "en" ? "rgba(124,58,237,0.35)" : "transparent", color: lang === "en" ? "#a78bfa" : "rgba(248,248,240,0.4)", transition: "all 0.2s" }}>EN</button>
+          <button onClick={() => setLang("ar")} style={{ flex: 1, padding: "8px 0", fontSize: 11, fontWeight: 600, cursor: "pointer", border: "none", background: lang === "ar" ? "rgba(124,58,237,0.35)" : "transparent", color: lang === "ar" ? "#a78bfa" : "rgba(248,248,240,0.4)", transition: "all 0.2s", direction: "rtl" }}>ع</button>
+        </div>
+        <button onClick={onLogout} style={{ ...btnG, width: "100%", textAlign: "center" as const, padding: "10px 0" }}>{lang === "ar" ? "خروج" : "Sign Out"}</button>
       </div>
     </div>
   );
@@ -181,6 +190,8 @@ function Countries({ token }: { token: string }) {
   const [uploadErr, setUploadErr] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [editPhotoIdx, setEditPhotoIdx] = useState<number | null>(null);
+  const [previewIdx, setPreviewIdx] = useState<number | null>(null);
+  const [dragOverGridIdx, setDragOverGridIdx] = useState<number | null>(null);
 
   // Load from KV on mount, fall back to CONTINENTS defaults
   useEffect(() => {
@@ -202,6 +213,19 @@ function Countries({ token }: { token: string }) {
 
   // Clear checkbox selection whenever the active country changes
   useEffect(() => { setSelectedPhotos(new Set()); }, [editCountry]);
+
+  // Keyboard navigation for photo preview
+  useEffect(() => {
+    if (previewIdx === null) return;
+    const photos = continents.find(c => c.id === active)?.countries.find(c => c.name === editCountry)?.photos || [];
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPreviewIdx(null);
+      else if (e.key === "ArrowRight") setPreviewIdx(i => i !== null ? (i + 1) % photos.length : null);
+      else if (e.key === "ArrowLeft")  setPreviewIdx(i => i !== null ? (i - 1 + photos.length) % photos.length : null);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [previewIdx, continents, active, editCountry]);
 
   const cont = continents.find(c => c.id === active);
   const editingCountry = cont?.countries.find(c => c.name === editCountry);
@@ -285,6 +309,20 @@ function Countries({ token }: { token: string }) {
     const files = Array.from(e.target.files || []);
     files.forEach(f => uploadFile(f));
     e.target.value = "";
+  };
+
+  const reorderPhoto = (fromIdx: number, toIdx: number) => {
+    if (!editCountry || fromIdx === toIdx) return;
+    setContinents(cs => cs.map(c => c.id === active ? {
+      ...c,
+      countries: c.countries.map(co => {
+        if (co.name !== editCountry) return co;
+        const photos = [...(co.photos || [])];
+        const [moved] = photos.splice(fromIdx, 1);
+        photos.splice(toIdx, 0, moved);
+        return { ...co, photos };
+      }),
+    } : c));
   };
 
   const movePhoto = (fromCountry: string, photoIndex: number, toCountry: string) => {
@@ -413,63 +451,97 @@ function Countries({ token }: { token: string }) {
                 )}
               </div>
 
-              {/* Existing photos list */}
+              {/* Photo grid — matches website layout */}
               {(editingCountry.photos || []).length > 0 ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 20 }}>
-                  <div style={{ fontSize: 10, color: "rgba(248,248,240,0.3)", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
-                    <span>⠿</span> Drag onto a country chip to move · checkbox to select for bulk delete
+                <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontSize: 10, color: "rgba(248,248,240,0.3)", marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+                    <span>⠿</span> Drag onto a country chip to move · double-click to preview · hover for controls
                   </div>
-                  {(editingCountry.photos || []).map((photo, pi) => {
-                    const isDraggingThis = dragPhoto?.fromCountry === editCountry && dragPhoto?.photoIndex === pi;
-                    const isChecked = selectedPhotos.has(pi);
-                    const isEditingPos = editPhotoIdx === pi;
-                    return (
-                      <div key={pi} style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${isChecked ? "rgba(239,68,68,0.3)" : isDraggingThis ? "rgba(124,58,237,0.4)" : isEditingPos ? "rgba(124,58,237,0.5)" : "rgba(255,255,255,0.07)"}`, transition: "all 0.15s" }}>
-                        {/* Main row */}
-                        <div
-                          draggable={!isEditingPos}
-                          onDragStart={() => !isEditingPos && setDragPhoto({ fromCountry: editCountry!, photoIndex: pi })}
-                          onDragEnd={() => { setDragPhoto(null); setDropTarget(null); }}
-                          style={{
-                            display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
-                            background: isChecked ? "rgba(239,68,68,0.08)" : isDraggingThis ? "rgba(124,58,237,0.12)" : isEditingPos ? "rgba(124,58,237,0.08)" : "rgba(255,255,255,0.04)",
-                            cursor: isEditingPos ? "default" : "grab", opacity: isDraggingThis ? 0.5 : 1,
-                          }}
-                        >
-                          <input type="checkbox" checked={isChecked} onChange={() => toggleSelect(pi)} onClick={e => e.stopPropagation()} style={{ width: 15, height: 15, flexShrink: 0, accentColor: "#ef4444", cursor: "pointer" }} />
-                          <span style={{ fontSize: 15, color: "rgba(255,255,255,0.2)", flexShrink: 0, userSelect: "none" }}>⠿</span>
-                          <div style={{ width: 56, height: 40, borderRadius: 5, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+                    {(editingCountry.photos || []).map((photo, pi) => {
+                      const isDraggingThis = dragPhoto?.fromCountry === editCountry && dragPhoto?.photoIndex === pi;
+                      const isChecked = selectedPhotos.has(pi);
+                      const isEditingPos = editPhotoIdx === pi;
+                      const photos = editingCountry.photos || [];
+                      return (
+                        <div key={pi} style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                          <div
+                            draggable={!isEditingPos}
+                            onDragStart={e => { if (isEditingPos) { e.preventDefault(); return; } setDragPhoto({ fromCountry: editCountry!, photoIndex: pi }); setDragOverGridIdx(null); }}
+                            onDragEnd={() => { setDragPhoto(null); setDropTarget(null); setDragOverGridIdx(null); }}
+                            onDragOver={e => {
+                              e.preventDefault();
+                              // Within same country — reorder mode
+                              if (dragPhoto?.fromCountry === editCountry && dragPhoto.photoIndex !== pi) {
+                                setDragOverGridIdx(pi);
+                                setDropTarget(null); // don't highlight country chips
+                              }
+                            }}
+                            onDragLeave={() => { if (dragOverGridIdx === pi) setDragOverGridIdx(null); }}
+                            onDrop={e => {
+                              e.preventDefault();
+                              e.stopPropagation(); // prevent country-chip drop handler
+                              if (dragPhoto?.fromCountry === editCountry && dragPhoto.photoIndex !== pi) {
+                                reorderPhoto(dragPhoto.photoIndex, pi);
+                              }
+                              setDragPhoto(null);
+                              setDragOverGridIdx(null);
+                              setDropTarget(null);
+                            }}
+                            onDoubleClick={() => setPreviewIdx(pi)}
+                            className="group"
+                            style={{
+                              position: "relative", aspectRatio: "4/3", borderRadius: isEditingPos ? "10px 10px 0 0" : 10,
+                              overflow: "hidden", cursor: isEditingPos ? "default" : "grab",
+                              border: `2px solid ${dragOverGridIdx === pi ? cont.color : isChecked ? "rgba(239,68,68,0.5)" : isDraggingThis ? "rgba(124,58,237,0.5)" : isEditingPos ? "rgba(124,58,237,0.6)" : "rgba(255,255,255,0.08)"}`,
+                              boxShadow: dragOverGridIdx === pi ? `0 0 0 2px ${cont.color}55` : "none",
+                              opacity: isDraggingThis ? 0.35 : 1, transition: "all 0.15s",
+                            }}
+                          >
+                            {/* Photo */}
                             <img
-                              src={photo.src} alt={photo.caption}
-                              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`, transform: `scale(${photo.zoom ?? 1})`, transformOrigin: `${photo.x ?? 50}% ${photo.y ?? 50}%`, pointerEvents: "none" }}
+                              src={photo.src} alt={photo.caption || ""}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`, transform: `scale(${photo.zoom ?? 1})`, transformOrigin: `${photo.x ?? 50}% ${photo.y ?? 50}%`, filter: "brightness(0.85) saturate(1.1)", display: "block", pointerEvents: "none" }}
                               onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }}
                             />
+
+                            {/* Hover overlay — caption + controls */}
+                            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(6,6,8,0.92) 0%, rgba(6,6,8,0.3) 50%, transparent 100%)", opacity: 0, transition: "opacity 0.25s" }}
+                              onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
+                              onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = "0"}
+                            >
+                              {/* Caption */}
+                              <div style={{ position: "absolute", bottom: 8, left: 10, right: 10, fontSize: 10, color: "rgba(248,248,240,0.7)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                {photo.caption || "No caption"}
+                              </div>
+                              {/* Action buttons top-right */}
+                              <div style={{ position: "absolute", top: 6, right: 6, display: "flex", gap: 4 }} onClick={e => e.stopPropagation()}>
+                                <button onClick={() => reorderPhoto(pi, pi - 1)} disabled={pi === 0} title="Move left" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: "rgba(0,0,0,0.55)", color: pi === 0 ? "rgba(255,255,255,0.15)" : "#f8f8f0", fontSize: 11, cursor: pi === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>←</button>
+                                <button onClick={() => reorderPhoto(pi, pi + 1)} disabled={pi === photos.length - 1} title="Move right" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: "rgba(0,0,0,0.55)", color: pi === photos.length - 1 ? "rgba(255,255,255,0.15)" : "#f8f8f0", fontSize: 11, cursor: pi === photos.length - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>→</button>
+                                <button onClick={e => { e.stopPropagation(); setEditPhotoIdx(isEditingPos ? null : pi); }} title="Crop / position" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: isEditingPos ? "rgba(124,58,237,0.7)" : "rgba(0,0,0,0.55)", color: isEditingPos ? "#fff" : "#f8f8f0", fontSize: 11, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✥</button>
+                                <button onClick={e => { e.stopPropagation(); removePhoto(pi); }} title="Remove" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: "rgba(239,68,68,0.6)", color: "#fff", fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+                              </div>
+                              {/* Checkbox top-left */}
+                              <div style={{ position: "absolute", top: 8, left: 8 }} onClick={e => e.stopPropagation()}>
+                                <input type="checkbox" checked={isChecked} onChange={() => toggleSelect(pi)} style={{ width: 15, height: 15, accentColor: "#ef4444", cursor: "pointer" }} />
+                              </div>
+                            </div>
                           </div>
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontSize: 11, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
-                            <div style={{ fontSize: 10, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
-                          </div>
-                          {/* Crop/position toggle */}
-                          <button
-                            onClick={e => { e.stopPropagation(); setEditPhotoIdx(isEditingPos ? null : pi); }}
-                            style={{ background: isEditingPos ? "rgba(124,58,237,0.3)" : "rgba(255,255,255,0.06)", border: `1px solid ${isEditingPos ? "rgba(124,58,237,0.6)" : "rgba(255,255,255,0.1)"}`, color: isEditingPos ? "#a78bfa" : "rgba(248,248,240,0.4)", cursor: "pointer", fontSize: 11, padding: "4px 9px", borderRadius: 6, flexShrink: 0, transition: "all 0.15s" }}
-                            title="Adjust position & zoom"
-                          >✥ Crop</button>
-                          <button onClick={e => { e.stopPropagation(); removePhoto(pi); }} style={{ background: "none", border: "none", color: "rgba(248,248,240,0.25)", cursor: "pointer", fontSize: 18, padding: "0 4px", lineHeight: 1, flexShrink: 0, transition: "color 0.15s" }} onMouseEnter={e => (e.currentTarget.style.color = "#f87171")} onMouseLeave={e => (e.currentTarget.style.color = "rgba(248,248,240,0.25)")} title="Remove">×</button>
+
+                          {/* Inline ImagePositioner below the card */}
+                          {isEditingPos && (
+                            <div style={{ background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.4)", borderTop: "none", borderRadius: "0 0 10px 10px", padding: "8px 10px" }}>
+                              <ImagePositioner
+                                image={photo.src}
+                                x={photo.x ?? 50} y={photo.y ?? 50} zoom={photo.zoom ?? 1}
+                                onChange={(x, y, zoom) => updatePhotoPos(pi, x, y, zoom)}
+                              />
+                            </div>
+                          )}
                         </div>
-                        {/* Inline ImagePositioner */}
-                        {isEditingPos && (
-                          <div style={{ padding: "0 12px 12px", background: "rgba(124,58,237,0.05)" }}>
-                            <ImagePositioner
-                              image={photo.src}
-                              x={photo.x ?? 50} y={photo.y ?? 50} zoom={photo.zoom ?? 1}
-                              onChange={(x, y, zoom) => updatePhotoPos(pi, x, y, zoom)}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               ) : (
                 <div style={{ padding: "12px 0 20px", fontSize: 13, color: "rgba(248,248,240,0.3)" }}>No photos yet for {editCountry}. Add your first photo below.</div>
@@ -545,6 +617,84 @@ function Countries({ token }: { token: string }) {
           <button onClick={addCountry} style={{ ...btnP, flexShrink: 0 }}>Add</button>
         </div>
       </div>
+
+      {/* ── Full-screen photo preview modal ── */}
+      <AnimatePresence>
+        {previewIdx !== null && editingCountry && (() => {
+          const photos = editingCountry.photos || [];
+          const photo = photos[previewIdx];
+          if (!photo) return null;
+          const goPrev = () => setPreviewIdx(i => i !== null ? (i - 1 + photos.length) % photos.length : null);
+          const goNext = () => setPreviewIdx(i => i !== null ? (i + 1) % photos.length : null);
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.92)", display: "flex", alignItems: "center", justifyContent: "center" }}
+              onClick={() => setPreviewIdx(null)}
+            >
+              {/* Close */}
+              <button
+                onClick={() => setPreviewIdx(null)}
+                style={{ position: "absolute", top: 20, right: 20, width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", color: "#f8f8f0", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}
+              >✕</button>
+
+              {/* Counter */}
+              <div style={{ position: "absolute", top: 24, left: "50%", transform: "translateX(-50%)", fontSize: 12, color: "rgba(248,248,240,0.4)", letterSpacing: "1px" }}>
+                {previewIdx + 1} / {photos.length}
+              </div>
+
+              {/* Prev button */}
+              <button
+                onClick={e => { e.stopPropagation(); goPrev(); }}
+                style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "#f8f8f0", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}
+              >←</button>
+
+              {/* Image */}
+              <motion.img
+                key={previewIdx}
+                src={photo.src}
+                alt={photo.caption || ""}
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={e => e.stopPropagation()}
+                style={{ maxWidth: "calc(100vw - 140px)", maxHeight: "calc(100vh - 100px)", objectFit: "contain", borderRadius: 10, boxShadow: "0 24px 80px rgba(0,0,0,0.7)" }}
+                onError={e => { (e.target as HTMLImageElement).style.opacity = "0.3"; }}
+              />
+
+              {/* Next button */}
+              <button
+                onClick={e => { e.stopPropagation(); goNext(); }}
+                style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", width: 44, height: 44, borderRadius: "50%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "#f8f8f0", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}
+              >→</button>
+
+              {/* Caption */}
+              {photo.caption && (
+                <div style={{ position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)", fontSize: 13, color: "rgba(248,248,240,0.55)", background: "rgba(0,0,0,0.5)", padding: "6px 16px", borderRadius: 999, whiteSpace: "nowrap" }}>
+                  {photo.caption}
+                </div>
+              )}
+
+              {/* Dot indicators */}
+              {photos.length > 1 && (
+                <div style={{ position: "absolute", bottom: photo.caption ? 68 : 28, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6 }}>
+                  {photos.map((_, di) => (
+                    <button
+                      key={di}
+                      onClick={e => { e.stopPropagation(); setPreviewIdx(di); }}
+                      style={{ width: di === previewIdx ? 20 : 6, height: 6, borderRadius: 3, border: "none", cursor: "pointer", background: di === previewIdx ? cont.color : "rgba(255,255,255,0.25)", transition: "all 0.3s", padding: 0 }}
+                    />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
     </div>
   );
 }
@@ -691,18 +841,41 @@ function ImagePositioner({
 }
 
 // ── Stories ───────────────────────────────────────────────────────────────────
-function StoriesTab({ token }: { token: string }) {
-  const [stories, setStories] = useState<Story[]>(STORIES.map(s => ({ ...s })));
+// Merge KV data with latest data.ts (EN is always source of truth) + pre-populate AR fields
+function withArFields(list: Story[]): Story[] {
+  return list.map(s => {
+    const src = STORIES.find(x => x.id === s.id);
+    return {
+      ...s,
+      // EN fields: always from data.ts
+      title:    src?.title    ?? s.title,
+      subtitle: src?.subtitle ?? s.subtitle,
+      excerpt:  src?.excerpt  ?? s.excerpt,
+      body:     src?.body     ?? s.body,
+      location: src?.location ?? s.location,
+      tag:      src?.tag      ?? s.tag,
+      // AR fields: dataTranslations always wins (source of truth), KV as fallback for new stories only
+      titleAr:    STORY_TITLES_AR[s.id]   ?? s.titleAr    ?? s.title,
+      locationAr: (STORY_LOCATIONS_AR as Record<string, string>)[s.location] ?? s.locationAr ?? s.location,
+      excerptAr:  STORY_EXCERPTS_AR[s.id] ?? s.excerptAr  ?? s.excerpt,
+      bodyAr:     STORY_BODIES_AR[s.id]   ?? s.bodyAr     ?? s.body,
+    };
+  });
+}
+
+function StoriesTab({ token, lang }: { token: string; lang: "en" | "ar" }) {
+  const ar = lang === "ar";
+  const [stories, setStories] = useState<Story[]>(withArFields(STORIES.map(s => ({ ...s }))));
   const [open, setOpen] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveErr, setSaveErr] = useState("");
 
-  // Load saved stories from KV on mount
+  // Load saved stories from KV on mount, merging AR fields
   useEffect(() => {
     fetch("/api/admin/content?key=stories", { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
-      .then(d => { if (d.data && Array.isArray(d.data) && d.data.length > 0) setStories(d.data); })
+      .then(d => { if (d.data && Array.isArray(d.data) && d.data.length > 0) setStories(withArFields(d.data)); })
       .catch(() => {});
   }, [token]);
 
@@ -731,13 +904,25 @@ function StoriesTab({ token }: { token: string }) {
       setSaving(false);
     }
   };
+  // Helpers — switch between EN body and AR bodyAr based on lang
+  const bodyKey = ar ? "bodyAr" : "body";
+  const updBody = (storyIdx: number, paraIdx: number, val: string) =>
+    setStories(ss => ss.map((s, j) => j === storyIdx ? { ...s, [bodyKey]: ((s[bodyKey] as string[]) ?? []).map((p: string, k: number) => k === paraIdx ? val : p) } : s));
+  const addPara = (storyIdx: number) =>
+    setStories(ss => ss.map((s, j) => j === storyIdx ? { ...s, [bodyKey]: [...((s[bodyKey] as string[]) ?? []), ""] } : s));
+  const removePara = (storyIdx: number, paraIdx: number) =>
+    setStories(ss => ss.map((s, j) => j === storyIdx ? { ...s, [bodyKey]: ((s[bodyKey] as string[]) ?? []).filter((_: string, k: number) => k !== paraIdx) } : s));
+
   return (
     <div style={{ padding: 36, maxWidth: 860 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-        <div><h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>Stories</h2><p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>Edit your travel stories shown on the site.</p></div>
+        <div>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>{ar ? "القصص" : "Stories"}</h2>
+          <p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>{ar ? "عدّل قصص السفر المعروضة في الموقع." : "Edit your travel stories shown on the site."}</p>
+        </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
           {saveErr && <div style={{ fontSize: 12, color: "#f87171" }}>{saveErr}</div>}
-          <button onClick={save} disabled={saving} style={btnP}>{saving ? "Saving…" : saved ? "✓ Saved!" : "Save All"}</button>
+          <button onClick={save} disabled={saving} style={btnP}>{saving ? (ar ? "راني نحفظ…" : "Saving…") : saved ? (ar ? "✓ تحفظت!" : "✓ Saved!") : (ar ? "احفظ كل شيء" : "Save All")}</button>
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -754,18 +939,55 @@ function StoriesTab({ token }: { token: string }) {
                 <div style={{ fontSize: 14, fontWeight: 600, color: "#f8f8f0" }}>{s.title}</div>
                 <div style={{ fontSize: 12, color: "rgba(248,248,240,0.4)", marginTop: 2 }}>📍 {s.location}</div>
               </div>
-              <button onClick={() => setOpen(open === i ? null : i)} style={open === i ? btnD : btnG}>{open === i ? "Close" : "Edit"}</button>
+              <button onClick={() => setOpen(open === i ? null : i)} style={open === i ? btnD : btnG}>{open === i ? (ar ? "إغلاق" : "Close") : (ar ? "تعديل" : "Edit")}</button>
             </div>
             <AnimatePresence>
               {open === i && (
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden" }}>
                   <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 20, marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                    <div><span style={label}>Title</span><input style={inp} value={s.title} onChange={e => upd(i, "title", e.target.value)} /></div>
-                    <div><span style={label}>Location</span><input style={inp} value={s.location} onChange={e => upd(i, "location", e.target.value)} /></div>
-                    <div><span style={label}>Tag Label</span><input style={inp} value={s.tag} onChange={e => upd(i, "tag", e.target.value)} /></div>
-                    <div><span style={label}>Accent Color</span><input style={inp} value={s.color} onChange={e => upd(i, "color", e.target.value)} /></div>
-                    <div style={{ gridColumn: "1/-1" }}><span style={label}>Short Description</span><textarea style={{ ...inp, minHeight: 80, resize: "none" as const }} value={s.excerpt} onChange={e => upd(i, "excerpt", e.target.value)} /></div>
-                    <div style={{ gridColumn: "1/-1" }}><span style={label}>Image URL</span><input style={inp} value={s.image} onChange={e => upd(i, "image", e.target.value)} /></div>
+                    <div><span style={label}>{ar ? "العنوان" : "Title"}</span><input style={{ ...inp, direction: ar ? "rtl" : "ltr", textAlign: ar ? "right" : "left" }} value={ar ? (s.titleAr ?? "") : s.title} onChange={e => upd(i, ar ? "titleAr" : "title", e.target.value)} /></div>
+                    <div><span style={label}>{ar ? "الموقع" : "Location"}</span><input style={{ ...inp, direction: ar ? "rtl" : "ltr", textAlign: ar ? "right" : "left" }} value={ar ? (s.locationAr ?? "") : s.location} onChange={e => upd(i, ar ? "locationAr" : "location", e.target.value)} /></div>
+                    <div><span style={label}>{ar ? "الوسم" : "Tag Label"}</span><input style={{ ...inp, direction: ar ? "rtl" : "ltr", textAlign: ar ? "right" : "left" }} value={ar ? (s.tagAr ?? s.tag) : s.tag} onChange={e => upd(i, ar ? "tagAr" : "tag", e.target.value)} /></div>
+                    <div><span style={label}>{ar ? "اللون" : "Accent Color"}</span><input style={inp} value={s.color} onChange={e => upd(i, "color", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}><span style={label}>{ar ? "الوصف القصير" : "Short Description"}</span><textarea style={{ ...inp, minHeight: 80, resize: "none" as const, direction: ar ? "rtl" : "ltr", textAlign: ar ? "right" : "left" }} value={ar ? (s.excerptAr ?? "") : s.excerpt} onChange={e => upd(i, ar ? "excerptAr" : "excerpt", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}><span style={label}>{ar ? "رابط الصورة" : "Image URL"}</span><input style={inp} value={s.image} onChange={e => upd(i, "image", e.target.value)} /></div>
+
+                    {/* ── Body paragraphs editor ────────────────────────────── */}
+                    <div style={{ gridColumn: "1/-1" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                        <span style={label}>{ar ? "فقرات القصة" : "Story Paragraphs"}</span>
+                        <button
+                          onClick={() => addPara(i)}
+                          style={{ fontSize: 11, padding: "5px 14px", borderRadius: 6, cursor: "pointer", border: "1px solid rgba(124,58,237,0.4)", background: "rgba(124,58,237,0.12)", color: "#a78bfa", fontWeight: 600 }}
+                        >
+                          {ar ? "+ أضف فقرة" : "+ Add Paragraph"}
+                        </button>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                        {((ar ? s.bodyAr : s.body) ?? []).map((para: string, pi: number) => (
+                          <div key={pi} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                            <span style={{ fontSize: 10, color: "rgba(248,248,240,0.25)", paddingTop: 12, minWidth: 18, textAlign: "center" }}>{pi + 1}</span>
+                            <textarea
+                              style={{ ...inp, minHeight: 70, resize: "vertical" as const, flex: 1, direction: "rtl", textAlign: "right" }}
+                              value={para}
+                              onChange={e => updBody(i, pi, e.target.value)}
+                              placeholder={ar ? `الفقرة ${pi + 1}` : `Paragraph ${pi + 1}`}
+                            />
+                            <button
+                              onClick={() => removePara(i, pi)}
+                              style={{ padding: "6px 10px", borderRadius: 6, border: "none", background: "rgba(239,68,68,0.1)", color: "#f87171", cursor: "pointer", fontSize: 13, flexShrink: 0, marginTop: 4 }}
+                              title={ar ? "احذف الفقرة" : "Remove paragraph"}
+                            >✕</button>
+                          </div>
+                        ))}
+                        {((ar ? s.bodyAr : s.body) ?? []).length === 0 && (
+                          <div style={{ fontSize: 12, color: "rgba(248,248,240,0.25)", fontStyle: "italic", padding: "10px 0" }}>
+                            {ar ? "ما كاين حتى فقرة. زيد واحدة." : "No paragraphs yet. Add one above."}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <div style={{ gridColumn: "1/-1" }}>
                       <ImagePositioner
                         image={s.image}
@@ -1010,19 +1232,22 @@ function Settings({ token }: { token: string }) {
 export default function AdminPage() {
   const [token, setToken] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("settings");
+  const [lang, setLang] = useState<"en" | "ar">("en");
   useEffect(() => { const t = sessionStorage.getItem("ranzo_admin"); if (t) setToken(t); }, []);
+  useEffect(() => { const l = localStorage.getItem("ranzo-lang"); if (l === "ar" || l === "en") setLang(l); }, []);
   const login = (t: string) => { sessionStorage.setItem("ranzo_admin", t); setToken(t); };
   const logout = () => { sessionStorage.removeItem("ranzo_admin"); setToken(null); };
+  const handleLang = (l: "en" | "ar") => { setLang(l); localStorage.setItem("ranzo-lang", l); };
   if (!token) return <Login onLogin={login} />;
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#060608", color: "#f8f8f0", fontFamily: "var(--font-ui)" }}>
-      <Sidebar tab={tab} setTab={setTab} onLogout={logout} />
+      <Sidebar tab={tab} setTab={setTab} onLogout={logout} lang={lang} setLang={handleLang} />
       <main style={{ flex: 1, overflowY: "auto" }}>
         <AnimatePresence mode="wait">
           <motion.div key={tab} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
             {tab === "messages"  && <Messages   token={token} />}
             {tab === "countries" && <Countries  token={token} />}
-            {tab === "stories"   && <StoriesTab token={token} />}
+            {tab === "stories"   && <StoriesTab token={token} lang={lang} />}
             {tab === "apps"      && <AppsTab    token={token} />}
             {tab === "settings"  && <Settings   token={token} />}
           </motion.div>

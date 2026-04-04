@@ -143,8 +143,25 @@ export default function Hero() {
   const opacity  = useTransform(smoothProgress, [0, 0.5], [1, 0]);
   const sidesOpacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
 
+  const smoothScroll = (targetY: number, duration = 750) => {
+    const startY = window.scrollY;
+    const diff = targetY - startY;
+    if (diff === 0) return;
+    let start: number | null = null;
+    const ease2 = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      window.scrollTo(0, startY + diff * ease2(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
   const scrollDown = () => {
-    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+    const el = document.getElementById("about");
+    if (!el) return;
+    smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72);
   };
 
   return (
@@ -218,41 +235,6 @@ export default function Hero() {
         />
       </div>
 
-      {/* ── LEFT: Stats panel ── */}
-      <AnimatePresence>
-        {showStats && (
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease }}
-            className="absolute left-10 top-1/2 -translate-y-1/2 z-10 hidden lg:flex flex-col"
-            style={{ opacity: sidesOpacity as unknown as number, gap: 2 }}
-          >
-            <div className="w-px h-12 self-center opacity-20 mb-3" style={{ background: "linear-gradient(to bottom, transparent, var(--white))" }} />
-            {STATS.slice(0, 3).map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 + i * 0.1, duration: 0.5, ease }}
-                className="text-left"
-                style={{ padding: "10px 18px" }}
-              >
-                <div
-                  className="text-gradient font-bold leading-none"
-                  style={{ fontFamily: "var(--font-display)", fontSize: 22, marginBottom: 4 }}
-                >
-                  {stat.short}
-                </div>
-                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-            <div className="w-px h-12 self-center opacity-20 mt-3" style={{ background: "linear-gradient(to bottom, var(--white), transparent)" }} />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Main content — CENTERED */}
       <motion.div
@@ -308,7 +290,7 @@ export default function Hero() {
             color: "rgba(248,248,240,0.42)",
             fontWeight: 300,
             letterSpacing: "0.2px",
-            marginBottom: isMobile ? 20 : 36,
+            marginBottom: isMobile ? 14 : 22,
             maxWidth: 420,
             textAlign: "center",
           }}
@@ -316,18 +298,45 @@ export default function Hero() {
           {t.hero.description}
         </motion.p>
 
+        {/* ── Stat pills ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75, duration: 0.5, ease }}
+          className="flex flex-wrap justify-center"
+          style={{ gap: 10, marginBottom: isMobile ? 20 : 28 }}
+        >
+          {STATS.slice(0, 3).map((stat) => (
+            <div key={stat.label} style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "7px 18px", borderRadius: 999,
+              border: "1px solid var(--live-accent-30)",
+              background: "var(--live-accent-08)",
+            }}>
+              <span className="text-gradient font-bold" style={{ fontFamily: "var(--font-display)", fontSize: 17, lineHeight: 1, direction: "ltr", unicodeBidi: "isolate" }}>
+                {stat.short}
+              </span>
+              <span style={{ width: 1, height: 11, background: "var(--live-accent-30)", flexShrink: 0 }} />
+              <span style={{ fontSize: 9, fontWeight: 600, color: "var(--muted)", letterSpacing: "1.5px", textTransform: "uppercase" as const }}>
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* ── CTAs ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5, ease }}
+          transition={{ delay: 0.9, duration: 0.5, ease }}
           className="flex flex-wrap justify-center"
           style={{ gap: 16 }}
         >
-          <button onClick={() => document.getElementById("stories")?.scrollIntoView({ behavior: "smooth" })} className="btn-primary">
-            {t.hero.storiesBtn}
+          <button onClick={() => { const el = document.getElementById("collab"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-primary">
+            {t.nav.workWithMe}
           </button>
-          <button onClick={() => document.getElementById("travels")?.scrollIntoView({ behavior: "smooth" })} className="btn-ghost">
-            {t.hero.travelsBtn}
+          <button onClick={() => { const el = document.getElementById("stories"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-ghost">
+            {t.hero.storiesBtn}
           </button>
         </motion.div>
 
@@ -367,29 +376,6 @@ export default function Hero() {
           </motion.div>
         )}
 
-        {/* ── Mobile: Stats row ── */}
-        {isMobile && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, duration: 0.5, ease }}
-            style={{ display: "flex", gap: 24, marginTop: 24, justifyContent: "center" }}
-          >
-            {STATS.slice(0, 3).map((stat) => (
-              <div key={stat.label} style={{ textAlign: "center" }}>
-                <div
-                  className="text-gradient font-bold"
-                  style={{ fontFamily: "var(--font-display)", fontSize: 20, lineHeight: 1 }}
-                >
-                  {stat.short}
-                </div>
-                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "var(--muted)", marginTop: 4 }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        )}
       </motion.div>
 
       {/* ── RIGHT: Social links panel ── */}

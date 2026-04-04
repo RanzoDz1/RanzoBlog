@@ -9,6 +9,7 @@ const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 type Story = typeof STORIES[number] & {
   imageX?: number; imageY?: number; imageZoom?: number;
+  titleAr?: string; locationAr?: string; excerptAr?: string; bodyAr?: string[];
 };
 
 export default function Stories() {
@@ -21,7 +22,25 @@ export default function Stories() {
   useEffect(() => {
     fetch("/api/admin/content?key=stories")
       .then(r => r.json())
-      .then(d => { if (d.data && Array.isArray(d.data) && d.data.length > 0) setStories(d.data); })
+      .then(d => {
+        if (d.data && Array.isArray(d.data) && d.data.length > 0) {
+          // KV supplies image position + AR fields.
+          // EN body/excerpt/title/location always come from data.ts (source of truth).
+          const merged = d.data.map((s: Story) => {
+            const src = STORIES.find(x => x.id === s.id);
+            return {
+              ...s,
+              title:    src?.title    ?? s.title,
+              subtitle: src?.subtitle ?? s.subtitle,
+              excerpt:  src?.excerpt  ?? s.excerpt,
+              body:     src?.body     ?? s.body,
+              location: src?.location ?? s.location,
+              tag:      src?.tag      ?? s.tag,
+            };
+          });
+          setStories(merged);
+        }
+      })
       .catch(() => {});
   }, []);
 
@@ -147,10 +166,10 @@ export default function Stories() {
                     </span>
                   </div>
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, lineHeight: 1.15, color: "var(--white)", marginBottom: 10 }}>
-                    {lang === "ar" ? (STORY_TITLES_AR[story.id] ?? story.title) : story.title}
+                    {lang === "ar" ? (STORY_TITLES_AR[story.id] ?? (story as Story).titleAr ?? story.title) : story.title}
                   </h3>
                   <p className="line-clamp-3" style={{ fontSize: 12, color: "rgba(248,248,240,0.55)", lineHeight: 1.7 }}>
-                    {lang === "ar" ? (STORY_EXCERPTS_AR[story.id] ?? story.excerpt) : story.excerpt}
+                    {lang === "ar" ? (STORY_EXCERPTS_AR[story.id] ?? (story as Story).excerptAr ?? story.excerpt) : story.excerpt}
                   </p>
 
                   {/* Read more hint */}
@@ -269,7 +288,7 @@ export default function Stories() {
               >
                 {/* Location */}
                 <div style={{ fontSize: 11, color: "var(--muted)", marginBottom: 20, letterSpacing: lang === "ar" ? "0" : "1px" }}>
-                  📍 {tr(STORY_LOCATIONS_AR, open.location, lang)}
+                  📍 {lang === "ar" ? (tr(STORY_LOCATIONS_AR, open.location, lang) ?? open.locationAr ?? open.location) : open.location}
                 </div>
 
                 {/* Title */}
@@ -287,7 +306,7 @@ export default function Stories() {
                       fontWeight: 700, lineHeight: 1.1,
                       color: "var(--white)", marginBottom: 12,
                     }}>
-                      {lang === "ar" ? (STORY_TITLES_AR[open.id] ?? open.title) : open.title}
+                      {lang === "ar" ? (STORY_TITLES_AR[open.id] ?? open.titleAr ?? open.title) : open.title}
                     </h2>
 
                     {/* Subtitle */}
@@ -300,7 +319,7 @@ export default function Stories() {
 
                     {/* Body paragraphs */}
                     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                      {(lang === "ar" ? (STORY_BODIES_AR[open.id] ?? open.body ?? []) : (open.body ?? [])).map((para, i) => (
+                      {(lang === "ar" ? (STORY_BODIES_AR[open.id] ?? open.bodyAr ?? open.body ?? []) : (open.body ?? [])).map((para, i) => (
                         <p key={i} style={{ fontSize: 15, lineHeight: 1.9, color: "rgba(248,248,240,0.72)", fontWeight: 300 }}>
                           {para}
                         </p>

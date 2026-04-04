@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/sections/Hero";
+import Platforms from "@/components/sections/Platforms";
 import About from "@/components/sections/About";
 import Travels from "@/components/sections/Travels";
 import Stories from "@/components/sections/Stories";
@@ -14,6 +15,8 @@ export default function Home() {
       <ClientShell />
       <Navbar />
       <Hero />
+      <div className="divider" />
+      <Platforms />
       <div className="divider" />
       <About />
       <div className="divider" />

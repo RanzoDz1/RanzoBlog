@@ -7,7 +7,7 @@ const ease = [0.25, 0.46, 0.45, 0.94] as const;
 type FormState = "idle" | "loading" | "success" | "error";
 
 export default function Collab() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView   = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [form, setForm]         = useState({ name: "", email: "", brand: "", message: "" });
@@ -44,14 +44,31 @@ export default function Collab() {
           </p>
         </motion.div>
 
+        {/* Reach banner */}
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, ease, delay: 0.12 }}
+          className="w-full text-center" style={{ maxWidth: 800, marginBottom: 28 }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 10,
+            padding: "10px 24px", borderRadius: 999,
+            border: "1px solid var(--live-accent-30)", background: "var(--live-accent-08)",
+          }}>
+            <span className="text-gradient-vivid font-bold" style={{ fontFamily: "var(--font-display)", fontSize: 20, direction: "ltr", unicodeBidi: "isolate" }}>1M+</span>
+            <span style={{ width: 1, height: 14, background: "var(--live-accent-30)" }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", letterSpacing: "1px" }}>
+              {lang === "ar" ? "متابع عبر جميع البلاتفورمات" : "FOLLOWERS ACROSS ALL PLATFORMS"}
+            </span>
+          </div>
+        </motion.div>
+
         {/* Audience Stats */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease, delay: 0.15 }}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease, delay: 0.18 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 40 }}>
-          <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 16 }}>
+          <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 14 }}>
             {t.collab.stats.map((stat) => (
-              <div key={stat.label} className="text-center rounded-xl" style={{ padding: "28px 20px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}>
-                <div className="text-gradient-vivid font-bold leading-none brand-ltr" style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", fontSize: 26, marginBottom: 10, direction: "ltr", unicodeBidi: "isolate" }}>{stat.value}</div>
-                <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted)" }}>{stat.label}</div>
+              <div key={stat.label} className="text-center rounded-2xl" style={{ padding: "32px 16px", border: "1px solid var(--live-accent-15)", background: "var(--live-accent-08)", position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(to right, transparent, var(--live-accent), transparent)" }} />
+                <div className="text-gradient-vivid font-bold leading-none brand-ltr" style={{ fontFamily: "var(--font-display)", fontSize: 36, marginBottom: 12, direction: "ltr", unicodeBidi: "isolate" }}>{stat.value}</div>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "var(--muted)", letterSpacing: "0.5px" }}>{stat.label}</div>
               </div>
             ))}
           </div>
