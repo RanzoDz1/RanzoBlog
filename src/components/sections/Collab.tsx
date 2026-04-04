@@ -136,58 +136,121 @@ export default function Collab() {
           </div>
         </motion.div>
 
-        {/* Contact Form */}
+        {/* Pricing + Contact Form */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease, delay: 0.3 }}
-          className="w-full rounded-2xl" style={{ maxWidth: 680, background: "var(--surface2)", border: "1px solid var(--border)", padding: "48px 40px" }}>
-          <div className="text-center" style={{ marginBottom: 40 }}>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 600, color: "var(--white)", marginBottom: 10 }}>{t.collab.form.title}</div>
-            <p style={{ fontSize: 13, color: "var(--muted)" }}>{t.collab.form.subtitle}</p>
+          className="w-full" style={{ maxWidth: 1060 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr]" style={{ gap: 20, alignItems: "start" }}>
+
+            {/* ── Pricing column ── */}
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase" as const, color: "var(--muted)", marginBottom: 18 }}>
+                {t.collab.pricing.label}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {t.collab.pricing.packages.map((pkg, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.38 + i * 0.09, duration: 0.45, ease }}
+                    style={{
+                      padding: "16px 20px", borderRadius: 14, position: "relative",
+                      border: pkg.tag ? "1px solid var(--live-accent-30)" : "1px solid var(--border)",
+                      background: pkg.tag ? "var(--live-accent-08)" : "rgba(255,255,255,0.02)",
+                    }}
+                  >
+                    {pkg.tag && (
+                      <span style={{
+                        position: "absolute", top: -1,
+                        right: lang === "ar" ? "auto" : 14,
+                        left: lang === "ar" ? 14 : "auto",
+                        fontSize: 8, fontWeight: 800, letterSpacing: "1px",
+                        textTransform: "uppercase" as const,
+                        padding: "3px 10px", borderRadius: "0 0 8px 8px",
+                        background: "linear-gradient(135deg, var(--live-accent), var(--live-accent-bright))",
+                        color: "#fff",
+                      }}>
+                        {pkg.tag}
+                      </span>
+                    )}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                      <div style={{ paddingTop: pkg.tag ? 8 : 0 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 3 }}>{pkg.name}</div>
+                        <div style={{ fontSize: 11, color: "rgba(248,248,240,0.38)" }}>{pkg.desc}</div>
+                      </div>
+                      <div style={{ textAlign: "right", flexShrink: 0, paddingTop: pkg.tag ? 8 : 0 }}>
+                        <div className="text-gradient-vivid font-bold brand-ltr" style={{ fontFamily: "var(--font-display)", fontSize: 20, lineHeight: 1, direction: "ltr", unicodeBidi: "isolate" }}>
+                          {pkg.price}
+                        </div>
+                        {pkg.alt && (
+                          <div className="brand-ltr" style={{ fontSize: 11, color: "var(--muted)", marginTop: 3, direction: "ltr", unicodeBidi: "isolate" }}>
+                            {pkg.alt}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: "rgba(248,248,240,0.28)", marginTop: 14, lineHeight: 1.7 }}>
+                * {t.collab.pricing.note}
+              </p>
+            </div>
+
+            {/* ── Form column ── */}
+            <div className="rounded-2xl" style={{ background: "var(--surface2)", border: "1px solid var(--border)", padding: "36px 32px" }}>
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{t.collab.form.title}</div>
+                <p style={{ fontSize: 13, color: "var(--muted)" }}>{t.collab.form.subtitle}</p>
+              </div>
+
+              {formState === "success" ? (
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center" style={{ padding: "48px 0" }}>
+                  <div style={{ fontSize: 48, marginBottom: 16 }}>✈️</div>
+                  <h4 style={{ fontSize: 20, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{t.collab.form.successTitle}</h4>
+                  <p style={{ fontSize: 14, color: "var(--muted)" }}>{t.collab.form.successDesc}</p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col" style={{ gap: 16 }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 14 }}>
+                    <div>
+                      <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.name}</label>
+                      <input type="text" required placeholder={t.collab.form.namePlaceholder} className="form-input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+                    </div>
+                    <div>
+                      <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.email}</label>
+                      <input type="email" required placeholder="your@email.com" className="form-input" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.brand}</label>
+                    <input type="text" placeholder={t.collab.form.brandPlaceholder} className="form-input" value={form.brand} onChange={e => setForm(f => ({ ...f, brand: e.target.value }))} />
+                  </div>
+                  <div>
+                    <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.message}</label>
+                    <textarea required rows={4} placeholder={t.collab.form.messagePlaceholder} className="form-input resize-none" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
+                  </div>
+                  <motion.button type="submit" disabled={formState === "loading"} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
+                    className="w-full rounded-lg"
+                    style={{ padding: "15px 0", marginTop: 4, fontSize: 12, fontWeight: 600, textTransform: "uppercase" as const,
+                      background: formState === "loading" ? "var(--live-accent-30)" : "linear-gradient(135deg, var(--live-accent) 0%, var(--live-accent-bright) 100%)",
+                      color: "#fff", boxShadow: "0 8px 32px var(--live-glow)", border: "none", cursor: "pointer" }}>
+                    {formState === "loading" ? t.collab.form.sending : t.collab.form.send}
+                  </motion.button>
+                  {formState === "error" && <p className="text-center" style={{ fontSize: 13, color: "#f87171" }}>{t.collab.form.error}</p>}
+                </form>
+              )}
+            </div>
+
           </div>
 
-          {formState === "success" ? (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center text-center" style={{ padding: "48px 0" }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>✈️</div>
-              <h4 style={{ fontSize: 20, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{t.collab.form.successTitle}</h4>
-              <p style={{ fontSize: 14, color: "var(--muted)" }}>{t.collab.form.successDesc}</p>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col" style={{ gap: 20 }}>
-              <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 16 }}>
-                <div>
-                  <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.name}</label>
-                  <input type="text" required placeholder={t.collab.form.namePlaceholder} className="form-input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
-                </div>
-                <div>
-                  <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.email}</label>
-                  <input type="email" required placeholder="your@email.com" className="form-input" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
-                </div>
-              </div>
-              <div>
-                <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.brand}</label>
-                <input type="text" placeholder={t.collab.form.brandPlaceholder} className="form-input" value={form.brand} onChange={e => setForm(f => ({ ...f, brand: e.target.value }))} />
-              </div>
-              <div>
-                <label className="block" style={{ fontSize: 11, fontWeight: 600, color: "var(--muted)", marginBottom: 8 }}>{t.collab.form.message}</label>
-                <textarea required rows={5} placeholder={t.collab.form.messagePlaceholder} className="form-input resize-none" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
-              </div>
-              <motion.button type="submit" disabled={formState === "loading"} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
-                className="w-full rounded-lg"
-                style={{ padding: "16px 0", marginTop: 8, fontSize: 12, fontWeight: 600, textTransform: "uppercase" as const,
-                  background: formState === "loading" ? "var(--live-accent-30)" : "linear-gradient(135deg, var(--live-accent) 0%, var(--live-accent-bright) 100%)",
-                  color: "#fff", boxShadow: "0 8px 32px var(--live-glow)", border: "none", cursor: "pointer" }}>
-                {formState === "loading" ? t.collab.form.sending : t.collab.form.send}
-              </motion.button>
-              {formState === "error" && <p className="text-center" style={{ fontSize: 13, color: "#f87171" }}>{t.collab.form.error}</p>}
-            </form>
-          )}
+          <div className="text-center" style={{ marginTop: 28 }}>
+            <a href="mailto:ranzodzt@gmail.com" className="inline-flex items-center transition-colors duration-200 hover:text-white" style={{ gap: 12, fontSize: 13, color: "var(--muted)" }}>
+              <span className="flex items-center justify-center rounded-full" style={{ width: 32, height: 32, fontSize: 14, background: "var(--live-accent-15)", border: "1px solid var(--live-accent-30)" }}>✉</span>
+              <span className="brand-ltr">ranzodzt@gmail.com</span>
+            </a>
+          </div>
         </motion.div>
-
-        <div className="text-center" style={{ marginTop: 32 }}>
-          <a href="mailto:ranzodzt@gmail.com" className="inline-flex items-center transition-colors duration-200 hover:text-white" style={{ gap: 12, fontSize: 13, color: "var(--muted)" }}>
-            <span className="flex items-center justify-center rounded-full" style={{ width: 32, height: 32, fontSize: 14, background: "var(--live-accent-15)", border: "1px solid var(--live-accent-30)" }}>✉</span>
-            <span className="brand-ltr">ranzodzt@gmail.com</span>
-          </a>
-        </div>
       </div>
     </section>
   );

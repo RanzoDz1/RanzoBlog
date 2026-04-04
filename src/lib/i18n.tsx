@@ -73,6 +73,16 @@ const EN = {
       { icon: "🤝", title: "Creator Collaborations",     desc: "Joint projects, IRL stream crossovers, and campaigns.", color: "var(--amber)" },
       { icon: "🌍", title: "Destination Content",        desc: "Tourism boards, hotels, and experiences.", color: "var(--purple-l)" },
     ],
+    pricing: {
+      label: "Pricing",
+      note: "Rates are approximate and may vary based on scope, usage rights, and deliverables.",
+      packages: [
+        { name: "Simple Story",   price: "~€50",         alt: "",              desc: "Single story frame",                   tag: "" },
+        { name: "Story Pack",     price: "~€100",        alt: "",              desc: "Multiple stories · 3 frames",          tag: "" },
+        { name: "Reel + Stories", price: "~€500",        alt: "",              desc: "Full reel production + 3 story frames", tag: "Most Requested" },
+        { name: "Link in Bio",    price: "€200 / week",  alt: "€500 / month",  desc: "Pinned placement across all platforms", tag: "" },
+      ],
+    },
     workedWith: "Brands I've worked with",
     brandCategories: [
       { icon: "📱", name: "eSIM & Digital Products",   desc: "Global connectivity & digital services" },
@@ -263,6 +273,16 @@ const AR: typeof EN = {
       { icon: "🤝", title: "تعاون مع كريتورز",   desc: "مشاريع مشتركة، كروسأوفر على السترام، وكامبانيات.", color: "var(--amber)" },
       { icon: "🌍", title: "محتوى الوجهات",      desc: "هيئات السياحة، الفنادق، والتجارب.", color: "var(--purple-l)" },
     ],
+    pricing: {
+      label: "الأسعار",
+      note: "الأسعار تقريبية وتختلف حسب الحجم وحقوق الاستخدام والمحتوى المطلوب.",
+      packages: [
+        { name: "ستوري بسيطة",   price: "~50€",          alt: "",                desc: "ستوري واحدة",                          tag: "" },
+        { name: "باقة ستوريز",    price: "~100€",         alt: "",                desc: "ستوريز متعددة · 3 فريمات",             tag: "" },
+        { name: "ريل + ستوريز",   price: "~500€",         alt: "",                desc: "ريل كامل + 3 ستوريز",                  tag: "الأكثر طلباً" },
+        { name: "لينك في البايو", price: "200€ / أسبوع",  alt: "500€ / شهر",      desc: "تثبيت في البايو عبر البلاتفورمات",     tag: "" },
+      ],
+    },
     workedWith: "براندات اشتغلت معاهم",
     brandCategories: [
       { icon: "📱", name: "eSIM ومنتجات ديجيتال",   desc: "اتصال عالمي وخدمات رقمية" },
