@@ -96,6 +96,46 @@ export default function Collab() {
           </div>
         </motion.div>
 
+        {/* Brand categories */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease, delay: 0.28 }}
+          className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", color: "var(--muted)", textAlign: "center", marginBottom: 20 }}>
+            {t.collab.workedWith}
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+            {t.collab.brandCategories.map((cat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ delay: 0.32 + i * 0.06, duration: 0.4, ease }}
+                style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "10px 18px", borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  background: "rgba(255,255,255,0.025)",
+                  cursor: "default",
+                  transition: "border-color 0.2s, background 0.2s",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.025)";
+                }}
+              >
+                <span style={{ fontSize: 18, lineHeight: 1 }}>{cat.icon}</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--white)", lineHeight: 1.2 }}>{cat.name}</div>
+                  <div style={{ fontSize: 10, color: "var(--muted)", marginTop: 2 }}>{cat.desc}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Contact Form */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease, delay: 0.3 }}
           className="w-full rounded-2xl" style={{ maxWidth: 680, background: "var(--surface2)", border: "1px solid var(--border)", padding: "48px 40px" }}>

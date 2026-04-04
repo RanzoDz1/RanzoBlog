@@ -73,6 +73,15 @@ const EN = {
       { icon: "🤝", title: "Creator Collaborations",     desc: "Joint projects, IRL stream crossovers, and campaigns.", color: "var(--amber)" },
       { icon: "🌍", title: "Destination Content",        desc: "Tourism boards, hotels, and experiences.", color: "var(--purple-l)" },
     ],
+    workedWith: "Brands I've worked with",
+    brandCategories: [
+      { icon: "📱", name: "eSIM & Digital Products",   desc: "Global connectivity & digital services" },
+      { icon: "🏨", name: "Hotels & Hospitality",       desc: "Local and international accommodations" },
+      { icon: "🍽️", name: "Restaurants & Food",         desc: "Dining experiences and local cuisine" },
+      { icon: "🌸", name: "Lifestyle & Fragrance",      desc: "Perfumes and personal care products" },
+      { icon: "📷", name: "Cameras & Tech",             desc: "Photography gear and equipment" },
+      { icon: "✈️", name: "Travel & More",              desc: "Across many other categories" },
+    ],
     form: {
       title: "Send a Message",
       subtitle: "Tell me about your project. I read every message personally.",
@@ -253,6 +262,15 @@ const AR: typeof EN = {
       { icon: "🎬", title: "بروموشن البراند",     desc: "محتوى طويل على يوتيوب وتيك توك وإنستغرام.", color: "var(--blue)" },
       { icon: "🤝", title: "تعاون مع كريتورز",   desc: "مشاريع مشتركة، كروسأوفر على السترام، وكامبانيات.", color: "var(--amber)" },
       { icon: "🌍", title: "محتوى الوجهات",      desc: "هيئات السياحة، الفنادق، والتجارب.", color: "var(--purple-l)" },
+    ],
+    workedWith: "براندات اشتغلت معاهم",
+    brandCategories: [
+      { icon: "📱", name: "eSIM ومنتجات ديجيتال",   desc: "اتصال عالمي وخدمات رقمية" },
+      { icon: "🏨", name: "فنادق وضيافة",            desc: "إقامات محلية وعالمية" },
+      { icon: "🍽️", name: "مطاعم وأكل",              desc: "تجارب طعام وأكل محلي" },
+      { icon: "🌸", name: "لايفستايل وعطور",          desc: "عطور ومنتجات العناية" },
+      { icon: "📷", name: "كاميرات وتك",             desc: "معدات ولوازم التصوير" },
+      { icon: "✈️", name: "سفر وأكثر",               desc: "في قطاعات متعددة" },
     ],
     form: {
       title: "ابعثلي رسالة",
