@@ -161,6 +161,8 @@ function Countries({ token }: { token: string }) {
   const [nc, setNc] = useState({ name: "", flag: "" });
   const [newPhoto, setNewPhoto] = useState({ src: "", caption: "" });
   const [saving, setSaving] = useState(false); const [saved, setSaved] = useState(false);
+  const [dragPhoto, setDragPhoto] = useState<{ fromCountry: string; photoIndex: number } | null>(null);
+  const [dropTarget, setDropTarget] = useState<string | null>(null);
 
   // Load from KV on mount, fall back to CONTINENTS defaults
   useEffect(() => {
@@ -194,6 +196,23 @@ function Countries({ token }: { token: string }) {
   const removePhoto = (pi: number) => {
     if (!editCountry) return;
     setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).filter((_, i) => i !== pi) } : co) } : c));
+  };
+
+  const movePhoto = (fromCountry: string, photoIndex: number, toCountry: string) => {
+    if (fromCountry === toCountry) return;
+    setContinents(cs => cs.map(ct => {
+      if (ct.id !== active) return ct;
+      const photo = ct.countries.find(co => co.name === fromCountry)?.photos?.[photoIndex];
+      if (!photo) return ct;
+      return {
+        ...ct,
+        countries: ct.countries.map(co => {
+          if (co.name === fromCountry) return { ...co, photos: (co.photos || []).filter((_, i) => i !== photoIndex) };
+          if (co.name === toCountry) return { ...co, photos: [...(co.photos || []), photo] };
+          return co;
+        }),
+      };
+    }));
   };
 
   const [saveErr, setSaveErr] = useState("");
@@ -232,21 +251,46 @@ function Countries({ token }: { token: string }) {
       {/* Country chips — click to select and manage photos */}
       <div style={{ ...card, marginBottom: 20 }}>
         <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 16 }}>
-          {cont.countries.length} Countries · <span style={{ color: cont.color }}>click a country to add/remove photos</span>
+          {cont.countries.length} Countries · <span style={{ color: cont.color }}>click to edit photos · drag a photo onto a chip to move it</span>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-          {cont.countries.map((c, i) => (
-            <div
-              key={i}
-              onClick={() => setEditCountry(editCountry === c.name ? null : c.name)}
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 999, background: editCountry === c.name ? `${cont.color}22` : `${cont.color}14`, border: `1px solid ${editCountry === c.name ? cont.color + "50" : cont.color + "30"}`, fontSize: 13, color: editCountry === c.name ? "#f8f8f0" : "rgba(248,248,240,0.75)", cursor: "pointer", transition: "all 0.15s" }}
-            >
-              <span style={{ fontSize: 17 }}>{c.flag}</span>
-              <span>{c.name}</span>
-              {c.photos && c.photos.length > 0 && <span style={{ fontSize: 10, opacity: 0.65, marginLeft: 2 }}>📷 {c.photos.length}</span>}
-              <button onClick={e => { e.stopPropagation(); removeCountry(i); }} style={{ background: "none", border: "none", color: "rgba(248,248,240,0.3)", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1, marginLeft: 4 }}>×</button>
-            </div>
-          ))}
+          {cont.countries.map((c, i) => {
+            const isDropTarget = dropTarget === c.name;
+            const isSelected = editCountry === c.name;
+            return (
+              <div
+                key={i}
+                onClick={() => setEditCountry(isSelected ? null : c.name)}
+                onDragOver={e => { e.preventDefault(); if (dragPhoto && dragPhoto.fromCountry !== c.name) setDropTarget(c.name); }}
+                onDragLeave={() => setDropTarget(null)}
+                onDrop={e => {
+                  e.preventDefault();
+                  if (dragPhoto && dragPhoto.fromCountry !== c.name) {
+                    movePhoto(dragPhoto.fromCountry, dragPhoto.photoIndex, c.name);
+                  }
+                  setDragPhoto(null);
+                  setDropTarget(null);
+                }}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "7px 14px", borderRadius: 999, fontSize: 13,
+                  cursor: "pointer", transition: "all 0.15s",
+                  background: isDropTarget ? `${cont.color}40` : isSelected ? `${cont.color}22` : `${cont.color}14`,
+                  border: `1px solid ${isDropTarget ? cont.color : isSelected ? cont.color + "50" : cont.color + "30"}`,
+                  color: isDropTarget || isSelected ? "#f8f8f0" : "rgba(248,248,240,0.75)",
+                  outline: isDropTarget ? `2px dashed ${cont.color}` : "none",
+                  outlineOffset: 2,
+                  transform: isDropTarget ? "scale(1.06)" : "scale(1)",
+                }}
+              >
+                <span style={{ fontSize: 17 }}>{c.flag}</span>
+                <span>{c.name}</span>
+                {c.photos && c.photos.length > 0 && <span style={{ fontSize: 10, opacity: 0.65, marginLeft: 2 }}>📷 {c.photos.length}</span>}
+                {isDropTarget && <span style={{ fontSize: 10, color: cont.color, fontWeight: 700 }}>drop here</span>}
+                <button onClick={e => { e.stopPropagation(); removeCountry(i); }} style={{ background: "none", border: "none", color: "rgba(248,248,240,0.3)", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1, marginLeft: 4 }}>×</button>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -262,18 +306,37 @@ function Countries({ token }: { token: string }) {
               {/* Existing photos list */}
               {(editingCountry.photos || []).length > 0 ? (
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
-                  {(editingCountry.photos || []).map((photo, pi) => (
-                    <div key={pi} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 8, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                      <div style={{ width: 60, height: 44, borderRadius: 6, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
-                        <img src={photo.src} alt={photo.caption} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
+                  <div style={{ fontSize: 10, color: "rgba(248,248,240,0.3)", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
+                    <span>⠿</span> Drag a photo row onto any country chip above to move it
+                  </div>
+                  {(editingCountry.photos || []).map((photo, pi) => {
+                    const isDraggingThis = dragPhoto?.fromCountry === editCountry && dragPhoto?.photoIndex === pi;
+                    return (
+                      <div
+                        key={pi}
+                        draggable
+                        onDragStart={() => setDragPhoto({ fromCountry: editCountry!, photoIndex: pi })}
+                        onDragEnd={() => { setDragPhoto(null); setDropTarget(null); }}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 12, padding: "10px 14px",
+                          borderRadius: 8, background: isDraggingThis ? "rgba(124,58,237,0.12)" : "rgba(255,255,255,0.04)",
+                          border: `1px solid ${isDraggingThis ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.07)"}`,
+                          cursor: "grab", opacity: isDraggingThis ? 0.5 : 1, transition: "all 0.15s",
+                        }}
+                      >
+                        {/* Drag handle */}
+                        <span style={{ fontSize: 16, color: "rgba(255,255,255,0.2)", flexShrink: 0, userSelect: "none" }}>⠿</span>
+                        <div style={{ width: 60, height: 44, borderRadius: 6, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
+                          <img src={photo.src} alt={photo.caption} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: 12, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
+                          <div style={{ fontSize: 11, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
+                        </div>
+                        <button onClick={() => removePhoto(pi)} style={{ ...btnD, padding: "5px 12px", fontSize: 11, flexShrink: 0 }}>Remove</button>
                       </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 12, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
-                        <div style={{ fontSize: 11, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
-                      </div>
-                      <button onClick={() => removePhoto(pi)} style={{ ...btnD, padding: "5px 12px", fontSize: 11, flexShrink: 0 }}>Remove</button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div style={{ padding: "12px 0 20px", fontSize: 13, color: "rgba(248,248,240,0.3)" }}>No photos yet for {editCountry}. Add your first photo below.</div>
