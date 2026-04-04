@@ -539,7 +539,8 @@ function Settings({ token }: { token: string }) {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ key: "hero-position", data: pos }),
       });
-      setStatus(r.ok ? "saved" : "savedLocal");
+      const json = await r.json().catch(() => ({})) as { ok?: boolean };
+      setStatus((r.ok && json.ok) ? "saved" : "savedLocal");
     } catch {
       setStatus("savedLocal");
     }

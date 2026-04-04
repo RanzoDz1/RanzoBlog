@@ -173,7 +173,13 @@ export default function Hero() {
                 const py = heroPos ? (isMobile ? heroPos.mobileY : heroPos.desktopY) : (isMobile ? 20 : 30);
                 const tx = (50 - px) / 50 * 15;
                 const ty = (50 - py) / 50 * 10;
-                return `scale(1.5) translate(${tx}%, ${ty}%)`;
+                // Dynamic minimum scale: just enough so edges never cut, plus tiny margin
+                const minScale = Math.max(
+                  1 + 2 * Math.abs(tx) / 100,
+                  1 + 2 * Math.abs(ty) / 100,
+                  1.02
+                ) + 0.03;
+                return `scale(${minScale.toFixed(3)}) translate(${tx}%, ${ty}%)`;
               })(),
               transition: "transform 0.3s ease",
             }}
