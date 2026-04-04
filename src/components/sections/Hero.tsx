@@ -236,6 +236,42 @@ export default function Hero() {
       </div>
 
 
+      {/* ── LEFT: Stats panel ── */}
+      <AnimatePresence>
+        {showStats && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease }}
+            className="absolute left-10 top-1/2 -translate-y-1/2 z-10 hidden lg:flex flex-col"
+            style={{ opacity: sidesOpacity as unknown as number, gap: 2 }}
+          >
+            <div className="w-px h-12 self-center opacity-20 mb-3" style={{ background: "linear-gradient(to bottom, transparent, var(--white))" }} />
+            {STATS.slice(0, 3).map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.1, duration: 0.5, ease }}
+                className="text-left"
+                style={{ padding: "10px 18px" }}
+              >
+                <div
+                  className="text-gradient font-bold leading-none"
+                  style={{ fontFamily: "var(--font-display)", fontSize: 22, marginBottom: 4 }}
+                >
+                  {stat.short}
+                </div>
+                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+            <div className="w-px h-12 self-center opacity-20 mt-3" style={{ background: "linear-gradient(to bottom, var(--white), transparent)" }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main content — CENTERED */}
       <motion.div
         className="relative z-10 flex flex-col items-center text-center"
