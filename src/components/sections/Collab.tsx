@@ -12,6 +12,32 @@ export default function Collab() {
   const isInView   = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [form, setForm]         = useState({ name: "", email: "", brand: "", message: "" });
   const [formState, setFormState] = useState<FormState>("idle");
+  const [selectedPkg, setSelectedPkg] = useState("");
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const selectPackage = (pkg: { name: string; price: string; alt: string }) => {
+    setSelectedPkg(pkg.name);
+    const priceStr = pkg.alt ? `${pkg.price} / ${pkg.alt}` : pkg.price;
+    const msg = lang === "ar"
+      ? `مرحبا، مهتم بـ "${pkg.name}" (${priceStr}). `
+      : `Hi, I'm interested in the "${pkg.name}" package (${priceStr}). `;
+    setForm(f => ({ ...f, message: msg }));
+    if (formRef.current) {
+      const top = formRef.current.getBoundingClientRect().top + window.scrollY - 96;
+      const startY = window.scrollY;
+      const diff = top - startY;
+      if (Math.abs(diff) < 10) return;
+      let start: number | null = null;
+      const easeF = (t: number) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+      const step = (ts: number) => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 600, 1);
+        window.scrollTo(0, startY + diff * easeF(p));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setFormState("loading");
@@ -143,23 +169,59 @@ export default function Collab() {
 
             {/* ── Pricing column ── */}
             <div>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase" as const, color: "var(--muted)", marginBottom: 18 }}>
-                {t.collab.pricing.label}
+              <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 18 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                  {t.collab.pricing.label}
+                </div>
+                <div style={{ fontSize: 10, color: "rgba(248,248,240,0.25)" }}>
+                  {t.collab.pricing.selectHint}
+                </div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {t.collab.pricing.packages.map((pkg, i) => (
+                {t.collab.pricing.packages.map((pkg, i) => {
+                  const isSelected = selectedPkg === pkg.name;
+                  const isFeatured = !!pkg.tag;
+                  return (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -16 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: 0.38 + i * 0.09, duration: 0.45, ease }}
+                    onClick={() => selectPackage(pkg)}
+                    whileHover={{ scale: 1.015 }}
+                    whileTap={{ scale: 0.985 }}
                     style={{
                       padding: "16px 20px", borderRadius: 14, position: "relative",
-                      border: pkg.tag ? "1px solid var(--live-accent-30)" : "1px solid var(--border)",
-                      background: pkg.tag ? "var(--live-accent-08)" : "rgba(255,255,255,0.02)",
+                      cursor: "pointer",
+                      border: isSelected
+                        ? "1px solid var(--live-accent-50)"
+                        : isFeatured
+                          ? "1px solid var(--live-accent-30)"
+                          : "1px solid var(--border)",
+                      background: isSelected
+                        ? "var(--live-accent-15)"
+                        : isFeatured
+                          ? "var(--live-accent-08)"
+                          : "rgba(255,255,255,0.02)",
+                      transition: "border-color 0.2s, background 0.2s",
+                      boxShadow: isSelected ? "0 0 20px var(--live-glow)" : "none",
                     }}
                   >
-                    {pkg.tag && (
+                    {isSelected && (
+                      <span style={{
+                        position: "absolute", top: -1,
+                        left: lang === "ar" ? "auto" : 14,
+                        right: lang === "ar" ? 14 : "auto",
+                        fontSize: 8, fontWeight: 800, letterSpacing: "1px",
+                        textTransform: "uppercase" as const,
+                        padding: "3px 10px", borderRadius: "0 0 8px 8px",
+                        background: "linear-gradient(135deg, var(--live-accent), var(--live-accent-bright))",
+                        color: "#fff",
+                      }}>
+                        ✓ Selected
+                      </span>
+                    )}
+                    {!isSelected && pkg.tag && (
                       <span style={{
                         position: "absolute", top: -1,
                         right: lang === "ar" ? "auto" : 14,
@@ -174,11 +236,11 @@ export default function Collab() {
                       </span>
                     )}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
-                      <div style={{ paddingTop: pkg.tag ? 8 : 0 }}>
+                      <div style={{ paddingTop: (isSelected || isFeatured) ? 8 : 0 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 3 }}>{pkg.name}</div>
                         <div style={{ fontSize: 11, color: "rgba(248,248,240,0.38)" }}>{pkg.desc}</div>
                       </div>
-                      <div style={{ textAlign: "right", flexShrink: 0, paddingTop: pkg.tag ? 8 : 0 }}>
+                      <div style={{ textAlign: "right", flexShrink: 0, paddingTop: (isSelected || isFeatured) ? 8 : 0 }}>
                         <div className="text-gradient-vivid font-bold brand-ltr" style={{ fontFamily: "var(--font-display)", fontSize: 20, lineHeight: 1, direction: "ltr", unicodeBidi: "isolate" }}>
                           {pkg.price}
                         </div>
@@ -190,7 +252,8 @@ export default function Collab() {
                       </div>
                     </div>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
               <p style={{ fontSize: 11, color: "rgba(248,248,240,0.28)", marginTop: 14, lineHeight: 1.7 }}>
                 * {t.collab.pricing.note}
@@ -198,7 +261,7 @@ export default function Collab() {
             </div>
 
             {/* ── Form column ── */}
-            <div className="rounded-2xl" style={{ background: "var(--surface2)", border: "1px solid var(--border)", padding: "36px 32px" }}>
+            <div ref={formRef} className="rounded-2xl" style={{ background: "var(--surface2)", border: "1px solid var(--border)", padding: "36px 32px" }}>
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{t.collab.form.title}</div>
                 <p style={{ fontSize: 13, color: "var(--muted)" }}>{t.collab.form.subtitle}</p>
