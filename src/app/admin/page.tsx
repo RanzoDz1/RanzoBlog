@@ -149,7 +149,7 @@ function Messages({ token }: { token: string }) {
             </div>
             <div style={{ fontSize: 11, color: "rgba(248,248,240,0.3)", marginBottom: 20 }}>📅 {fmt(sel.date)}</div>
             <div style={{ ...card, fontSize: 14, lineHeight: 1.85, color: "rgba(248,248,240,0.8)", whiteSpace: "pre-wrap" }}>{sel.message}</div>
-            <a href={`mailto:${sel.email}?subject=Re: Your inquiry`} style={{ display: "inline-block", marginTop: 20, ...btnP, textDecoration: "none" }}>Reply via Email ↗</a>
+            <a href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(sel.email)}&su=${encodeURIComponent("Re: Your inquiry")}`} target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", marginTop: 20, ...btnP, textDecoration: "none" }}>Reply via Email ↗</a>
           </motion.div>
         )}
       </div>
