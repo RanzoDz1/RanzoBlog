@@ -21,31 +21,32 @@ export async function POST(req: NextRequest) {
       });
       await kv.set("ranzo:messages", msgs.slice(0, 200));
     } catch {
-      // KV not configured — that's fine, email still goes out
+      // KV not configured — messages still go out via email
     }
 
-    // Send email via Resend if configured
-    const RESEND_KEY = process.env.RESEND_API_KEY;
-    if (RESEND_KEY) {
-      const { Resend } = await import("resend");
-      const resend = new Resend(RESEND_KEY);
-      await resend.emails.send({
-        from: "RanzoDz Website <onboarding@resend.dev>",
-        to: "ranzodzt@gmail.com",
-        subject: `New collab inquiry from ${name}${brand ? ` | ${brand}` : ""}`,
-        html: `
-          <h2>New Collaboration Inquiry</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          ${brand ? `<p><strong>Brand:</strong> ${brand}</p>` : ""}
-          <p><strong>Message:</strong></p>
-          <blockquote>${message.replace(/\n/g, "<br/>")}</blockquote>
-          <hr/>
-          <p style="color:#999;font-size:12px">Sent via ranzodz.com contact form</p>
-        `,
+    // Send email via FormSubmit.co — free, unlimited, no API key needed
+    // NOTE: First ever submission will send a confirmation email to ranzodzt@gmail.com
+    // Just click "Confirm" in that email once, then all future submissions arrive instantly.
+    try {
+      await fetch("https://formsubmit.co/ajax/ranzodzt@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: `New collab inquiry from ${name}${brand ? ` — ${brand}` : ""}`,
+          _template: "table",
+          _captcha: "false",
+          Name: name,
+          Email: email,
+          ...(brand ? { Brand: brand } : {}),
+          Message: message,
+        }),
       });
-    } else {
-      console.log("Contact form submission:", { name, email, brand, message });
+    } catch (mailErr) {
+      // Email failed silently — message is still saved to admin dashboard
+      console.error("FormSubmit error:", mailErr);
     }
 
     return NextResponse.json({ success: true });
