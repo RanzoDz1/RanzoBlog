@@ -19,23 +19,7 @@ export async function POST(req: NextRequest) {
       console.error("DB save error:", dbErr);
     }
 
-    // Send email notification via FormSubmit.co
-    try {
-      await fetch("https://formsubmit.co/ajax/ranzodzt@gmail.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          message: `${brand ? `Brand: ${brand}\n\n` : ""}${message}`,
-          _subject: `New collab inquiry from ${name}${brand ? ` — ${brand}` : ""}`,
-          _replyto: email,
-        }),
-      });
-    } catch (emailErr) {
-      console.error("FormSubmit error:", emailErr);
-    }
-
+    // Email notification is sent client-side via FormSubmit.co
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Contact form error:", error);

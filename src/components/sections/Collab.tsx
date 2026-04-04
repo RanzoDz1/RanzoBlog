@@ -42,7 +42,23 @@ export default function Collab() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setFormState("loading");
     try {
+      // Save to database via our API
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+
+      // Send email notification via FormSubmit.co (directly from browser)
+      fetch("https://formsubmit.co/ajax/ranzodzt@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: `${form.brand ? `Brand: ${form.brand}\n\n` : ""}${form.message}`,
+          _subject: `New collab inquiry from ${form.name}${form.brand ? ` — ${form.brand}` : ""}`,
+          _replyto: form.email,
+          _captcha: "false",
+        }),
+      }).catch(() => {});
+
       if (res.ok) { setFormState("success"); setForm({ name: "", email: "", brand: "", message: "" }); }
       else { setFormState("error"); }
     } catch { setFormState("success"); setForm({ name: "", email: "", brand: "", message: "" }); }
