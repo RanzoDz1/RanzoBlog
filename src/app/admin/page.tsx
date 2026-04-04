@@ -592,9 +592,9 @@ function ImagePositioner({
             draggable={false}
             style={{
               width: "100%", height: "100%",
-              objectFit: "cover",
+              objectFit: zoom <= 1 ? "contain" : "cover",
               objectPosition: `${x}% ${y}%`,
-              transform: `scale(${zoom})`,
+              transform: zoom <= 1 ? "none" : `scale(${zoom})`,
               transformOrigin: `${x}% ${y}%`,
               pointerEvents: "none",
               display: "block",
@@ -624,7 +624,7 @@ function ImagePositioner({
 
         {/* Hint badge */}
         <div style={{ position: "absolute", top: 8, left: 8, fontSize: 9, color: "rgba(255,255,255,0.55)", background: "rgba(0,0,0,0.55)", padding: "3px 8px", borderRadius: 4, letterSpacing: "0.5px" }}>
-          ✥ DRAG TO REPOSITION
+          {zoom <= 1 ? "📐 FULL IMAGE VIEW" : "✥ DRAG TO REPOSITION"}
         </div>
         {/* Live coords */}
         <div style={{ position: "absolute", bottom: 8, right: 8, fontSize: 10, color: "rgba(255,255,255,0.7)", background: "rgba(0,0,0,0.55)", padding: "3px 8px", borderRadius: 4, fontFamily: "monospace" }}>
@@ -636,14 +636,21 @@ function ImagePositioner({
       <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", flexShrink: 0 }}>Zoom</span>
         <input
-          type="range" min={100} max={300} step={5}
+          type="range" min={30} max={300} step={5}
           value={Math.round(zoom * 100)}
           onChange={e => onChangeRef.current(x, y, Number(e.target.value) / 100)}
           style={{ flex: 1, accentColor: "#7c3aed", cursor: "pointer" }}
         />
-        <span style={{ fontSize: 13, fontWeight: 700, color: "#a78bfa", fontFamily: "monospace", minWidth: 44, textAlign: "right" as const }}>
-          {Math.round(zoom * 100)}%
+        <span style={{ fontSize: 13, fontWeight: 700, color: zoom <= 1 ? "#34d399" : "#a78bfa", fontFamily: "monospace", minWidth: 44, textAlign: "right" as const }}>
+          {zoom <= 1 ? "Fit" : `${Math.round(zoom * 100)}%`}
         </span>
+        <button
+          onClick={() => onChangeRef.current(50, 50, 0.5)}
+          style={{ fontSize: 10, padding: "5px 12px", borderRadius: 6, background: "rgba(52,211,153,0.1)", border: "1px solid rgba(52,211,153,0.3)", color: "#34d399", cursor: "pointer", flexShrink: 0 }}
+          title="Show entire image"
+        >
+          Full
+        </button>
         <button
           onClick={() => onChangeRef.current(50, 50, 1)}
           style={{ fontSize: 10, padding: "5px 12px", borderRadius: 6, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(248,248,240,0.5)", cursor: "pointer", flexShrink: 0 }}
