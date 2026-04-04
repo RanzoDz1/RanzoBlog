@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { STORIES } from "@/lib/data";
 import { useT } from "@/lib/i18n";
-import { STORY_TAGS_AR, STORY_LOCATIONS_AR, tr } from "@/lib/dataTranslations";
+import { STORY_TAGS_AR, STORY_LOCATIONS_AR, STORY_TITLES_AR, STORY_EXCERPTS_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -110,10 +110,10 @@ export default function Stories() {
                   </span>
                 </div>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, lineHeight: 1.15, color: "var(--white)", marginBottom: 10 }}>
-                  {story.title}
+                  {lang === "ar" ? (STORY_TITLES_AR[story.id] ?? story.title) : story.title}
                 </h3>
                 <p className="line-clamp-3" style={{ fontSize: 12, color: "rgba(248,248,240,0.55)", lineHeight: 1.7 }}>
-                  {story.excerpt}
+                  {lang === "ar" ? (STORY_EXCERPTS_AR[story.id] ?? story.excerpt) : story.excerpt}
                 </p>
               </div>
 

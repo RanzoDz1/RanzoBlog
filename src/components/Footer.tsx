@@ -3,6 +3,10 @@ import { motion } from "framer-motion";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
+const FOOTER_NAV_AR: Record<string, string> = {
+  "#about": "عني", "#travels": "رحلاتي", "#stories": "قصصي", "#collab": "تعاون",
+};
+
 // ── Full SVG icon set for all platforms ──────────────────────────────────────
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
   Instagram: (
@@ -53,7 +57,7 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 };
 
 export default function Footer() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const scrollTo = (href: string) => {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -91,10 +95,10 @@ export default function Footer() {
               <button
                 key={href}
                 onClick={() => scrollTo(href)}
-                className="text-[10px] font-semibold tracking-[2px] uppercase transition-colors duration-200 hover:text-white"
-                style={{ color: "var(--muted)" }}
+                className="text-[10px] font-semibold uppercase transition-colors duration-200 hover:text-white"
+                style={{ color: "var(--muted)", letterSpacing: lang === "ar" ? "0" : "2px" }}
               >
-                {href.replace("#", "")}
+                {lang === "ar" ? (FOOTER_NAV_AR[href] ?? href.replace("#", "")) : href.replace("#", "")}
               </button>
             ))}
           </div>

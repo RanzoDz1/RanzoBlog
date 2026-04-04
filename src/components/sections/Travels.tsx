@@ -134,7 +134,7 @@ export default function Travels() {
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, lineHeight: 1, color: active === cont.id ? cont.color : "var(--muted)" }}>
                   {cont.countries.length}
                 </div>
-                <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)", marginTop: 4 }}>countries</div>
+                <div style={{ fontSize: 9, letterSpacing: lang === "ar" ? "0" : "2px", textTransform: "uppercase" as const, color: "var(--muted)", marginTop: 4 }}>{lang === "ar" ? "دولة" : "countries"}</div>
               </button>
             ))}
           </motion.div>
@@ -251,7 +251,7 @@ export default function Travels() {
               transition={{ delay: 0.6, duration: 0.5 }}
               style={{ fontSize: 12, letterSpacing: "1px", color: "var(--muted)", marginTop: 8 }}
             >
-              + more being added every journey. The count never stops.
+              {lang === "ar" ? "والمزيد يُضاف مع كل رحلة. العدّ لا يتوقف." : "+ more being added every journey. The count never stops."}
             </motion.p>
           </div>
 
