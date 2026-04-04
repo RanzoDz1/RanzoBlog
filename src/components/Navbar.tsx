@@ -2,10 +2,12 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { NAV_LINKS, SOCIALS } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden]   = useState(false);
+  const { t, lang, setLang } = useT();
+  const [scrolled, setScrolled]     = useState(false);
+  const [hidden, setHidden]         = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const lastY = useRef(0);
@@ -20,15 +22,10 @@ export default function Navbar() {
   useEffect(() => {
     const ids = NAV_LINKS.map(l => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); });
-      },
+      (entries) => { entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }); },
       { rootMargin: "-40% 0px -55% 0px" }
     );
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    ids.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
   }, []);
 
@@ -37,6 +34,35 @@ export default function Navbar() {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Map NAV_LINKS to translated labels
+  const navLabels: Record<string, string> = {
+    "#about": t.nav.about, "#travels": t.nav.travels, "#stories": t.nav.stories,
+    "#gallery": t.nav.gallery, "#collab": t.nav.collab,
+  };
+
+  const LangToggle = () => (
+    <button
+      onClick={() => setLang(lang === "en" ? "ar" : "en")}
+      style={{
+        display: "flex", alignItems: "center", gap: 4,
+        padding: "6px 12px", borderRadius: 999,
+        border: "1px solid rgba(255,255,255,0.15)",
+        background: "rgba(255,255,255,0.05)",
+        fontSize: 11, fontWeight: 700, letterSpacing: "0.5px",
+        color: "var(--muted)", cursor: "pointer",
+        transition: "all 0.2s",
+        flexShrink: 0,
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--white)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.3)"; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)"; }}
+      aria-label="Switch language"
+    >
+      <span style={{ direction: "ltr", unicodeBidi: "isolate" }}>
+        {lang === "en" ? "عربي" : "EN"}
+      </span>
+    </button>
+  );
 
   return (
     <>
@@ -53,38 +79,36 @@ export default function Navbar() {
           borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
         }}
       >
-        {/* ── LAYER 1: Logo left + CTA right ── */}
+        {/* Logo left + Right controls */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          {/* Logo */}
           <motion.a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            className="text-[20px] font-bold tracking-[4px] text-gradient"
-            style={{ fontFamily: "var(--font-display)", flexShrink: 0 }}
+            className="brand-ltr text-[20px] font-bold tracking-[4px] text-gradient"
+            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0 }}
             whileHover={{ letterSpacing: "6px" }}
             transition={{ duration: 0.3 }}
           >
             RANZODZ
           </motion.a>
 
-          {/* CTA + Hamburger */}
-          <div style={{ display: "flex", alignItems: "center", gap: 16, flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+            <LangToggle />
             <button
               onClick={() => scrollTo("#collab")}
               className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full transition-all duration-300"
               style={{
                 padding: "10px 24px",
                 background: "linear-gradient(135deg, var(--live-accent), var(--live-accent-bright))",
-                boxShadow: "0 4px 20px var(--live-glow)",
-                color: "#fff",
+                boxShadow: "0 4px 20px var(--live-glow)", color: "#fff",
                 transition: "background 0.6s, box-shadow 0.6s",
+                letterSpacing: lang === "ar" ? "0" : undefined,
               }}
               onMouseEnter={e => (e.currentTarget.style.transform = "translateY(-1px)")}
               onMouseLeave={e => (e.currentTarget.style.transform = "translateY(0)")}
             >
-              Work With Me
+              {t.nav.workWithMe}
             </button>
-
             <button
               className="md:hidden flex flex-col gap-[5px] p-2"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -97,31 +121,25 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* ── LAYER 2: Nav links — position:absolute on the full nav, centered on viewport ── */}
+        {/* Centered nav links */}
         <div
           className="hidden md:flex items-center gap-8"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "auto",
-          }}
+          style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", pointerEvents: "auto" }}
         >
           {NAV_LINKS.map((link) => (
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="relative text-[11px] font-semibold tracking-[2px] uppercase transition-colors duration-200"
+              className="relative text-[11px] font-semibold uppercase transition-colors duration-200"
               style={{
                 color: activeSection === link.href.replace("#", "") ? "var(--white)" : "var(--muted)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: "4px 0",
+                background: "none", border: "none", cursor: "pointer", padding: "4px 0",
+                letterSpacing: lang === "ar" ? "0" : "2px",
+                fontFamily: lang === "ar" ? "'Cairo', system-ui, sans-serif" : undefined,
+                fontSize: lang === "ar" ? "13px" : "11px",
               }}
             >
-              {link.label}
+              {navLabels[link.href] ?? link.label}
               {activeSection === link.href.replace("#", "") && (
                 <motion.div
                   layoutId="nav-indicator"
@@ -138,9 +156,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 flex flex-col justify-center items-center"
             style={{ background: "rgba(6,6,8,0.97)", backdropFilter: "blur(24px)" }}
@@ -149,30 +165,26 @@ export default function Navbar() {
               {NAV_LINKS.map((link, i) => (
                 <motion.button
                   key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.07 }}
                   onClick={() => scrollTo(link.href)}
                   className="text-[32px] font-light tracking-widest uppercase"
-                  style={{ fontFamily: "var(--font-display)", color: "var(--white)" }}
+                  style={{ fontFamily: "var(--font-display)", color: "var(--white)", letterSpacing: lang === "ar" ? "0" : undefined }}
                 >
-                  {link.label}
+                  {navLabels[link.href] ?? link.label}
                 </motion.button>
               ))}
               <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                onClick={() => scrollTo("#collab")}
-                className="mt-4 btn-primary"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+                onClick={() => scrollTo("#collab")} className="mt-4 btn-primary"
               >
-                Work With Me
+                {t.nav.workWithMe}
               </motion.button>
             </nav>
             <div className="absolute bottom-12 flex gap-6">
               {SOCIALS.map(s => (
                 <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer"
-                  className="text-[12px] font-semibold tracking-[1px]" style={{ color: "var(--muted)" }}>
+                  className="text-[12px] font-semibold brand-ltr" style={{ color: "var(--muted)" }}>
                   {s.name}
                 </a>
               ))}

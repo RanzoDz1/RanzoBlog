@@ -275,3 +275,59 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   z-index: 9999;
 }
 .skip-link:focus { top: 0; }
+
+/* ── ARABIC / RTL SUPPORT ── */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
+
+/* When Arabic is active, switch font vars and remove letter-spacing */
+[data-lang="ar"] {
+  --font-display: 'Cairo', system-ui, sans-serif;
+  --font-ui:      'Cairo', system-ui, sans-serif;
+}
+[data-lang="ar"] body {
+  font-family: var(--font-ui);
+}
+/* Arabic text should never have letter-spacing (breaks connected letters) */
+[data-lang="ar"] .eyebrow,
+[data-lang="ar"] button,
+[data-lang="ar"] label,
+[data-lang="ar"] p,
+[data-lang="ar"] h1,
+[data-lang="ar"] h2,
+[data-lang="ar"] h3,
+[data-lang="ar"] h4,
+[data-lang="ar"] span:not(.keep-ltr),
+[data-lang="ar"] div {
+  letter-spacing: 0 !important;
+}
+/* Keep brand name, numbers and social handles LTR even in RTL layout */
+[data-lang="ar"] .brand-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+/* eyebrow line flips to right in RTL */
+[dir="rtl"] .eyebrow::before {
+  margin-inline-end: 10px;
+  margin-inline-start: 0;
+}
+/* Timeline vertical line in RTL */
+[dir="rtl"] .timeline-line {
+  left: auto;
+  right: 15px;
+}
+/* Adjust line-height for Arabic display text */
+[data-lang="ar"] .display-xl,
+[data-lang="ar"] .display-lg,
+[data-lang="ar"] .display-md {
+  line-height: 1.1;
+}
+/* About badge RTL positions */
+[dir="rtl"] .badge-bottom-start {
+  left: auto !important;
+  right: 1.5rem;
+}
+[dir="rtl"] .badge-top-end {
+  right: auto !important;
+  left: -1rem;
+}

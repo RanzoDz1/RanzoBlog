@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "fra
 import dynamic from "next/dynamic";
 import { IMAGES } from "@/lib/images";
 import { STATS } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 
 const ParticleCanvas = dynamic(() => import("@/components/ui/ParticleCanvas"), { ssr: false });
 
@@ -79,6 +80,7 @@ const SOCIAL_LINKS = [
 ];
 
 export default function Hero() {
+  const { t, lang } = useT();
   const containerRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const [bgLoaded, setBgLoaded] = useState(false);
@@ -264,7 +266,7 @@ export default function Hero() {
           className="eyebrow justify-center"
           style={{ marginBottom: isMobile ? 16 : 28 }}
         >
-          <span>Algeria · Germany · Everywhere</span>
+          <span>{t.hero.eyebrow}</span>
         </motion.div>
 
         <motion.h1
@@ -292,8 +294,8 @@ export default function Hero() {
             textAlign: "center",
           }}
         >
-          <span className="text-gradient-vivid" style={{ fontStyle: "normal", fontWeight: 600 }}>Travel. Risk.</span>{" "}
-          Experience.
+          <span className="text-gradient-vivid" style={{ fontStyle: "normal", fontWeight: 600 }}>{t.hero.tagline}</span>{" "}
+          {t.hero.taglineEnd}
         </motion.p>
 
         <motion.p
@@ -311,7 +313,7 @@ export default function Hero() {
             textAlign: "center",
           }}
         >
-          Exploring the world beyond comfort zones. One border, one story, one moment at a time.
+          {t.hero.description}
         </motion.p>
 
         <motion.div
@@ -322,10 +324,10 @@ export default function Hero() {
           style={{ gap: 16 }}
         >
           <button onClick={() => document.getElementById("stories")?.scrollIntoView({ behavior: "smooth" })} className="btn-primary">
-            My Stories ↗
+            {t.hero.storiesBtn}
           </button>
           <button onClick={() => document.getElementById("travels")?.scrollIntoView({ behavior: "smooth" })} className="btn-ghost">
-            See My Travels
+            {t.hero.travelsBtn}
           </button>
         </motion.div>
 
@@ -442,7 +444,7 @@ export default function Hero() {
         style={{ opacity: useTransform(smoothProgress, [0, 0.3], [1, 0]) as unknown as number }}
         aria-label="Scroll down"
       >
-        <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase" as const, color: "var(--muted)" }}>Scroll</span>
+        <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase" as const, color: "var(--muted)" }}>{t.hero.scroll}</span>
         <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
           <div className="w-full h-full" style={{ background: "linear-gradient(to bottom, var(--purple-l), var(--blue-l))", animation: "scroll-line 2.5s ease-in-out infinite" }} />
         </div>

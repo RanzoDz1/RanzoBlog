@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { GALLERY_ITEMS } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 
 type Category = "all" | "nature" | "cities" | "culture" | "adventures";
 const CATEGORIES: { id: Category; label: string; emoji: string }[] = [
@@ -16,6 +17,7 @@ const ease = [0.25, 0.46, 0.45, 0.94] as const;
 const PREVIEW_COUNT = 4; // photos per category in "All" view
 
 export default function Gallery() {
+  const { t } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [category, setCategory] = useState<Category>("all");
@@ -40,15 +42,15 @@ export default function Gallery() {
               initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6 }} className="eyebrow justify-center mb-4"
             >
-              Visual Archive
+              {t.gallery.eyebrow}
             </motion.div>
             <motion.h2
               initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, ease, delay: 0.1 }}
               style={{ fontFamily: "var(--font-display)", fontSize: "clamp(42px, 6vw, 72px)", fontWeight: 700, lineHeight: 0.9 }}
             >
-              <span style={{ color: "var(--white)" }}>The</span>{" "}
-              <em className="text-gradient-vivid">Gallery</em>
+              <span style={{ color: "var(--white)" }}>{t.gallery.headline1}</span>{t.gallery.headline1 ? " " : ""}
+              <em className="text-gradient-vivid">{t.gallery.headline2}</em>
             </motion.h2>
 
             {/* Category tabs */}
@@ -70,7 +72,7 @@ export default function Gallery() {
                   }}
                 >
                   <span>{cat.emoji}</span>
-                  {cat.label}
+                  {t.gallery.categories[cat.id as keyof typeof t.gallery.categories] ?? cat.label}
                 </button>
               ))}
             </motion.div>
@@ -101,7 +103,7 @@ export default function Gallery() {
                         className="text-[11px] font-semibold tracking-[1px] uppercase px-4 py-1.5 rounded-full transition-all duration-300 hover:border-purple-500"
                         style={{ color: "var(--purple-l)", border: "1px solid var(--border)", background: "rgba(124,58,237,0.05)" }}
                       >
-                        See all {group.items.length} →
+                        {t.gallery.seeAll} {group.items.length} →
                       </button>
                     </div>
 

@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { SOCIALS } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 
 // ── Full SVG icon set for all platforms ──────────────────────────────────────
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
@@ -52,6 +53,7 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 };
 
 export default function Footer() {
+  const { t } = useT();
   const scrollTo = (href: string) => {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -79,7 +81,7 @@ export default function Footer() {
               RANZODZ
             </div>
             <p className="text-[11px] tracking-[2px] uppercase" style={{ color: "var(--muted)" }}>
-              Travel · Risk · Experience
+              {t.footer.tagline}
             </p>
           </div>
 
@@ -142,7 +144,7 @@ export default function Footer() {
           style={{ borderTop: "1px solid var(--border)" }}
         >
           <p className="text-[11px]" style={{ color: "var(--muted)" }}>
-            © 2026 Abdullah Khalfi · @RanzoDz · All rights reserved
+            {t.footer.copyright}
           </p>
           <p className="text-[11px]" style={{ color: "var(--muted)" }}>
             ranzodzt@gmail.com

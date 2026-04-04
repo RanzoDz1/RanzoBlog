@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { CONTINENTS } from "@/lib/data";
 import { IMAGES } from "@/lib/images";
+import { useT } from "@/lib/i18n";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -26,6 +27,7 @@ const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {
 type ContinentData = { id: string; name: string; emoji: string; color: string; countries: { name: string; flag: string; photos?: { src: string; caption: string }[] }[] };
 
 export default function Travels() {
+  const { t } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [active, setActive] = useState("europe");
@@ -87,14 +89,14 @@ export default function Travels() {
             className="text-center w-full"
             style={{ maxWidth: 560, marginBottom: 56 }}
           >
-            <div className="eyebrow justify-center" style={{ marginBottom: 20 }}>Global Footprint</div>
+            <div className="eyebrow justify-center" style={{ marginBottom: 20 }}>{t.travels.eyebrow}</div>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5.5vw, 64px)", fontWeight: 700, lineHeight: 1, marginBottom: 20 }}>
-              <span style={{ color: "var(--white)" }}>Every country</span><br />
-              <em className="text-gradient-vivid">tells a story.</em>
+              <span style={{ color: "var(--white)" }}>{t.travels.headline1}</span><br />
+              <em className="text-gradient-vivid">{t.travels.headline2}</em>
             </h2>
             <p style={{ fontSize: 15, color: "rgba(248,248,240,0.45)", lineHeight: 1.8, margin: 0 }}>
-              From the Sahara to Scandinavia, from Sub-Saharan Africa to Southeast Asia.{" "}
-              <strong style={{ color: "var(--white)" }}>50+ countries</strong> and counting.
+              {t.travels.description}{" "}
+              <strong style={{ color: "var(--white)" }}>{t.travels.countriesStrong}</strong> {t.travels.countriesEnd}
             </p>
           </motion.div>
 
@@ -126,7 +128,7 @@ export default function Travels() {
                 )}
                 <div style={{ fontSize: 24, marginBottom: 12 }}>{cont.emoji}</div>
                 <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6, color: active === cont.id ? "var(--white)" : "var(--muted)" }}>
-                  {cont.name}
+                  {t.travels.continents[cont.id as keyof typeof t.travels.continents] ?? cont.name}
                 </div>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, lineHeight: 1, color: active === cont.id ? cont.color : "var(--muted)" }}>
                   {cont.countries.length}
@@ -151,10 +153,10 @@ export default function Travels() {
                   <span style={{ fontSize: 32 }}>{activeCont.emoji}</span>
                   <div>
                     <h3 style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 600, color: "var(--white)", lineHeight: 1 }}>
-                      {activeCont.name}
+                      {t.travels.continents[activeCont.id as keyof typeof t.travels.continents] ?? activeCont.name}
                     </h3>
                     <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
-                      {activeCont.countries.length} countries visited · click a country to see photos
+                      {activeCont.countries.length} · {t.travels.clickToView}
                     </p>
                   </div>
                 </div>

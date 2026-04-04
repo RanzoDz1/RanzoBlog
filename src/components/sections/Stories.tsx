@@ -2,10 +2,12 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { STORIES } from "@/lib/data";
+import { useT } from "@/lib/i18n";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export default function Stories() {
+  const { t } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [stories, setStories] = useState(STORIES);
@@ -34,13 +36,13 @@ export default function Stories() {
           className="text-center w-full"
           style={{ maxWidth: 480, marginBottom: 56 }}
         >
-          <div className="eyebrow justify-center" style={{ marginBottom: 20 }}>Real Stories</div>
+          <div className="eyebrow justify-center" style={{ marginBottom: 20 }}>{t.stories.eyebrow}</div>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5.5vw, 64px)", fontWeight: 700, lineHeight: 1, marginBottom: 20 }}>
-            <span style={{ color: "var(--white)" }}>Stories from</span><br />
-            <em className="text-gradient-vivid">the road.</em>
+            <span style={{ color: "var(--white)" }}>{t.stories.headline1}</span><br />
+            <em className="text-gradient-vivid">{t.stories.headline2}</em>
           </h2>
           <p style={{ fontSize: 14, color: "rgba(248,248,240,0.45)", lineHeight: 1.8, margin: 0 }}>
-            Six moments that changed everything. Raw, real, unfiltered.
+            {t.stories.description}
           </p>
         </motion.div>
 
