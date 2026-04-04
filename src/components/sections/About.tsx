@@ -1,8 +1,18 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import { IMAGES } from "@/lib/images";
 import { useT } from "@/lib/i18n";
+
+const SLIDE_IMAGES = [
+  IMAGES.desertHelmet,
+  IMAGES.auroraArms,
+  IMAGES.arcticHat,
+  IMAGES.desertArab,
+  IMAGES.airportSelfie,
+  IMAGES.outdoorRed,
+  IMAGES.desertSand,
+];
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 const ICONS = ["🇩🇿", "✈️", "🇩🇪", "🌍"];
@@ -31,6 +41,17 @@ export default function About() {
   const imgY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
   const isAr = lang === "ar";
 
+  const [slideIdx, setSlideIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => {
+      setSlideIdx(i => (i + 1) % SLIDE_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [paused]);
+
   return (
     <section id="about" ref={sectionRef} className="section" style={{ background: "var(--black)" }}>
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
@@ -40,11 +61,37 @@ export default function About() {
 
           {/* ── Image ── */}
           <motion.div ref={imageRef} initial={{ opacity: 0, x: isAr ? 40 : -40 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.9, ease }} className="relative">
-            <motion.div style={{ y: imgY }} className="relative rounded-[20px] overflow-hidden">
+            <motion.div style={{ y: imgY }} className="relative rounded-[20px] overflow-hidden"
+              onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
               <div style={{ aspectRatio: "3/4", position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid var(--border)" }}>
-                <img src={IMAGES.desertHelmet} alt="Abdullah Khalfi | RanzoDz"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.88) saturate(1.1)" }} />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, var(--live-accent-30) 0%, transparent 55%)" }} />
+                <AnimatePresence mode="sync">
+                  <motion.img
+                    key={slideIdx}
+                    src={SLIDE_IMAGES[slideIdx]}
+                    alt="Abdullah Khalfi | RanzoDz"
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.88) saturate(1.1)" }}
+                  />
+                </AnimatePresence>
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, var(--live-accent-30) 0%, transparent 55%)", zIndex: 2 }} />
+
+                {/* Dot indicators */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 3 }}>
+                  {SLIDE_IMAGES.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => { setSlideIdx(i); setPaused(true); setTimeout(() => setPaused(false), 6000); }}
+                      style={{
+                        width: i === slideIdx ? 20 : 6, height: 6, borderRadius: 999,
+                        background: i === slideIdx ? "var(--white)" : "rgba(255,255,255,0.35)",
+                        border: "none", cursor: "pointer", transition: "all 0.35s ease", padding: 0,
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             </motion.div>
 

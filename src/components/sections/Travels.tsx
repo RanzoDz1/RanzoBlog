@@ -8,22 +8,8 @@ import { COUNTRY_NAMES_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
-// Photos mapped to country names
-const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {
-  "Finland":       [{ src: IMAGES.auroraArms, caption: "Aurora Borealis, Lapland" }, { src: IMAGES.auroraRoad, caption: "Road under the Lights" }, { src: IMAGES.reindeer, caption: "Arctic Reindeer" }],
-  "Norway":        [{ src: IMAGES.fjord1, caption: "Into the Fjord" }, { src: IMAGES.fjord2, caption: "Canyon Waters" }],
-  "Denmark":       [{ src: IMAGES.copenhagen, caption: "Nyhavn Harbor, Copenhagen" }],
-  "Austria":       [{ src: IMAGES.viennaGold, caption: "Golden Vienna" }, { src: IMAGES.viennaCathedral, caption: "Stephansdom Cathedral" }],
-  "Algeria":       [{ src: IMAGES.desertSand, caption: "Sahara Desert" }, { src: IMAGES.airportSelfie, caption: "Departure" }],
-  "Kenya":         [{ src: IMAGES.tentMarket, caption: "Colorful Market, East Africa" }],
-  "Uganda":        [{ src: IMAGES.ugandaHospital, caption: "Uganda: The Story" }],
-  "Saudi Arabia":  [{ src: IMAGES.mecca1, caption: "The Pilgrimage" }, { src: IMAGES.mecca2, caption: "The Sacred House" }],
-  "UAE":           [{ src: IMAGES.desertArab, caption: "Desert Traditions" }, { src: IMAGES.desertArab2, caption: "Wide Desert" }],
-  "Qatar":         [{ src: IMAGES.hotAirBalloon, caption: "Above It All" }, { src: IMAGES.stadium1, caption: "World Cup 2022" }],
-  "Germany":       [{ src: IMAGES.colorBuildings, caption: "European Streets" }],
-  "France":        [{ src: IMAGES.oldTown, caption: "Old Town" }],
-  "Netherlands":   [{ src: IMAGES.colorMarket, caption: "Market Day" }],
-};
+// Photos mapped to country names — cleared, will be re-added via admin
+const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {};
 
 type ContinentData = { id: string; name: string; emoji: string; color: string; countries: { name: string; flag: string; photos?: { src: string; caption: string }[] }[] };
 
