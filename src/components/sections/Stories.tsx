@@ -149,17 +149,18 @@ export default function Stories() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[400] flex items-stretch"
-            style={{ background: "rgba(4,4,6,0.97)", backdropFilter: "blur(24px)" }}
+            style={{ background: "rgba(4,4,6,0.98)" }}
             onClick={() => setOpen(null)}
           >
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.4, ease }}
-              className="relative flex flex-col lg:flex-row w-full h-full overflow-hidden"
+              transition={{ duration: 0.3, ease }}
+              className="relative flex flex-col lg:flex-row w-full h-full"
+              style={{ overflow: "hidden" }}
               onClick={e => e.stopPropagation()}
             >
               {/* Image panel */}
@@ -184,7 +185,6 @@ export default function Stories() {
                     fontSize: 9, fontWeight: 700, letterSpacing: lang === "ar" ? "0" : "3px", textTransform: "uppercase" as const,
                     padding: "5px 12px", borderRadius: 999,
                     background: `${open.color}25`, color: open.color, border: `1px solid ${open.color}50`,
-                    backdropFilter: "blur(8px)",
                   }}>
                     {tr(STORY_TAGS_AR, open.tag, lang)}
                   </span>
@@ -234,7 +234,7 @@ export default function Stories() {
               <button
                 onClick={() => setOpen(null)}
                 className="absolute top-6 right-6 flex items-center justify-center rounded-full"
-                style={{ width: 40, height: 40, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "var(--muted)", fontSize: 18, cursor: "pointer", backdropFilter: "blur(8px)", transition: "all 0.2s", zIndex: 10 }}
+                style={{ width: 40, height: 40, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "var(--muted)", fontSize: 18, cursor: "pointer", transition: "all 0.2s", zIndex: 10 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--white)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.15)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)"; }}
               >

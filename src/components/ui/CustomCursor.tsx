@@ -12,10 +12,17 @@ export default function CustomCursor() {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const move = (e: MouseEvent) => {
-      if (!visible) setVisible(true);
+    // Only hide the real cursor on non-admin pages
+    if (!window.location.pathname.startsWith("/admin")) {
+      document.documentElement.style.cursor = "none";
+      document.body.style.cursor = "none";
+      const style = document.createElement("style");
+      style.id = "__custom-cursor-style";
+      style.textContent = "button { cursor: none !important; } a { cursor: none !important; }";
+      document.head.appendChild(style);
+    }
 
-      // Instant position - zero delay
+    const move = (e: MouseEvent) => {
       if (dotRef.current) {
         dotRef.current.style.left = `${e.clientX}px`;
         dotRef.current.style.top = `${e.clientY}px`;
@@ -24,16 +31,12 @@ export default function CustomCursor() {
         ringRef.current.style.left = `${e.clientX}px`;
         ringRef.current.style.top = `${e.clientY}px`;
       }
+      setVisible(true);
     };
 
     const enter = () => setVisible(true);
     const leave = () => setVisible(false);
 
-    window.addEventListener("mousemove", move, { passive: true });
-    document.addEventListener("mouseenter", enter);
-    document.addEventListener("mouseleave", leave);
-
-    // Detect hoverable elements
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement;
       if (
@@ -50,17 +53,28 @@ export default function CustomCursor() {
     };
     const onOut = () => setHovering(false);
 
+    window.addEventListener("mousemove", move, { passive: true });
+    document.addEventListener("mouseenter", enter);
+    document.addEventListener("mouseleave", leave);
     document.addEventListener("mouseover", onOver);
     document.addEventListener("mouseout", onOut);
 
     return () => {
+      // Restore real cursor
+      document.documentElement.style.cursor = "";
+      document.body.style.cursor = "";
+      document.getElementById("__custom-cursor-style")?.remove();
+
       window.removeEventListener("mousemove", move);
       document.removeEventListener("mouseenter", enter);
       document.removeEventListener("mouseleave", leave);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
     };
-  }, [visible]);
+  }, []); // run once only
+
+  // Don't render on admin
+  if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) return null;
 
   return (
     <>
