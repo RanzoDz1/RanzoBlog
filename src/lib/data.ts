@@ -28,7 +28,7 @@ export const STORIES = [
     image: IMAGES.budgetRoom,
     color: '#d97706',
     location: 'Across Europe',
-    excerpt: "Hitchhiking across continents, sleeping on strangers' couches. Connection over comfort — every time.",
+    excerpt: "Hitchhiking across continents, sleeping on strangers' couches. Connection over comfort, every time.",
     body: [
       "There's a version of travel that costs nothing except pride. You ask for rides. You sleep on couches. You eat what people offer.",
       "People think budget travel means suffering. It's the opposite. It forces connection.",
@@ -79,7 +79,7 @@ export const STORIES = [
     image: IMAGES.auroraArms,
     color: '#0891b2',
     location: 'Lapland, Finland',
-    excerpt: "Minus twenty degrees, completely alone. Then the sky erupted in green and violet — the most spectacular thing I've ever seen.",
+    excerpt: "Minus twenty degrees, completely alone. Then the sky erupted in green and violet. The most spectacular thing I've ever seen.",
     body: [
       "My local host, a Finnish man of sixty who spoke in sentences no longer than four words, drove me thirty kilometers from the nearest town and left me in the dark.",
       '"Wait," he said. And drove away.',

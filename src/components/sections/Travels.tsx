@@ -15,7 +15,7 @@ const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {
   "Austria":       [{ src: IMAGES.viennaGold, caption: "Golden Vienna" }, { src: IMAGES.viennaCathedral, caption: "Stephansdom Cathedral" }],
   "Algeria":       [{ src: IMAGES.desertSand, caption: "Sahara Desert" }, { src: IMAGES.airportSelfie, caption: "Departure" }],
   "Kenya":         [{ src: IMAGES.tentMarket, caption: "Colorful Market, East Africa" }],
-  "Uganda":        [{ src: IMAGES.ugandaHospital, caption: "Uganda — The Story" }],
+  "Uganda":        [{ src: IMAGES.ugandaHospital, caption: "Uganda: The Story" }],
   "Saudi Arabia":  [{ src: IMAGES.mecca1, caption: "The Pilgrimage" }, { src: IMAGES.mecca2, caption: "The Sacred House" }],
   "UAE":           [{ src: IMAGES.desertArab, caption: "Desert Traditions" }, { src: IMAGES.desertArab2, caption: "Wide Desert" }],
   "Qatar":         [{ src: IMAGES.hotAirBalloon, caption: "Above It All" }, { src: IMAGES.stadium1, caption: "World Cup 2022" }],

@@ -356,7 +356,7 @@ function ImagePositioner({
 
   return (
     <div style={{ marginTop: 20 }}>
-      <span style={{ ...label, marginBottom: 10 }}>Image Position &amp; Zoom — hold &amp; drag to reposition</span>
+      <span style={{ ...label, marginBottom: 10 }}>Image Position &amp; Zoom · hold &amp; drag to reposition</span>
 
       {/* ── Drag preview box ── */}
       <div
@@ -476,7 +476,7 @@ function StoriesTab({ token }: { token: string }) {
         setSaveErr(d.error || `Error ${r.status}`);
       }
     } catch (e) {
-      setSaveErr("Network error — check connection");
+      setSaveErr("Network error, check connection");
     } finally {
       setSaving(false);
     }
@@ -641,7 +641,7 @@ function PosSlider({ lbl, field, value, onChange }: { lbl: string; field: keyof 
         style={{ width: "100%", accentColor: "#7c3aed", cursor: "pointer" }}
       />
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: "rgba(248,248,240,0.25)", marginTop: 4 }}>
-        <span>0% — Left</span><span>50% — Center</span><span>100% — Right</span>
+        <span>0% Left</span><span>50% Center</span><span>100% Right</span>
       </div>
     </div>
   );
@@ -749,7 +749,7 @@ function Settings({ token }: { token: string }) {
       <button onClick={save} disabled={status === "saving"} style={{ ...btnP, padding: "14px 48px", fontSize: 13 }}>
         {status === "saving"    ? "Saving…"
         : status === "saved"    ? "✓ Saved!"
-        : status === "savedLocal" ? "✓ Saved locally — refresh homepage"
+        : status === "savedLocal" ? "✓ Saved locally, refresh homepage"
         : "Save Position →"}
       </button>
     </div>

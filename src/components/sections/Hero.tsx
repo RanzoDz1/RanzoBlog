@@ -345,7 +345,7 @@ export default function Hero() {
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${s.name} — ${s.handle}`}
+                aria-label={`${s.name} · ${s.handle}`}
                 title={`${s.name} ${s.handle}`}
                 style={{
                   display: "flex",
@@ -407,7 +407,7 @@ export default function Hero() {
             href={s.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${s.name} — ${s.handle}`}
+            aria-label={`${s.name} · ${s.handle}`}
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.1 + i * 0.07, duration: 0.4, ease }}

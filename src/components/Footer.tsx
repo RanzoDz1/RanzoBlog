@@ -108,7 +108,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.name}
-                title={`${s.name} — ${s.handle}`}
+                title={`${s.name} · ${s.handle}`}
                 whileHover={{ scale: 1.12, borderColor: s.color }}
                 style={{
                   width: 38,
