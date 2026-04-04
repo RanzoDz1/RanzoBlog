@@ -258,7 +258,7 @@ const AR: typeof EN = {
   data: {
     storyTags: {
       "Origin Story":   "قصة البدايات",
-      "Budget Travel":  "سفر بلا فلوس",
+      "Budget Travel":  "سفر بلا دراهم",
       "Africa":         "أفريقيا",
       "Ancient Living": "عيش قديم",
       "Northern Lights":"الشفق القطبي",
