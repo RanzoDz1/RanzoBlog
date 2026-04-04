@@ -34,10 +34,10 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       // Allow data URIs (blur placeholders), blob URIs, Unsplash and Cloudinary images
       "img-src 'self' data: blob: https://www.google-analytics.com https://images.unsplash.com https://plus.unsplash.com https://lh3.googleusercontent.com https://res.cloudinary.com",
-      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://vitals.vercel-insights.com https://images.unsplash.com https://lh3.googleusercontent.com https://fonts.googleapis.com https://fonts.gstatic.com https://api.cloudinary.com https://res.cloudinary.com",
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://vitals.vercel-insights.com https://images.unsplash.com https://lh3.googleusercontent.com https://fonts.googleapis.com https://fonts.gstatic.com https://api.cloudinary.com https://res.cloudinary.com https://formsubmit.co",
       "frame-ancestors 'self'",
       "base-uri 'self'",
-      "form-action 'self'",
+      "form-action 'self' https://formsubmit.co",
     ].join("; "),
   },
 ];
