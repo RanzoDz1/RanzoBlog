@@ -6,7 +6,7 @@ import { CONTINENTS, STORIES, TRAVEL_APPS } from "@/lib/data";
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Msg { id: string; name: string; email: string; brand?: string; message: string; date: string; read: boolean; }
 type Tab = "messages" | "countries" | "stories" | "apps" | "settings";
-type Story = (typeof STORIES)[0];
+type Story = (typeof STORIES)[0] & { imageX?: number; imageY?: number; imageZoom?: number };
 type App   = (typeof TRAVEL_APPS)[0];
 
 // ── Shared Styles ─────────────────────────────────────────────────────────────
@@ -306,6 +306,140 @@ function Countries({ token }: { token: string }) {
   );
 }
 
+// ── Image Positioner (drag + zoom) ────────────────────────────────────────────
+function ImagePositioner({
+  image, x, y, zoom, onChange,
+}: {
+  image: string; x: number; y: number; zoom: number;
+  onChange: (x: number, y: number, zoom: number) => void;
+}) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const last = useRef({ x: 0, y: 0 });
+  // Refs to always-current values — avoids stale closures in the global listener
+  const curRef = useRef({ x, y, zoom });
+  curRef.current = { x, y, zoom };
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      if (!isDragging.current || !boxRef.current) return;
+      const rect = boxRef.current.getBoundingClientRect();
+      const dx = e.clientX - last.current.x;
+      const dy = e.clientY - last.current.y;
+      last.current = { x: e.clientX, y: e.clientY };
+      const { x: cx, y: cy, zoom: cz } = curRef.current;
+      // Drag right → see more of left side → X decreases (grab-pan behavior)
+      const nx = Math.round(Math.max(0, Math.min(100, cx - (dx / rect.width) * 100)));
+      const ny = Math.round(Math.max(0, Math.min(100, cy - (dy / rect.height) * 100)));
+      onChangeRef.current(nx, ny, cz);
+    };
+    const onUp = () => {
+      isDragging.current = false;
+      if (boxRef.current) boxRef.current.style.cursor = "grab";
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, []); // runs once — latest values come from refs
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    isDragging.current = true;
+    last.current = { x: e.clientX, y: e.clientY };
+    if (boxRef.current) boxRef.current.style.cursor = "grabbing";
+    e.preventDefault();
+  };
+
+  return (
+    <div style={{ marginTop: 20 }}>
+      <span style={{ ...label, marginBottom: 10 }}>Image Position &amp; Zoom — hold &amp; drag to reposition</span>
+
+      {/* ── Drag preview box ── */}
+      <div
+        ref={boxRef}
+        onMouseDown={onMouseDown}
+        style={{
+          position: "relative", width: "100%", height: 220,
+          borderRadius: 10, overflow: "hidden",
+          cursor: "grab",
+          border: "1px solid rgba(255,255,255,0.12)",
+          userSelect: "none", background: "rgba(255,255,255,0.03)",
+        }}
+      >
+        {image ? (
+          <img
+            src={image}
+            alt="position preview"
+            draggable={false}
+            style={{
+              width: "100%", height: "100%",
+              objectFit: "cover",
+              objectPosition: `${x}% ${y}%`,
+              transform: `scale(${zoom})`,
+              transformOrigin: `${x}% ${y}%`,
+              pointerEvents: "none",
+              display: "block",
+            }}
+          />
+        ) : (
+          <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.2)", fontSize: 13 }}>
+            Paste an image URL above first
+          </div>
+        )}
+
+        {/* Focal-point crosshair */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          {/* Horizontal line */}
+          <div style={{ position: "absolute", top: `${y}%`, left: 0, right: 0, height: 1, background: "rgba(255,255,255,0.25)" }} />
+          {/* Vertical line */}
+          <div style={{ position: "absolute", left: `${x}%`, top: 0, bottom: 0, width: 1, background: "rgba(255,255,255,0.25)" }} />
+          {/* Circle at focal point */}
+          <div style={{
+            position: "absolute", left: `${x}%`, top: `${y}%`,
+            transform: "translate(-50%, -50%)",
+            width: 16, height: 16, borderRadius: "50%",
+            border: "2px solid #fff",
+            boxShadow: "0 0 0 1px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.6)",
+          }} />
+        </div>
+
+        {/* Hint badge */}
+        <div style={{ position: "absolute", top: 8, left: 8, fontSize: 9, color: "rgba(255,255,255,0.55)", background: "rgba(0,0,0,0.55)", padding: "3px 8px", borderRadius: 4, letterSpacing: "0.5px" }}>
+          ✥ DRAG TO REPOSITION
+        </div>
+        {/* Live coords */}
+        <div style={{ position: "absolute", bottom: 8, right: 8, fontSize: 10, color: "rgba(255,255,255,0.7)", background: "rgba(0,0,0,0.55)", padding: "3px 8px", borderRadius: 4, fontFamily: "monospace" }}>
+          {x}% · {y}%
+        </div>
+      </div>
+
+      {/* ── Zoom slider ── */}
+      <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
+        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", flexShrink: 0 }}>Zoom</span>
+        <input
+          type="range" min={100} max={300} step={5}
+          value={Math.round(zoom * 100)}
+          onChange={e => onChangeRef.current(x, y, Number(e.target.value) / 100)}
+          style={{ flex: 1, accentColor: "#7c3aed", cursor: "pointer" }}
+        />
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#a78bfa", fontFamily: "monospace", minWidth: 44, textAlign: "right" as const }}>
+          {Math.round(zoom * 100)}%
+        </span>
+        <button
+          onClick={() => onChangeRef.current(50, 50, 1)}
+          style={{ fontSize: 10, padding: "5px 12px", borderRadius: 6, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(248,248,240,0.5)", cursor: "pointer", flexShrink: 0 }}
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── Stories ───────────────────────────────────────────────────────────────────
 function StoriesTab({ token }: { token: string }) {
   const [stories, setStories] = useState<Story[]>(STORIES.map(s => ({ ...s })));
@@ -322,7 +456,7 @@ function StoriesTab({ token }: { token: string }) {
       .catch(() => {});
   }, [token]);
 
-  const upd = (i: number, f: string, v: string) => setStories(ss => ss.map((s, j) => j === i ? { ...s, [f]: v } : s));
+  const upd = (i: number, f: string, v: string | number) => setStories(ss => ss.map((s, j) => j === i ? { ...s, [f]: v } : s));
 
   const save = async () => {
     setSaving(true);
@@ -382,6 +516,15 @@ function StoriesTab({ token }: { token: string }) {
                     <div><span style={label}>Accent Color</span><input style={inp} value={s.color} onChange={e => upd(i, "color", e.target.value)} /></div>
                     <div style={{ gridColumn: "1/-1" }}><span style={label}>Short Description</span><textarea style={{ ...inp, minHeight: 80, resize: "none" as const }} value={s.excerpt} onChange={e => upd(i, "excerpt", e.target.value)} /></div>
                     <div style={{ gridColumn: "1/-1" }}><span style={label}>Image URL</span><input style={inp} value={s.image} onChange={e => upd(i, "image", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}>
+                      <ImagePositioner
+                        image={s.image}
+                        x={s.imageX ?? 50}
+                        y={s.imageY ?? 50}
+                        zoom={s.imageZoom ?? 1}
+                        onChange={(nx, ny, nz) => setStories(ss => ss.map((st, j) => j === i ? { ...st, imageX: nx, imageY: ny, imageZoom: nz } : st))}
+                      />
+                    </div>
                   </div>
                 </motion.div>
               )}

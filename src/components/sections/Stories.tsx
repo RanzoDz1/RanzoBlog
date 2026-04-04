@@ -59,12 +59,21 @@ export default function Stories() {
               style={{ height: "clamp(300px, 50vw, 420px)", border: "1px solid var(--border)" }}
             >
               {/* Background image */}
-              <div className="story-card-img absolute inset-0">
+              <div className="story-card-img absolute inset-0" style={{ overflow: "hidden" }}>
                 <img
                   src={story.image}
                   alt={story.title}
-                  className="w-full h-full object-cover"
-                  style={{ filter: "brightness(0.45) saturate(1.2)" }}
+                  draggable={false}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: `${(story as any).imageX ?? 50}% ${(story as any).imageY ?? 50}%`,
+                    transform: `scale(${(story as any).imageZoom ?? 1})`,
+                    transformOrigin: `${(story as any).imageX ?? 50}% ${(story as any).imageY ?? 50}%`,
+                    filter: "brightness(0.45) saturate(1.2)",
+                    display: "block",
+                  }}
                   loading="lazy"
                 />
               </div>
