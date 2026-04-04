@@ -38,7 +38,7 @@ export default function Navbar() {
   // Map NAV_LINKS to translated labels
   const navLabels: Record<string, string> = {
     "#about": t.nav.about, "#travels": t.nav.travels, "#stories": t.nav.stories,
-    "#gallery": t.nav.gallery, "#collab": t.nav.collab,
+    "#collab": t.nav.collab,
   };
 
   const LangToggle = () => (
