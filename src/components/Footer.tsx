@@ -4,7 +4,7 @@ import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
 const FOOTER_NAV_AR: Record<string, string> = {
-  "#about": "عني", "#travels": "رحلاتي", "#stories": "قصصي", "#collab": "تعاون",
+  "#about": "عليا", "#travels": "رحلاتي", "#stories": "قصصي", "#collab": "تعاون",
 };
 const FOOTER_NAV_LINKS = ["#about", "#travels", "#stories", "#collab"];
 

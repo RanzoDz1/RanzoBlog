@@ -242,7 +242,7 @@ export default function Travels() {
               transition={{ delay: 0.6, duration: 0.5 }}
               style={{ fontSize: 12, letterSpacing: "1px", color: "var(--muted)", marginTop: 8 }}
             >
-              {lang === "ar" ? "والمزيد يُضاف مع كل رحلة. العدّ لا يتوقف." : "+ more being added every journey. The count never stops."}
+              {lang === "ar" ? "والمزيد يتزاد مع كل رحلة. العدّ ما يوقفش." : "+ more being added every journey. The count never stops."}
             </motion.p>
           </div>
 

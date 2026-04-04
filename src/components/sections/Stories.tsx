@@ -125,7 +125,7 @@ export default function Stories() {
                   {/* Read more hint */}
                   <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ gap: 6, marginTop: 14 }}>
                     <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1px", color: story.color }}>
-                      {lang === "ar" ? "اقرأ القصة" : "READ STORY"}
+                      {lang === "ar" ? "قرا القصة" : "READ STORY"}
                     </span>
                     <span style={{ color: story.color, fontSize: 12 }}>→</span>
                   </div>
