@@ -177,6 +177,9 @@ function Countries({ token }: { token: string }) {
   const [dragPhoto, setDragPhoto] = useState<{ fromCountry: string; photoIndex: number } | null>(null);
   const [dropTarget, setDropTarget] = useState<string | null>(null);
   const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
+  const [uploading, setUploading] = useState(false);
+  const [uploadErr, setUploadErr] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load from KV on mount, fall back to CONTINENTS defaults
   useEffect(() => {
@@ -222,6 +225,27 @@ function Countries({ token }: { token: string }) {
     setSelectedPhotos(new Set());
   };
   const toggleSelect = (pi: number) => setSelectedPhotos(s => { const n = new Set(s); n.has(pi) ? n.delete(pi) : n.add(pi); return n; });
+
+  const uploadFile = async (file: File) => {
+    if (!editCountry) return;
+    setUploading(true); setUploadErr("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const r = await fetch("/api/admin/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
+      const d = await r.json();
+      if (!r.ok || !d.url) { setUploadErr(d.error || "Upload failed"); return; }
+      setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: [...(co.photos || []), { src: d.url, caption: newPhoto.caption.trim() }] } : co) } : c));
+      setNewPhoto(p => ({ ...p, caption: "" }));
+    } catch { setUploadErr("Network error"); }
+    finally { setUploading(false); }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    files.forEach(f => uploadFile(f));
+    e.target.value = "";
+  };
 
   const movePhoto = (fromCountry: string, photoIndex: number, toCountry: string) => {
     if (fromCountry === toCountry) return;
@@ -409,30 +433,59 @@ function Countries({ token }: { token: string }) {
 
               {/* Add new photo */}
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 12 }}>Add New Photo</div>
-                <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
-                  <div style={{ flex: "2 1 200px" }}>
-                    <span style={label}>Google Drive share link or image URL</span>
-                    <input
-                      style={inp}
-                      placeholder="https://drive.google.com/file/d/…/view?usp=sharing"
-                      value={newPhoto.src}
-                      onChange={e => setNewPhoto(p => ({ ...p, src: e.target.value }))}
-                      onBlur={e => setNewPhoto(p => ({ ...p, src: parseDriveUrl(e.target.value) }))}
-                      onPaste={e => {
-                        e.preventDefault();
-                        const pasted = e.clipboardData.getData("text");
-                        const converted = parseDriveUrl(pasted);
-                        setNewPhoto(p => ({ ...p, src: converted }));
-                      }}
-                    />
-                    {newPhoto.src && newPhoto.src.includes("googleusercontent") && (
-                      <div style={{ fontSize: 10, color: "#34d399", marginTop: 4 }}>✓ Converted to direct image URL</div>
-                    )}
-                  </div>
-                  <div style={{ flex: "1 1 140px" }}><span style={label}>Caption</span><input style={inp} placeholder="e.g. Sahara Desert" value={newPhoto.caption} onChange={e => setNewPhoto(p => ({ ...p, caption: e.target.value }))} onKeyDown={e => e.key === "Enter" && addPhoto()} /></div>
-                  <button onClick={addPhoto} style={{ ...btnP, flexShrink: 0 }}>+ Add Photo</button>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 14 }}>Add Photos</div>
+
+                {/* Upload button — primary method */}
+                <input ref={fileInputRef} type="file" accept="image/*" multiple style={{ display: "none" }} onChange={handleFileChange} />
+                <div
+                  onClick={() => !uploading && fileInputRef.current?.click()}
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={e => { e.preventDefault(); Array.from(e.dataTransfer.files).filter(f => f.type.startsWith("image/")).forEach(f => uploadFile(f)); }}
+                  style={{
+                    border: "2px dashed rgba(124,58,237,0.4)", borderRadius: 10, padding: "28px 20px",
+                    textAlign: "center" as const, cursor: uploading ? "wait" : "pointer",
+                    background: "rgba(124,58,237,0.04)", marginBottom: 14, transition: "all 0.2s",
+                  }}
+                  onMouseEnter={e => { if (!uploading) (e.currentTarget as HTMLElement).style.borderColor = "rgba(124,58,237,0.8)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(124,58,237,0.4)"; }}
+                >
+                  {uploading ? (
+                    <div style={{ color: "#a78bfa", fontSize: 13 }}>⏳ Uploading to Cloudinary…</div>
+                  ) : (
+                    <>
+                      <div style={{ fontSize: 28, marginBottom: 8 }}>☁️</div>
+                      <div style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, marginBottom: 4 }}>Click to upload or drag & drop</div>
+                      <div style={{ fontSize: 11, color: "rgba(248,248,240,0.3)" }}>Any image file · multiple at once · stored on Cloudinary</div>
+                    </>
+                  )}
                 </div>
+                {uploadErr && <div style={{ fontSize: 12, color: "#f87171", marginBottom: 10 }}>⚠ {uploadErr}</div>}
+
+                {/* Optional caption for next upload */}
+                <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap", marginBottom: 8 }}>
+                  <div style={{ flex: "1 1 140px" }}>
+                    <span style={label}>Caption (optional — applies to next upload)</span>
+                    <input style={inp} placeholder="e.g. Sahara Desert" value={newPhoto.caption} onChange={e => setNewPhoto(p => ({ ...p, caption: e.target.value }))} />
+                  </div>
+                </div>
+
+                {/* Fallback: paste URL manually */}
+                <details style={{ marginTop: 8 }}>
+                  <summary style={{ fontSize: 11, color: "rgba(248,248,240,0.3)", cursor: "pointer", userSelect: "none" }}>Or paste an image URL manually</summary>
+                  <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap", marginTop: 10 }}>
+                    <div style={{ flex: "2 1 200px" }}>
+                      <input
+                        style={inp}
+                        placeholder="https://res.cloudinary.com/… or any direct image URL"
+                        value={newPhoto.src}
+                        onChange={e => setNewPhoto(p => ({ ...p, src: e.target.value }))}
+                        onBlur={e => setNewPhoto(p => ({ ...p, src: parseDriveUrl(e.target.value) }))}
+                        onPaste={e => { e.preventDefault(); const pasted = e.clipboardData.getData("text"); setNewPhoto(p => ({ ...p, src: parseDriveUrl(pasted) })); }}
+                      />
+                    </div>
+                    <button onClick={addPhoto} style={{ ...btnP, flexShrink: 0 }}>+ Add</button>
+                  </div>
+                </details>
               </div>
             </div>
           </motion.div>
