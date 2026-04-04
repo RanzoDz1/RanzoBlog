@@ -102,6 +102,7 @@ const EN = {
       kick:         "IRL Live Streams",
       facebook:     "DZ Community",
       youtubeGaming:"Gaming Content",
+      facebook2:    "New Page",
     },
   },
   // ── Data-level translation maps ────────────────────────────────────────────
@@ -282,6 +283,7 @@ const AR: typeof EN = {
       kick:         "بث مباشر IRL",
       facebook:     "مجتمع DZ",
       youtubeGaming:"محتوى قيمنغ",
+      facebook2:    "الصفحة الجديدة",
     },
   },
   // ── Data-level translation maps ────────────────────────────────────────────

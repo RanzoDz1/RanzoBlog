@@ -84,12 +84,12 @@ const PLATFORMS = [
     bg: "rgba(24,119,242,0.07)",
   },
   {
-    name: "YouTube Gaming",
-    handle: "@RanzoDz",
-    typeKey: "youtubeGaming" as const,
-    url: "https://www.youtube.com/channel/UCY8BV1FLuJWY4aV6QSaQ35Q/featured",
-    color: "#FF4444",
-    bg: "rgba(255,68,68,0.07)",
+    name: "Facebook",
+    handle: "@RanzoDZA",
+    typeKey: "facebook2" as const,
+    url: "https://www.facebook.com/RanzoDZA",
+    color: "#1877F2",
+    bg: "rgba(24,119,242,0.07)",
   },
 ];
 
@@ -99,7 +99,6 @@ const ICONS: Record<string, () => React.ReactElement> = {
   TikTok: IconTikTok,
   Kick: IconKick,
   Facebook: IconFacebook,
-  "YouTube Gaming": IconYouTube,
 };
 
 export default function Platforms() {
