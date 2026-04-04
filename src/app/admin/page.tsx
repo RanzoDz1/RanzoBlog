@@ -153,6 +153,19 @@ type Photo = { src: string; caption: string };
 type CountryEntry = { name: string; flag: string; photos?: Photo[] };
 type ContinentEntry = { id: string; name: string; emoji: string; color: string; countries: CountryEntry[] };
 
+/** Convert any Google Drive share/view link to a direct-embed URL */
+function parseDriveUrl(url: string): string {
+  url = url.trim();
+  // https://drive.google.com/file/d/FILE_ID/view?... or /preview
+  const m1 = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m1) return `https://lh3.googleusercontent.com/d/${m1[1]}`;
+  // https://drive.google.com/open?id=FILE_ID  or  /uc?id=FILE_ID  or  ?id=FILE_ID
+  const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m2) return `https://lh3.googleusercontent.com/d/${m2[1]}`;
+  // Already a direct URL — return as-is
+  return url;
+}
+
 function Countries({ token }: { token: string }) {
   const [continents, setContinents] = useState<ContinentEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -163,6 +176,7 @@ function Countries({ token }: { token: string }) {
   const [saving, setSaving] = useState(false); const [saved, setSaved] = useState(false);
   const [dragPhoto, setDragPhoto] = useState<{ fromCountry: string; photoIndex: number } | null>(null);
   const [dropTarget, setDropTarget] = useState<string | null>(null);
+  const [selectedPhotos, setSelectedPhotos] = useState<Set<number>>(new Set());
 
   // Load from KV on mount, fall back to CONTINENTS defaults
   useEffect(() => {
@@ -182,6 +196,9 @@ function Countries({ token }: { token: string }) {
     })();
   }, [token]);
 
+  // Clear checkbox selection whenever the active country changes
+  useEffect(() => { setSelectedPhotos(new Set()); }, [editCountry]);
+
   const cont = continents.find(c => c.id === active);
   const editingCountry = cont?.countries.find(c => c.name === editCountry);
 
@@ -190,13 +207,21 @@ function Countries({ token }: { token: string }) {
 
   const addPhoto = () => {
     if (!editCountry || !newPhoto.src.trim()) return;
-    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: [...(co.photos || []), { src: newPhoto.src.trim(), caption: newPhoto.caption.trim() }] } : co) } : c));
+    const src = parseDriveUrl(newPhoto.src);
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: [...(co.photos || []), { src, caption: newPhoto.caption.trim() }] } : co) } : c));
     setNewPhoto({ src: "", caption: "" });
   };
   const removePhoto = (pi: number) => {
     if (!editCountry) return;
     setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).filter((_, i) => i !== pi) } : co) } : c));
+    setSelectedPhotos(s => { const n = new Set(s); n.delete(pi); return n; });
   };
+  const deleteSelected = () => {
+    if (!editCountry || selectedPhotos.size === 0) return;
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).filter((_, i) => !selectedPhotos.has(i)) } : co) } : c));
+    setSelectedPhotos(new Set());
+  };
+  const toggleSelect = (pi: number) => setSelectedPhotos(s => { const n = new Set(s); n.has(pi) ? n.delete(pi) : n.add(pi); return n; });
 
   const movePhoto = (fromCountry: string, photoIndex: number, toCountry: string) => {
     if (fromCountry === toCountry) return;
@@ -299,18 +324,40 @@ function Countries({ token }: { token: string }) {
         {editCountry && editingCountry && (
           <motion.div key={editCountry} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} style={{ overflow: "hidden", marginBottom: 20 }}>
             <div style={{ ...card, borderColor: `${cont.color}40` }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: cont.color, marginBottom: 16 }}>
-                📷 Photos for {editCountry} · {(editingCountry.photos || []).length} photo(s)
+              {/* Header row */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: cont.color }}>
+                  📷 Photos for {editCountry} · {(editingCountry.photos || []).length} photo(s)
+                </div>
+                {(editingCountry.photos || []).length > 0 && (
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <button
+                      onClick={() => selectedPhotos.size === (editingCountry.photos || []).length ? setSelectedPhotos(new Set()) : setSelectedPhotos(new Set((editingCountry.photos || []).map((_, i) => i)))}
+                      style={{ ...btnG, padding: "5px 12px", fontSize: 11 }}
+                    >
+                      {selectedPhotos.size === (editingCountry.photos || []).length ? "Deselect All" : "Select All"}
+                    </button>
+                    {selectedPhotos.size > 0 && (
+                      <button
+                        onClick={() => { if (confirm(`Delete ${selectedPhotos.size} photo(s)?`)) deleteSelected(); }}
+                        style={{ ...btnD, padding: "5px 14px", fontSize: 11 }}
+                      >
+                        🗑 Delete {selectedPhotos.size} selected
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Existing photos list */}
               {(editingCountry.photos || []).length > 0 ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 20 }}>
                   <div style={{ fontSize: 10, color: "rgba(248,248,240,0.3)", marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
-                    <span>⠿</span> Drag a photo row onto any country chip above to move it
+                    <span>⠿</span> Drag onto a country chip to move · checkbox to select for bulk delete
                   </div>
                   {(editingCountry.photos || []).map((photo, pi) => {
                     const isDraggingThis = dragPhoto?.fromCountry === editCountry && dragPhoto?.photoIndex === pi;
+                    const isChecked = selectedPhotos.has(pi);
                     return (
                       <div
                         key={pi}
@@ -318,22 +365,40 @@ function Countries({ token }: { token: string }) {
                         onDragStart={() => setDragPhoto({ fromCountry: editCountry!, photoIndex: pi })}
                         onDragEnd={() => { setDragPhoto(null); setDropTarget(null); }}
                         style={{
-                          display: "flex", alignItems: "center", gap: 12, padding: "10px 14px",
-                          borderRadius: 8, background: isDraggingThis ? "rgba(124,58,237,0.12)" : "rgba(255,255,255,0.04)",
-                          border: `1px solid ${isDraggingThis ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.07)"}`,
+                          display: "flex", alignItems: "center", gap: 10, padding: "8px 12px",
+                          borderRadius: 8,
+                          background: isChecked ? "rgba(239,68,68,0.08)" : isDraggingThis ? "rgba(124,58,237,0.12)" : "rgba(255,255,255,0.04)",
+                          border: `1px solid ${isChecked ? "rgba(239,68,68,0.3)" : isDraggingThis ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.07)"}`,
                           cursor: "grab", opacity: isDraggingThis ? 0.5 : 1, transition: "all 0.15s",
                         }}
                       >
+                        {/* Checkbox */}
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => toggleSelect(pi)}
+                          onClick={e => e.stopPropagation()}
+                          style={{ width: 15, height: 15, flexShrink: 0, accentColor: "#ef4444", cursor: "pointer" }}
+                        />
                         {/* Drag handle */}
-                        <span style={{ fontSize: 16, color: "rgba(255,255,255,0.2)", flexShrink: 0, userSelect: "none" }}>⠿</span>
-                        <div style={{ width: 60, height: 44, borderRadius: 6, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
+                        <span style={{ fontSize: 15, color: "rgba(255,255,255,0.2)", flexShrink: 0, userSelect: "none" }}>⠿</span>
+                        {/* Thumbnail */}
+                        <div style={{ width: 56, height: 40, borderRadius: 5, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.05)" }}>
                           <img src={photo.src} alt={photo.caption} style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
                         </div>
+                        {/* Info */}
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: 12, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
-                          <div style={{ fontSize: 11, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
+                          <div style={{ fontSize: 11, color: "rgba(248,248,240,0.7)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{photo.src}</div>
+                          <div style={{ fontSize: 10, color: "rgba(248,248,240,0.35)", marginTop: 2 }}>{photo.caption || "No caption"}</div>
                         </div>
-                        <button onClick={() => removePhoto(pi)} style={{ ...btnD, padding: "5px 12px", fontSize: 11, flexShrink: 0 }}>Remove</button>
+                        {/* Single delete */}
+                        <button
+                          onClick={e => { e.stopPropagation(); removePhoto(pi); }}
+                          style={{ background: "none", border: "none", color: "rgba(248,248,240,0.25)", cursor: "pointer", fontSize: 18, padding: "0 4px", lineHeight: 1, flexShrink: 0, transition: "color 0.15s" }}
+                          onMouseEnter={e => (e.currentTarget.style.color = "#f87171")}
+                          onMouseLeave={e => (e.currentTarget.style.color = "rgba(248,248,240,0.25)")}
+                          title="Remove"
+                        >×</button>
                       </div>
                     );
                   })}
@@ -346,7 +411,25 @@ function Countries({ token }: { token: string }) {
               <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16 }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: "rgba(248,248,240,0.35)", marginBottom: 12 }}>Add New Photo</div>
                 <div style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
-                  <div style={{ flex: "2 1 200px" }}><span style={label}>Image URL (Google Drive, Imgur, etc.)</span><input style={inp} placeholder="https://lh3.googleusercontent.com/d/..." value={newPhoto.src} onChange={e => setNewPhoto(p => ({ ...p, src: e.target.value }))} /></div>
+                  <div style={{ flex: "2 1 200px" }}>
+                    <span style={label}>Google Drive share link or image URL</span>
+                    <input
+                      style={inp}
+                      placeholder="https://drive.google.com/file/d/…/view?usp=sharing"
+                      value={newPhoto.src}
+                      onChange={e => setNewPhoto(p => ({ ...p, src: e.target.value }))}
+                      onBlur={e => setNewPhoto(p => ({ ...p, src: parseDriveUrl(e.target.value) }))}
+                      onPaste={e => {
+                        e.preventDefault();
+                        const pasted = e.clipboardData.getData("text");
+                        const converted = parseDriveUrl(pasted);
+                        setNewPhoto(p => ({ ...p, src: converted }));
+                      }}
+                    />
+                    {newPhoto.src && newPhoto.src.includes("googleusercontent") && (
+                      <div style={{ fontSize: 10, color: "#34d399", marginTop: 4 }}>✓ Converted to direct image URL</div>
+                    )}
+                  </div>
                   <div style={{ flex: "1 1 140px" }}><span style={label}>Caption</span><input style={inp} placeholder="e.g. Sahara Desert" value={newPhoto.caption} onChange={e => setNewPhoto(p => ({ ...p, caption: e.target.value }))} onKeyDown={e => e.key === "Enter" && addPhoto()} /></div>
                   <button onClick={addPhoto} style={{ ...btnP, flexShrink: 0 }}>+ Add Photo</button>
                 </div>
