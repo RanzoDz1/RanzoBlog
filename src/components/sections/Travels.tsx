@@ -4,6 +4,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { CONTINENTS } from "@/lib/data";
 import { IMAGES } from "@/lib/images";
 import { useT } from "@/lib/i18n";
+import { COUNTRY_NAMES_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -27,7 +28,7 @@ const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {
 type ContinentData = { id: string; name: string; emoji: string; color: string; countries: { name: string; flag: string; photos?: { src: string; caption: string }[] }[] };
 
 export default function Travels() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [active, setActive] = useState("europe");
@@ -185,7 +186,7 @@ export default function Travels() {
                         }}
                       >
                         <span style={{ fontSize: 16 }}>{c.flag}</span>
-                        <span style={{ fontWeight: 500 }}>{c.name}</span>
+                        <span style={{ fontWeight: 500 }}>{tr(COUNTRY_NAMES_AR, c.name, lang)}</span>
                         {hasPhotos && <span style={{ fontSize: 10, opacity: 0.7 }}>📷</span>}
                       </motion.button>
                     );
@@ -207,8 +208,8 @@ export default function Travels() {
                         className="rounded-xl"
                         style={{ padding: "24px", background: "rgba(255,255,255,0.02)", border: `1px solid ${activeCont.color}20`, marginBottom: 16 }}
                       >
-                        <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: activeCont.color, marginBottom: 16 }}>
-                          📍 {selectedCountry}
+                        <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: lang === "ar" ? "0" : "1.5px", textTransform: "uppercase" as const, color: activeCont.color, marginBottom: 16 }}>
+                          📍 {tr(COUNTRY_NAMES_AR, selectedCountry, lang)}
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3" style={{ gap: 12 }}>
                           {countryPhotos.map((photo, i) => (

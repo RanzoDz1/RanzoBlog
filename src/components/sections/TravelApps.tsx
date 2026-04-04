@@ -3,11 +3,12 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { TRAVEL_APPS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
+import { APP_CATEGORIES_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export default function TravelApps() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
 
@@ -87,8 +88,8 @@ export default function TravelApps() {
               </div>
 
               {/* Category */}
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: app.color, marginBottom: 10 }}>
-                {app.category}
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: lang === "ar" ? "0" : "1.5px", textTransform: "uppercase" as const, color: app.color, marginBottom: 10 }}>
+                {tr(APP_CATEGORIES_AR, app.category, lang)}
               </div>
 
               {/* Description */}

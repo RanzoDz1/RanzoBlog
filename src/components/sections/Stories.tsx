@@ -3,11 +3,12 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { STORIES } from "@/lib/data";
 import { useT } from "@/lib/i18n";
+import { STORY_TAGS_AR, STORY_LOCATIONS_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
 export default function Stories() {
-  const { t } = useT();
+  const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [stories, setStories] = useState(STORIES);
@@ -97,12 +98,12 @@ export default function Stories() {
                 <div className="flex items-center" style={{ gap: 8, marginBottom: 14 }}>
                   <span
                     style={{
-                      fontSize: 9, fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase" as const,
+                      fontSize: 9, fontWeight: 700, letterSpacing: lang === "ar" ? "0" : "3px", textTransform: "uppercase" as const,
                       padding: "4px 10px", borderRadius: 999,
                       background: `${story.color}20`, color: story.color, border: `1px solid ${story.color}40`,
                     }}
                   >
-                    {story.tag}
+                    {tr(STORY_TAGS_AR, story.tag, lang)}
                   </span>
                   <span style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
                     {story.number}
@@ -117,8 +118,8 @@ export default function Stories() {
               </div>
 
               {/* Location badge */}
-              <div className="absolute glass" style={{ top: 20, right: 20, padding: "6px 12px", borderRadius: 999, fontSize: 10, letterSpacing: "1px", color: "var(--muted)" }}>
-                📍 {story.location}
+              <div className="absolute glass" style={{ top: 20, right: 20, padding: "6px 12px", borderRadius: 999, fontSize: 10, letterSpacing: lang === "ar" ? "0" : "1px", color: "var(--muted)" }}>
+                📍 {tr(STORY_LOCATIONS_AR, story.location, lang)}
               </div>
             </motion.div>
           ))}
