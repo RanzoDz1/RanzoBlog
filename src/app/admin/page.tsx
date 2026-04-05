@@ -25,6 +25,7 @@ const fmt = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "2-dig
 // ── Login ─────────────────────────────────────────────────────────────────────
 function Login({ onLogin }: { onLogin: (t: string) => void }) {
   const [u, setU] = useState(""); const [p, setP] = useState(""); const [err, setErr] = useState(""); const [loading, setLoading] = useState(false);
+  const [hint, setHint] = useState(false);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault(); setLoading(true); setErr("");
     try {
@@ -48,6 +49,20 @@ function Login({ onLogin }: { onLogin: (t: string) => void }) {
           {err && <div style={{ fontSize: 12, color: "#f87171", textAlign: "center" }}>{err}</div>}
           <button type="submit" disabled={loading} style={{ ...btnP, padding: "13px 0", marginTop: 8, width: "100%" }}>{loading ? "Signing in…" : "Sign In →"}</button>
         </form>
+        <div style={{ textAlign: "center", marginTop: 20 }}>
+          <button onClick={() => setHint(h => !h)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 12, color: "rgba(248,248,240,0.35)", textDecoration: "underline", padding: 0 }}>
+            Forgot password?
+          </button>
+        </div>
+        {hint && (
+          <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: 16, padding: "14px 18px", borderRadius: 10, background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.25)" }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: "#a78bfa", marginBottom: 8, letterSpacing: "1px", textTransform: "uppercase" }}>Hint</div>
+            <div style={{ fontSize: 13, color: "rgba(248,248,240,0.65)", lineHeight: 1.8 }}>
+              <span style={{ color: "rgba(248,248,240,0.4)" }}>Username:</span> <strong style={{ color: "#f8f8f0" }}>ranzodz</strong><br />
+              <span style={{ color: "rgba(248,248,240,0.4)" }}>Password:</span> <strong style={{ color: "#f8f8f0" }}>same as your PC password</strong>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );
