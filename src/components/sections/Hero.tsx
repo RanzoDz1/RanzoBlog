@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { IMAGES } from "@/lib/images";
 import { STATS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
@@ -143,26 +144,6 @@ export default function Hero() {
   const opacity  = useTransform(smoothProgress, [0, 0.5], [1, 0]);
   const sidesOpacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
 
-  const smoothScroll = (targetY: number, duration = 750) => {
-    const startY = window.scrollY;
-    const diff = targetY - startY;
-    if (diff === 0) return;
-    let start: number | null = null;
-    const ease2 = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      window.scrollTo(0, startY + diff * ease2(progress));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  const scrollDown = () => {
-    const el = document.getElementById("about");
-    if (!el) return;
-    smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72);
-  };
 
   return (
     <section
@@ -368,9 +349,9 @@ export default function Hero() {
           className="flex flex-wrap justify-center"
           style={{ gap: 16 }}
         >
-          <button onClick={() => { const el = document.getElementById("collab-form"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-primary" style={{ color: "#000" }}>
+          <Link href="/collab#collab-form" className="btn-primary" style={{ color: "#000", textDecoration: "none" }}>
             {t.nav.workWithMe}
-          </button>
+          </Link>
           <a href="https://ranzo-portfolio.vercel.app" target="_blank" rel="noopener noreferrer" className="btn-ghost">
             {t.hero.storiesBtn}
           </a>
@@ -457,20 +438,25 @@ export default function Hero() {
       </motion.div>
 
       {/* Scroll indicator */}
-      <motion.button
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4 }}
-        onClick={scrollDown}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
         style={{ opacity: useTransform(smoothProgress, [0, 0.3], [1, 0]) as unknown as number }}
-        aria-label="Scroll down"
       >
-        <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase" as const, color: "var(--muted)" }}>{t.hero.scroll}</span>
-        <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-          <div className="w-full h-full" style={{ background: "linear-gradient(to bottom, var(--purple-l), var(--blue-l))", animation: "scroll-line 2.5s ease-in-out infinite" }} />
-        </div>
-      </motion.button>
+        <Link
+          href="/about"
+          className="flex flex-col items-center gap-3"
+          style={{ textDecoration: "none" }}
+          aria-label="Go to About"
+        >
+          <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase" as const, color: "var(--muted)" }}>{t.hero.scroll}</span>
+          <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+            <div className="w-full h-full" style={{ background: "linear-gradient(to bottom, var(--purple-l), var(--blue-l))", animation: "scroll-line 2.5s ease-in-out infinite" }} />
+          </div>
+        </Link>
+      </motion.div>
     </section>
   );
 }

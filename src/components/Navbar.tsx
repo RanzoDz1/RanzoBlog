@@ -1,16 +1,25 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { NAV_LINKS, SOCIALS } from "@/lib/data";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
+
+const NAV_PAGES = [
+  { href: "/about",   labelKey: "about"   },
+  { href: "/travels", labelKey: "travels" },
+  { href: "/stories", labelKey: "stories" },
+  { href: "/collab",  labelKey: "collab"  },
+] as const;
 
 export default function Navbar() {
   const { t, lang, setLang } = useT();
-  const [scrolled, setScrolled]     = useState(false);
-  const [hidden, setHidden]         = useState(false);
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
-  const lastY = useRef(0);
+  const lastY = { current: 0 };
 
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => {
@@ -19,44 +28,11 @@ export default function Navbar() {
     lastY.current = y;
   });
 
-  useEffect(() => {
-    const ids = NAV_LINKS.map(l => l.href.replace("#", ""));
-    const observer = new IntersectionObserver(
-      (entries) => { entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }); },
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    ids.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
-    return () => observer.disconnect();
-  }, []);
+  // Close mobile menu on route change
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
-  const smoothScroll = (targetY: number, duration = 750) => {
-    const startY = window.scrollY;
-    const diff = targetY - startY;
-    if (diff === 0) return;
-    let start: number | null = null;
-    const ease = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      window.scrollTo(0, startY + diff * ease(progress));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  const scrollTo = (href: string) => {
-    setMobileOpen(false);
-    const el = document.querySelector(href) as HTMLElement | null;
-    if (!el) return;
-    const navH = 72;
-    const top = el.getBoundingClientRect().top + window.scrollY - navH;
-    smoothScroll(top);
-  };
-
-  // Map NAV_LINKS to translated labels
   const navLabels: Record<string, string> = {
-    "#about": t.nav.about, "#travels": t.nav.travels, "#stories": t.nav.stories,
-    "#collab": t.nav.collab,
+    about: t.nav.about, travels: t.nav.travels, stories: t.nav.stories, collab: t.nav.collab,
   };
 
   const LangToggle = () => (
@@ -69,11 +45,8 @@ export default function Navbar() {
         background: "rgba(255,255,255,0.05)",
         fontSize: 11, fontWeight: 700, letterSpacing: "0.5px",
         color: "var(--muted)", cursor: "pointer",
-        transition: "all 0.2s",
-        flexShrink: 0,
+        transition: "all 0.2s", flexShrink: 0,
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--white)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.3)"; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)"; }}
       aria-label="Switch language"
     >
       <span style={{ direction: "ltr", unicodeBidi: "isolate" }}>
@@ -90,43 +63,38 @@ export default function Navbar() {
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="fixed top-0 left-0 right-0 z-50"
         style={{
-          transition: "background 0.5s, border-color 0.5s, backdrop-filter 0.5s",
           padding: scrolled ? "12px clamp(16px, 5vw, 40px)" : "16px clamp(16px, 5vw, 40px)",
           background: scrolled ? "rgba(6,6,8,0.90)" : "transparent",
           backdropFilter: scrolled ? "blur(24px)" : "none",
           borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+          transition: "background 0.5s, border-color 0.5s, backdrop-filter 0.5s",
         }}
       >
-        {/* Logo left + Right controls */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <motion.a
-            href="#"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+          <Link
+            href="/"
             className="brand-ltr text-[20px] font-bold tracking-[4px] text-gradient"
-            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0 }}
-            whileHover={{ letterSpacing: "6px" }}
-            transition={{ duration: 0.3 }}
+            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0, textDecoration: "none" }}
           >
             RANZODZ
-          </motion.a>
+          </Link>
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <LangToggle />
-            <button
-              onClick={() => scrollTo("#collab")}
-              className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full transition-all duration-300"
+            <Link
+              href="/collab"
+              className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full"
               style={{
                 padding: "10px 24px",
                 background: "linear-gradient(135deg, var(--live-accent), var(--live-accent-bright))",
                 boxShadow: "0 4px 20px var(--live-glow)", color: "#fff",
-                transition: "background 0.6s, box-shadow 0.6s",
+                transition: "all 0.3s",
                 letterSpacing: lang === "ar" ? "0" : undefined,
+                textDecoration: "none",
               }}
-              onMouseEnter={e => (e.currentTarget.style.transform = "translateY(-1px)")}
-              onMouseLeave={e => (e.currentTarget.style.transform = "translateY(0)")}
             >
               {t.nav.workWithMe}
-            </button>
+            </Link>
             <button
               className="md:hidden flex flex-col gap-[5px] p-2"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -142,31 +110,35 @@ export default function Navbar() {
         {/* Centered nav links */}
         <div
           className="hidden md:flex items-center gap-8"
-          style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", pointerEvents: "auto" }}
+          style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
         >
-          {NAV_LINKS.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => scrollTo(link.href)}
-              className="relative text-[11px] font-semibold uppercase transition-colors duration-200"
-              style={{
-                color: activeSection === link.href.replace("#", "") ? "var(--white)" : "var(--muted)",
-                background: "none", border: "none", cursor: "pointer", padding: "4px 0",
-                letterSpacing: lang === "ar" ? "0" : "2px",
-                fontFamily: lang === "ar" ? "'Cairo', system-ui, sans-serif" : undefined,
-                fontSize: lang === "ar" ? "13px" : "11px",
-              }}
-            >
-              {navLabels[link.href] ?? link.label}
-              {activeSection === link.href.replace("#", "") && (
-                <motion.div
-                  layoutId="nav-indicator"
-                  className="absolute -bottom-1 left-0 right-0 h-[1px]"
-                  style={{ background: "linear-gradient(to right, var(--live-accent), var(--live-accent-bright))", transition: "background 0.6s" }}
-                />
-              )}
-            </button>
-          ))}
+          {NAV_PAGES.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="relative text-[11px] font-semibold uppercase transition-colors duration-200"
+                style={{
+                  color: isActive ? "var(--white)" : "var(--muted)",
+                  textDecoration: "none",
+                  padding: "4px 0",
+                  letterSpacing: lang === "ar" ? "0" : "2px",
+                  fontFamily: lang === "ar" ? "'Cairo', system-ui, sans-serif" : undefined,
+                  fontSize: lang === "ar" ? "13px" : "11px",
+                }}
+              >
+                {navLabels[link.labelKey]}
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute -bottom-1 left-0 right-0 h-[1px]"
+                    style={{ background: "linear-gradient(to right, var(--live-accent), var(--live-accent-bright))" }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </div>
       </motion.nav>
 
@@ -180,24 +152,23 @@ export default function Navbar() {
             style={{ background: "rgba(6,6,8,0.97)", backdropFilter: "blur(24px)" }}
           >
             <nav className="flex flex-col items-center gap-8">
-              {NAV_LINKS.map((link, i) => (
-                <motion.button
-                  key={link.href}
-                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07 }}
-                  onClick={() => scrollTo(link.href)}
-                  className="text-[32px] font-light tracking-widest uppercase"
-                  style={{ fontFamily: "var(--font-display)", color: "var(--white)", letterSpacing: lang === "ar" ? "0" : undefined }}
-                >
-                  {navLabels[link.href] ?? link.label}
-                </motion.button>
+              {NAV_PAGES.map((link, i) => (
+                <motion.div key={link.href} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="text-[32px] font-light tracking-widest uppercase"
+                    style={{ fontFamily: "var(--font-display)", color: pathname === link.href ? "var(--live-accent-bright)" : "var(--white)", textDecoration: "none", letterSpacing: lang === "ar" ? "0" : undefined }}
+                  >
+                    {navLabels[link.labelKey]}
+                  </Link>
+                </motion.div>
               ))}
-              <motion.button
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-                onClick={() => scrollTo("#collab")} className="mt-4 btn-primary"
-              >
-                {t.nav.workWithMe}
-              </motion.button>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+                <Link href="/collab" onClick={() => setMobileOpen(false)} className="mt-4 btn-primary" style={{ textDecoration: "none" }}>
+                  {t.nav.workWithMe}
+                </Link>
+              </motion.div>
             </nav>
             <div className="absolute bottom-12 flex gap-6">
               {SOCIALS.map(s => (

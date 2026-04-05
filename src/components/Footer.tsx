@@ -1,12 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
-
-const FOOTER_NAV_AR: Record<string, string> = {
-  "#about": "عليا", "#travels": "رحلاتي", "#stories": "قصصي", "#collab": "تعاون",
-};
-const FOOTER_NAV_LINKS = ["#about", "#travels", "#stories", "#collab"];
 
 // ── Full SVG icon set for all platforms ──────────────────────────────────────
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
@@ -59,27 +55,6 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 
 export default function Footer() {
   const { t, lang } = useT();
-  const smoothScroll = (targetY: number, duration = 750) => {
-    const startY = window.scrollY;
-    const diff = targetY - startY;
-    if (diff === 0) return;
-    let start: number | null = null;
-    const ease = (t: number) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    const step = (ts: number) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      window.scrollTo(0, startY + diff * ease(progress));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href) as HTMLElement | null;
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - 72;
-    smoothScroll(top);
-  };
 
   return (
     <footer
@@ -109,15 +84,20 @@ export default function Footer() {
 
           {/* Nav links */}
           <div className="flex gap-8">
-            {FOOTER_NAV_LINKS.map(href => (
-              <button
-                key={href}
-                onClick={() => scrollTo(href)}
+            {[
+              { href: "/about",   en: "About",   ar: "عليا" },
+              { href: "/travels", en: "Travels", ar: "رحلاتي" },
+              { href: "/stories", en: "Stories", ar: "قصصي" },
+              { href: "/collab",  en: "Collab",  ar: "تعاون" },
+            ].map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
                 className="text-[10px] font-semibold uppercase transition-colors duration-200 hover:text-white"
-                style={{ color: "var(--muted)", letterSpacing: lang === "ar" ? "0" : "2px" }}
+                style={{ color: "var(--muted)", letterSpacing: lang === "ar" ? "0" : "2px", textDecoration: "none" }}
               >
-                {lang === "ar" ? (FOOTER_NAV_AR[href] ?? href.replace("#", "")) : href.replace("#", "")}
-              </button>
+                {lang === "ar" ? item.ar : item.en}
+              </Link>
             ))}
           </div>
 

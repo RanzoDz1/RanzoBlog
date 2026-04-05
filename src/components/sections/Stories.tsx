@@ -4,6 +4,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { STORIES } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import { STORY_TAGS_AR, STORY_LOCATIONS_AR, STORY_TITLES_AR, STORY_EXCERPTS_AR, STORY_SUBTITLES_AR, STORY_BODIES_AR, tr } from "@/lib/dataTranslations";
+import Carousel from "@/components/ui/Carousel";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -109,84 +110,83 @@ export default function Stories() {
             </p>
           </motion.div>
 
-          {/* ── STORIES GRID ── */}
-          <div
-            className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            style={{ maxWidth: 1100, gap: 16 }}
-          >
-            {stories.map((story, i) => (
-              <motion.div
-                key={story.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.1 + i * 0.08, duration: 0.6, ease }}
-                className="story-card group relative rounded-xl overflow-hidden"
-                style={{ height: "clamp(300px, 50vw, 420px)", border: `1px solid var(--border)`, cursor: "pointer", transition: "border-color 0.3s" }}
-                onClick={() => setOpen(story)}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${story.color}60`; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
-              >
-                {/* Background image */}
-                <div className="story-card-img absolute inset-0" style={{ overflow: "hidden" }}>
-                  <img
-                    src={story.image}
-                    alt={story.title}
-                    draggable={false}
-                    className="group-hover:scale-105 transition-transform duration-700"
-                    style={{
-                      width: "100%", height: "100%", objectFit: "cover",
-                      objectPosition: `${(story as any).imageX ?? 50}% ${(story as any).imageY ?? 50}%`,
-                      transform: `scale(${(story as any).imageZoom ?? 1})`,
-                      transformOrigin: `${(story as any).imageX ?? 50}% ${(story as any).imageY ?? 50}%`,
-                      filter: "brightness(0.45) saturate(1.2)",
-                      display: "block",
-                    }}
-                    loading="lazy"
+          {/* ── STORIES CAROUSEL ── */}
+          <div className="w-full" style={{ maxWidth: 1100 }}>
+            <Carousel gap={16}>
+              {stories.map((story, i) => (
+                <motion.div
+                  key={story.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 0.1 + i * 0.08, duration: 0.6, ease }}
+                  className="story-card group relative rounded-xl overflow-hidden"
+                  style={{ height: 420, width: 300, border: `1px solid var(--border)`, cursor: "pointer", transition: "border-color 0.3s" }}
+                  onClick={() => setOpen(story)}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${story.color}60`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
+                >
+                  {/* Background image */}
+                  <div className="story-card-img absolute inset-0" style={{ overflow: "hidden" }}>
+                    <img
+                      src={story.image}
+                      alt={story.title}
+                      draggable={false}
+                      className="group-hover:scale-105 transition-transform duration-700"
+                      style={{
+                        width: "100%", height: "100%", objectFit: "cover",
+                        objectPosition: `${(story as any).imageX ?? 50}% ${(story as any).imageY ?? 50}%`,
+                        transform: `scale(${(story as any).imageZoom ?? 1})`,
+                        transformOrigin: `${(story as any).imageX ?? 50}% ${(story as any).imageY ?? 50}%`,
+                        filter: "brightness(0.45) saturate(1.2)",
+                        display: "block",
+                      }}
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Gradient overlay */}
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: "linear-gradient(to top, rgba(6,6,8,0.97) 0%, rgba(6,6,8,0.3) 50%, transparent 100%)" }}
                   />
-                </div>
 
-                {/* Gradient overlay */}
-                <div
-                  className="absolute inset-0"
-                  style={{ background: "linear-gradient(to top, rgba(6,6,8,0.97) 0%, rgba(6,6,8,0.3) 50%, transparent 100%)" }}
-                />
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0" style={{ padding: 28 }}>
+                    <div className="flex items-center" style={{ gap: 8, marginBottom: 14 }}>
+                      <span style={{
+                        fontSize: 9, fontWeight: 700, letterSpacing: lang === "ar" ? "0" : "3px", textTransform: "uppercase" as const,
+                        padding: "4px 10px", borderRadius: 999,
+                        background: `${story.color}20`, color: story.color, border: `1px solid ${story.color}40`,
+                      }}>
+                        {tr(STORY_TAGS_AR, story.tag, lang)}
+                      </span>
+                      <span style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
+                        {story.number}
+                      </span>
+                    </div>
+                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, lineHeight: 1.15, color: "var(--white)", marginBottom: 10 }}>
+                      {lang === "ar" ? (STORY_TITLES_AR[story.id] ?? (story as Story).titleAr ?? story.title) : story.title}
+                    </h3>
+                    <p className="line-clamp-3" style={{ fontSize: 12, color: "rgba(248,248,240,0.55)", lineHeight: 1.7 }}>
+                      {lang === "ar" ? (STORY_EXCERPTS_AR[story.id] ?? (story as Story).excerptAr ?? story.excerpt) : story.excerpt}
+                    </p>
 
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0" style={{ padding: 28 }}>
-                  <div className="flex items-center" style={{ gap: 8, marginBottom: 14 }}>
-                    <span style={{
-                      fontSize: 9, fontWeight: 700, letterSpacing: lang === "ar" ? "0" : "3px", textTransform: "uppercase" as const,
-                      padding: "4px 10px", borderRadius: 999,
-                      background: `${story.color}20`, color: story.color, border: `1px solid ${story.color}40`,
-                    }}>
-                      {tr(STORY_TAGS_AR, story.tag, lang)}
-                    </span>
-                    <span style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
-                      {story.number}
-                    </span>
+                    {/* Read more hint */}
+                    <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ gap: 6, marginTop: 14 }}>
+                      <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1px", color: story.color }}>
+                        {lang === "ar" ? "قرا القصة" : "READ STORY"}
+                      </span>
+                      <span style={{ color: story.color, fontSize: 12 }}>→</span>
+                    </div>
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, lineHeight: 1.15, color: "var(--white)", marginBottom: 10 }}>
-                    {lang === "ar" ? (STORY_TITLES_AR[story.id] ?? (story as Story).titleAr ?? story.title) : story.title}
-                  </h3>
-                  <p className="line-clamp-3" style={{ fontSize: 12, color: "rgba(248,248,240,0.55)", lineHeight: 1.7 }}>
-                    {lang === "ar" ? (STORY_EXCERPTS_AR[story.id] ?? (story as Story).excerptAr ?? story.excerpt) : story.excerpt}
-                  </p>
 
-                  {/* Read more hint */}
-                  <div className="flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ gap: 6, marginTop: 14 }}>
-                    <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "1px", color: story.color }}>
-                      {lang === "ar" ? "قرا القصة" : "READ STORY"}
-                    </span>
-                    <span style={{ color: story.color, fontSize: 12 }}>→</span>
+                  {/* Location badge */}
+                  <div className="absolute glass" style={{ top: 20, right: 20, padding: "6px 12px", borderRadius: 999, fontSize: 10, letterSpacing: lang === "ar" ? "0" : "1px", color: "var(--muted)" }}>
+                    📍 {tr(STORY_LOCATIONS_AR, story.location, lang)}
                   </div>
-                </div>
-
-                {/* Location badge */}
-                <div className="absolute glass" style={{ top: 20, right: 20, padding: "6px 12px", borderRadius: 999, fontSize: 10, letterSpacing: lang === "ar" ? "0" : "1px", color: "var(--muted)" }}>
-                  📍 {tr(STORY_LOCATIONS_AR, story.location, lang)}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </Carousel>
           </div>
 
         </div>

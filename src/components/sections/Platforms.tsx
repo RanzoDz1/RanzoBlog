@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useT } from "@/lib/i18n";
+import Carousel from "@/components/ui/Carousel";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -150,7 +151,7 @@ export default function Platforms() {
         </motion.div>
 
         {/* ── Platform cards ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: 14 }}>
+        <Carousel gap={14}>
           {PLATFORMS.map((platform, i) => {
             const PlatformIcon = ICONS[platform.name];
             return (
@@ -176,6 +177,7 @@ export default function Platforms() {
                   overflow: "hidden",
                   cursor: "pointer",
                   transition: "border-color 0.2s, box-shadow 0.2s, background 0.2s",
+                  width: 240,
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget as HTMLElement;
@@ -248,7 +250,7 @@ export default function Platforms() {
               </motion.a>
             );
           })}
-        </div>
+        </Carousel>
 
         {/* ── Total reach strip ── */}
         <motion.div
