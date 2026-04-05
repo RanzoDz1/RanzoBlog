@@ -144,7 +144,7 @@ export default function Collab() {
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", color: "var(--muted)", textAlign: "center", marginBottom: 20 }}>
             {t.collab.workedWith}
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {t.collab.brandCategories.map((cat, i) => (
               <motion.div
                 key={i}
