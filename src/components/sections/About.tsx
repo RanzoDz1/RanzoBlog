@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useInView, AnimatePresence } from "fra
 import { IMAGES } from "@/lib/images";
 import { useT } from "@/lib/i18n";
 
-const SLIDE_IMAGES = [
+const DEFAULT_SLIDE_IMAGES = [
   IMAGES.desertHelmet,
   IMAGES.auroraArms,
   IMAGES.arcticHat,
@@ -41,16 +41,25 @@ export default function About() {
   const imgY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
   const isAr = lang === "ar";
 
+  const [slideImages, setSlideImages] = useState<string[]>(DEFAULT_SLIDE_IMAGES);
   const [slideIdx, setSlideIdx] = useState(0);
   const [paused, setPaused] = useState(false);
 
-  const goPrev = () => { setSlideIdx(i => (i - 1 + SLIDE_IMAGES.length) % SLIDE_IMAGES.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
-  const goNext = () => { setSlideIdx(i => (i + 1) % SLIDE_IMAGES.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
+  // Load slide images from admin if available
+  useEffect(() => {
+    fetch("/api/admin/content?key=about-slides")
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d.data) && d.data.length > 0) setSlideImages(d.data); })
+      .catch(() => {});
+  }, []);
+
+  const goPrev = () => { setSlideIdx(i => (i - 1 + slideImages.length) % slideImages.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
+  const goNext = () => { setSlideIdx(i => (i + 1) % slideImages.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
 
   useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
-      setSlideIdx(i => (i + 1) % SLIDE_IMAGES.length);
+      setSlideIdx(i => (i + 1) % slideImages.length);
     }, 4000);
     return () => clearInterval(id);
   }, [paused]);
@@ -70,7 +79,7 @@ export default function About() {
                 <AnimatePresence mode="sync">
                   <motion.img
                     key={slideIdx}
-                    src={SLIDE_IMAGES[slideIdx]}
+                    src={slideImages[slideIdx]}
                     alt="Abdullah Khalfi | RanzoDz"
                     initial={{ opacity: 0, scale: 1.04 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -107,7 +116,7 @@ export default function About() {
 
                 {/* Dot indicators */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 3 }}>
-                  {SLIDE_IMAGES.map((_, i) => (
+                  {slideImages.map((_, i) => (
                     <button
                       key={i}
                       onClick={() => { setSlideIdx(i); setPaused(true); setTimeout(() => setPaused(false), 6000); }}

@@ -1095,6 +1095,104 @@ function AppsTab({ token }: { token: string }) {
   );
 }
 
+// ── About Slides ──────────────────────────────────────────────────────────────
+function AboutSlides({ token }: { token: string }) {
+  const [slides, setSlides] = useState<string[]>([]);
+  const [newUrl, setNewUrl] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/content?key=about-slides", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d.data) && d.data.length > 0) setSlides(d.data); })
+      .catch(() => {});
+  }, [token]);
+
+  const parseDrive = (url: string): string => {
+    url = url.trim();
+    const m1 = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (m1) return `https://lh3.googleusercontent.com/d/${m1[1]}`;
+    const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (m2) return `https://lh3.googleusercontent.com/d/${m2[1]}`;
+    return url;
+  };
+
+  const addUrl = () => {
+    if (!newUrl.trim()) return;
+    setSlides(s => [...s, parseDrive(newUrl)]);
+    setNewUrl("");
+  };
+
+  const remove = (i: number) => setSlides(s => s.filter((_, j) => j !== i));
+  const moveUp = (i: number) => { if (i === 0) return; setSlides(s => { const a = [...s]; [a[i-1], a[i]] = [a[i], a[i-1]]; return a; }); };
+  const moveDown = (i: number) => { if (i === slides.length - 1) return; setSlides(s => { const a = [...s]; [a[i], a[i+1]] = [a[i+1], a[i]]; return a; }); };
+
+  const uploadFile = async (file: File) => {
+    setUploading(true);
+    try {
+      const fd = new FormData(); fd.append("file", file);
+      const r = await fetch("/api/admin/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
+      const d = await r.json();
+      if (d.url) setSlides(s => [...s, d.url]);
+    } catch {}
+    setUploading(false);
+  };
+
+  const save = async () => {
+    setSaving(true);
+    await fetch("/api/admin/content", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ key: "about-slides", data: slides }) });
+    setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 3000);
+  };
+
+  return (
+    <div style={{ marginTop: 48, paddingTop: 40, borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+      <div style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 6 }}>About Slideshow</div>
+      <div style={{ fontSize: 13, color: "rgba(248,248,240,0.4)", marginBottom: 24, lineHeight: 1.7 }}>
+        Manage the photo slideshow in the "About" section (From Algeria, to everywhere).
+      </div>
+
+      {/* Current slides */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
+        {slides.map((src, i) => (
+          <div key={i} style={{ ...card, display: "flex", alignItems: "center", gap: 12, padding: "12px 16px" }}>
+            <img src={src} alt="" style={{ width: 64, height: 64, objectFit: "cover", borderRadius: 8, flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.3"; }} />
+            <div style={{ flex: 1, fontSize: 11, color: "rgba(248,248,240,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{src}</div>
+            <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+              <button onClick={() => moveUp(i)} style={{ ...btnG, padding: "5px 10px", fontSize: 13 }} title="Move up">↑</button>
+              <button onClick={() => moveDown(i)} style={{ ...btnG, padding: "5px 10px", fontSize: 13 }} title="Move down">↓</button>
+              <button onClick={() => remove(i)} style={{ ...btnD, padding: "5px 10px", fontSize: 13 }}>✕</button>
+            </div>
+          </div>
+        ))}
+        {slides.length === 0 && <div style={{ fontSize: 13, color: "rgba(248,248,240,0.25)", padding: "20px 0" }}>No slides yet — add images below.</div>}
+      </div>
+
+      {/* Add by URL */}
+      <div style={{ ...card, marginBottom: 16 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: "#f8f8f0", marginBottom: 12 }}>Add by URL or Google Drive link</div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <input style={{ ...inp, flex: 1 }} placeholder="https://lh3.googleusercontent.com/d/... or Drive share link" value={newUrl} onChange={e => setNewUrl(e.target.value)} onKeyDown={e => e.key === "Enter" && addUrl()} />
+          <button onClick={addUrl} style={{ ...btnP, whiteSpace: "nowrap" as const }}>Add →</button>
+        </div>
+      </div>
+
+      {/* Upload file */}
+      <div style={{ ...card, marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: "#f8f8f0", marginBottom: 12 }}>Upload from computer</div>
+        <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f); e.target.value = ""; }} />
+        <button onClick={() => fileRef.current?.click()} disabled={uploading} style={{ ...btnG }}>{uploading ? "Uploading…" : "Choose Photo"}</button>
+      </div>
+
+      <button onClick={save} disabled={saving} style={{ ...btnP, padding: "14px 48px", fontSize: 13 }}>
+        {saving ? "Saving…" : saved ? "✓ Saved!" : "Save Slides →"}
+      </button>
+    </div>
+  );
+}
+
 // ── Settings ──────────────────────────────────────────────────────────────────
 interface HeroPos { desktopX: number; desktopY: number; mobileX: number; mobileY: number; imageUrl: string; }
 const DEFAULT_POS: HeroPos = { desktopX: 55, desktopY: 30, mobileX: 35, mobileY: 20, imageUrl: "" };
@@ -1224,6 +1322,8 @@ function Settings({ token }: { token: string }) {
         : status === "savedLocal" ? "✓ Saved locally, refresh homepage"
         : "Save Position →"}
       </button>
+
+      <AboutSlides token={token} />
     </div>
   );
 }
