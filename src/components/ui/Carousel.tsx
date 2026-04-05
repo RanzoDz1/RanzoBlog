@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 interface CarouselProps {
   children: React.ReactNode[];
@@ -7,9 +7,11 @@ interface CarouselProps {
 }
 
 export default function Carousel({ children, gap = 16 }: CarouselProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [canLeft, setCanLeft] = useState(false);
+  const trackRef   = useRef<HTMLDivElement>(null);
+  const rafRef     = useRef<number | null>(null);
+  const [canLeft,  setCanLeft]  = useState(false);
   const [canRight, setCanRight] = useState(true);
+  const [pressing, setPressing] = useState<-1 | 0 | 1>(0);
 
   const update = useCallback(() => {
     const t = trackRef.current;
@@ -18,41 +20,95 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     setCanRight(t.scrollLeft < t.scrollWidth - t.clientWidth - 8);
   }, []);
 
+  // Initial check
+  useEffect(() => { update(); }, [update]);
+
+  const animateScroll = (target: number) => {
+    const t = trackRef.current;
+    if (!t) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    const start = t.scrollLeft;
+    const diff  = target - start;
+    if (Math.abs(diff) < 1) return;
+
+    const duration = 480; // ms — feels snappy but silky
+    let startTime: number | null = null;
+
+    // Cubic ease-in-out
+    const ease = (x: number) =>
+      x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+    const step = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      t.scrollLeft = start + diff * ease(progress);
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        update();
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+  };
+
   const scroll = (dir: 1 | -1) => {
     const t = trackRef.current;
     if (!t) return;
     const card = t.querySelector("[data-card]") as HTMLElement | null;
-    const step = card ? card.offsetWidth + gap : 280;
-    t.scrollBy({ left: dir * step, behavior: "smooth" });
+    const step = card ? card.offsetWidth + gap : 300;
+    animateScroll(t.scrollLeft + dir * step);
   };
 
-  const btnStyle = (active: boolean): React.CSSProperties => ({
-    position: "absolute" as const,
-    top: "50%",
-    transform: "translateY(-50%)",
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
-    border: "1px solid rgba(255,255,255,0.15)",
-    background: active ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
-    color: active ? "#fff" : "rgba(255,255,255,0.2)",
-    fontSize: 18,
-    cursor: active ? "pointer" : "default",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-    transition: "all 0.2s",
-    backdropFilter: "blur(8px)",
-    flexShrink: 0,
-  });
+  const BtnArrow = ({ dir }: { dir: 1 | -1 }) => {
+    const active = dir === -1 ? canLeft : canRight;
+    const isPress = pressing === dir;
+    return (
+      <button
+        onClick={() => active && scroll(dir)}
+        onMouseDown={() => active && setPressing(dir)}
+        onMouseUp={() => setPressing(0)}
+        onMouseLeave={() => setPressing(0)}
+        aria-label={dir === -1 ? "Previous" : "Next"}
+        style={{
+          position: "absolute",
+          top: "50%",
+          transform: isPress ? "translateY(-50%) scale(0.88)" : "translateY(-50%) scale(1)",
+          [dir === -1 ? "left" : "right"]: -22,
+          width: 44,
+          height: 44,
+          borderRadius: "50%",
+          border: `1px solid ${active ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.07)"}`,
+          background: active
+            ? isPress
+              ? "rgba(255,255,255,0.18)"
+              : "rgba(255,255,255,0.10)"
+            : "rgba(255,255,255,0.02)",
+          color: active ? "#fff" : "rgba(255,255,255,0.18)",
+          fontSize: 22,
+          lineHeight: 1,
+          cursor: active ? "pointer" : "default",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 10,
+          transition: "background 0.18s, border-color 0.18s, transform 0.12s, color 0.18s",
+          backdropFilter: "blur(10px)",
+          flexShrink: 0,
+          userSelect: "none",
+        }}
+      >
+        {dir === -1 ? "‹" : "›"}
+      </button>
+    );
+  };
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
-      {/* Left arrow */}
-      <button onClick={() => canLeft && scroll(-1)} style={{ ...btnStyle(canLeft), left: -20 }} aria-label="Previous">‹</button>
+      <BtnArrow dir={-1} />
 
-      {/* Track */}
+      {/* Track — hide scrollbar */}
       <div
         ref={trackRef}
         onScroll={update}
@@ -60,10 +116,10 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
           display: "flex",
           gap,
           overflowX: "auto",
-          scrollSnapType: "x mandatory",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
-          padding: "4px 2px 12px",
+          padding: "6px 4px 14px",
+          cursor: "grab",
         }}
       >
         {children.map((child, i) => (
@@ -73,10 +129,12 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
         ))}
       </div>
 
-      {/* Right arrow */}
-      <button onClick={() => canRight && scroll(1)} style={{ ...btnStyle(canRight), right: -20 }} aria-label="Next">›</button>
+      <BtnArrow dir={1} />
 
-      <style>{`[data-card]::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`
+        [data-radix-scroll-area-viewport]::-webkit-scrollbar { display: none; }
+        div[style*="overflow-x: auto"]::-webkit-scrollbar { display: none; }
+      `}</style>
     </div>
   );
 }
