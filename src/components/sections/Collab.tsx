@@ -277,7 +277,7 @@ export default function Collab() {
             </div>
 
             {/* ── Form column ── */}
-            <div ref={formRef} className="rounded-2xl" style={{ background: "var(--surface2)", border: "1px solid var(--border)", padding: "36px 32px" }}>
+            <div id="collab-form" ref={formRef} className="rounded-2xl" style={{ background: "var(--surface2)", border: "1px solid var(--border)", padding: "36px 32px" }}>
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{t.collab.form.title}</div>
                 <p style={{ fontSize: 13, color: "var(--muted)" }}>{t.collab.form.subtitle}</p>

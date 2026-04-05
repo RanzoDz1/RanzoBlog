@@ -368,7 +368,7 @@ export default function Hero() {
           className="flex flex-wrap justify-center"
           style={{ gap: 16 }}
         >
-          <button onClick={() => { const el = document.getElementById("collab"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-primary" style={{ color: "#000" }}>
+          <button onClick={() => { const el = document.getElementById("collab-form"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-primary" style={{ color: "#000" }}>
             {t.nav.workWithMe}
           </button>
           <a href="https://ranzo-portfolio.vercel.app" target="_blank" rel="noopener noreferrer" className="btn-ghost">
