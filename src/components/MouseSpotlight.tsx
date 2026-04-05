@@ -7,9 +7,19 @@ export default function MouseSpotlight() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
     const move = (e: MouseEvent) => {
+      // Instant position — no CSS transition delay
       el.style.transform = `translate(${e.clientX - 140}px, ${e.clientY - 140}px)`;
+
+      // Match current section accent color from CSS vars updated by scroll system
+      const s = getComputedStyle(document.documentElement);
+      const r = s.getPropertyValue("--live-r").trim();
+      const g = s.getPropertyValue("--live-g").trim();
+      const b = s.getPropertyValue("--live-b").trim();
+      el.style.background = `radial-gradient(circle, rgba(${r},${g},${b},0.20) 0%, rgba(${r},${g},${b},0.07) 45%, transparent 70%)`;
     };
+
     window.addEventListener("mousemove", move, { passive: true });
     return () => window.removeEventListener("mousemove", move);
   }, []);
@@ -27,10 +37,9 @@ export default function MouseSpotlight() {
         borderRadius: "50%",
         pointerEvents: "none",
         zIndex: 9999,
-        background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, rgba(124,58,237,0.08) 40%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(34,197,94,0.20) 0%, rgba(34,197,94,0.07) 45%, transparent 70%)",
         filter: "blur(28px)",
         willChange: "transform",
-        transition: "transform 0.1s ease-out",
       }}
     />
   );
