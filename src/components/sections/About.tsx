@@ -44,6 +44,8 @@ export default function About() {
   const [slideImages, setSlideImages] = useState<string[]>(DEFAULT_SLIDE_IMAGES);
   const [slideIdx, setSlideIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  const touchStartX = useRef(0);
+  const isDragSwipe  = useRef(false);
 
   // Load slide images from admin if available
   useEffect(() => {
@@ -55,6 +57,23 @@ export default function About() {
 
   const goPrev = () => { setSlideIdx(i => (i - 1 + slideImages.length) % slideImages.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
   const goNext = () => { setSlideIdx(i => (i + 1) % slideImages.length); setPaused(true); setTimeout(() => setPaused(false), 6000); };
+
+  // ── Swipe / drag handlers ──────────────────────────────────────────────────
+  const onDragStart = (clientX: number) => {
+    touchStartX.current = clientX;
+    isDragSwipe.current = false;
+    setPaused(true);
+  };
+  const onDragEnd = (clientX: number, prevent?: () => void) => {
+    const delta = clientX - touchStartX.current;
+    if (Math.abs(delta) > 40) {
+      isDragSwipe.current = true;
+      prevent?.();
+      if (delta < 0) goNext(); else goPrev();
+    } else {
+      setTimeout(() => setPaused(false), 6000);
+    }
+  };
 
   useEffect(() => {
     if (paused) return;
@@ -75,7 +94,13 @@ export default function About() {
           <motion.div ref={imageRef} initial={{ opacity: 0, x: isAr ? 40 : -40 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.9, ease }} className="relative">
             <motion.div style={{ y: imgY }} className="relative rounded-[20px] overflow-hidden"
               onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-              <div style={{ aspectRatio: "3/4", position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid var(--border)" }}>
+              <div
+                style={{ aspectRatio: "3/4", position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid var(--border)", touchAction: "pan-y" }}
+                onTouchStart={e => onDragStart(e.touches[0].clientX)}
+                onTouchEnd={e => onDragEnd(e.changedTouches[0].clientX, () => e.preventDefault())}
+                onMouseDown={e => onDragStart(e.clientX)}
+                onMouseUp={e => onDragEnd(e.clientX)}
+              >
                 <AnimatePresence mode="sync">
                   <motion.img
                     key={slideIdx}
@@ -92,7 +117,7 @@ export default function About() {
 
                 {/* Left click zone — go prev */}
                 <div
-                  onClick={goPrev}
+                  onClick={() => { if (!isDragSwipe.current) goPrev(); isDragSwipe.current = false; }}
                   className="group absolute left-0 top-0 bottom-0 flex items-center justify-start"
                   style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingLeft: 14 }}
                 >
@@ -104,7 +129,7 @@ export default function About() {
 
                 {/* Right click zone — go next */}
                 <div
-                  onClick={goNext}
+                  onClick={() => { if (!isDragSwipe.current) goNext(); isDragSwipe.current = false; }}
                   className="group absolute right-0 top-0 bottom-0 flex items-center justify-end"
                   style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingRight: 14 }}
                 >
