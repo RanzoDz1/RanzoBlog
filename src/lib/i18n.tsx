@@ -14,7 +14,7 @@ const EN = {
     eyebrow: "Travel Creator · 1M+ Followers · 50+ Countries",
     tagline: "Travel. Risk.", taglineEnd: "Experience.",
     description: "Travel creator with 1M+ followers. Authentic storytelling from 50+ countries on Instagram, YouTube, TikTok and more.",
-    storiesBtn: "My Stories ↗", travelsBtn: "See My Travels", scroll: "Scroll",
+    storiesBtn: "Build Your Website ↗", travelsBtn: "See My Travels", scroll: "Scroll",
   },
   about: {
     eyebrow: "About RanzoDz",

@@ -368,12 +368,12 @@ export default function Hero() {
           className="flex flex-wrap justify-center"
           style={{ gap: 16 }}
         >
-          <button onClick={() => { const el = document.getElementById("collab"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-primary">
+          <button onClick={() => { const el = document.getElementById("collab"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-primary" style={{ color: "#000" }}>
             {t.nav.workWithMe}
           </button>
-          <button onClick={() => { const el = document.getElementById("stories"); if (el) smoothScroll(el.getBoundingClientRect().top + window.scrollY - 72); }} className="btn-ghost">
+          <a href="https://ranzo-portfolio.vercel.app" target="_blank" rel="noopener noreferrer" className="btn-ghost">
             {t.hero.storiesBtn}
-          </button>
+          </a>
         </motion.div>
 
         {/* ── Mobile: Social links row ── */}
