@@ -153,6 +153,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         onClickCapture={onClickCapture}
+        onDragStart={e => e.preventDefault()}
         style={{
           display: "flex",
           gap,

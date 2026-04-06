@@ -52,6 +52,8 @@ export default function TravelApps() {
                 href={app.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                draggable={false}
+                onDragStart={e => e.preventDefault()}
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06, duration: 0.5, ease }}

@@ -168,6 +168,8 @@ export default function Platforms() {
                 href={platform.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                draggable={false}
+                onDragStart={(e: React.DragEvent) => e.preventDefault()}
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.07, duration: 0.5, ease }}
