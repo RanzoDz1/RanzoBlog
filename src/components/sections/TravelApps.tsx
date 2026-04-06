@@ -22,7 +22,7 @@ export default function TravelApps() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section" style={{ background: "var(--surface)" }}>
+    <section id="apps" ref={sectionRef} className="section" style={{ background: "var(--surface)" }}>
       <div className="w-full flex flex-col items-center">
 
         {/* ── HEADER ── */}
@@ -47,13 +47,12 @@ export default function TravelApps() {
         <div className="w-full" style={{ maxWidth: 900 }}>
           <Carousel gap={16}>
             {TRAVEL_APPS.map((app, i) => (
-              <motion.a
+              <motion.div
                 key={app.name}
-                href={app.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                draggable={false}
-                onDragStart={e => e.preventDefault()}
+                onClick={() => window.open(app.url, '_blank', 'noopener,noreferrer')}
+                role="link"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') window.open(app.url, '_blank', 'noopener,noreferrer'); }}
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06, duration: 0.5, ease }}
@@ -68,6 +67,7 @@ export default function TravelApps() {
                   width: 220,
                   height: "100%",
                   boxSizing: "border-box" as const,
+                  cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = `${app.color}50`;
@@ -110,7 +110,7 @@ export default function TravelApps() {
                 <div style={{ fontSize: 12, color: "var(--muted)", lineHeight: 1.7 }}>
                   {app.desc}
                 </div>
-              </motion.a>
+              </motion.div>
             ))}
           </Carousel>
         </div>

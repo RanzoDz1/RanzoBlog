@@ -23,15 +23,15 @@ export default function PageHero({ page, eyebrow, title, titleAccent, subtitle }
   return (
     <section style={{
       position: "relative",
-      minHeight: "clamp(380px, 55vh, 600px)",
+      minHeight: "clamp(520px, 68vh, 700px)",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "flex-end",
       overflow: "hidden",
       background: "var(--black)",
-      paddingTop: 80,
-      paddingBottom: 64,
+      paddingTop: 96,
+      paddingBottom: 80,
     }}>
       {/* Background image */}
       <div style={{
@@ -52,7 +52,7 @@ export default function PageHero({ page, eyebrow, title, titleAccent, subtitle }
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        style={{ position: "absolute", top: 88, left: "clamp(24px, 5vw, 80px)", display: "flex", alignItems: "center", gap: 8, zIndex: 10 }}
+        style={{ position: "absolute", top: 96, left: "clamp(24px, 5vw, 80px)", display: "flex", alignItems: "center", gap: 8, zIndex: 10 }}
       >
         <Link href="/" style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "1.5px", textTransform: "uppercase" }}>Home</Link>
         <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 11 }}>›</span>

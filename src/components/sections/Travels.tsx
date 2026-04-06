@@ -8,6 +8,14 @@ import { COUNTRY_NAMES_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
 
+// Background image per continent
+const CONTINENT_BG: Record<string, string> = {
+  europe:     IMAGES.fjord1,
+  africa:     IMAGES.tentMarket,
+  middleeast: IMAGES.desertArab,
+  asia:       IMAGES.waterfall,
+};
+
 // Photos mapped to country names — cleared, will be re-added via admin
 const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {};
 
@@ -68,13 +76,35 @@ export default function Travels() {
 
   return (
     <>
-      <section id="travels" ref={sectionRef} className="section" style={{ background: "var(--surface)" }}>
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)", filter: "blur(80px)" }}
-        />
+      <section id="travels" ref={sectionRef} className="section" style={{ background: "var(--black)", position: "relative" }}>
 
-        <div className="relative z-10 w-full flex flex-col items-center">
+        {/* ── Crossfading continent background ── */}
+        <AnimatePresence>
+          <motion.div
+            key={active}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9, ease: "easeInOut" }}
+            style={{
+              position: "absolute", inset: 0,
+              backgroundImage: `url(${CONTINENT_BG[active] ?? ""})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "brightness(0.18) saturate(1.1)",
+              zIndex: 0,
+            }}
+          />
+        </AnimatePresence>
+
+        {/* Dark gradient overlay for readability */}
+        <div style={{
+          position: "absolute", inset: 0, zIndex: 1,
+          background: "linear-gradient(to bottom, rgba(6,6,8,0.6) 0%, rgba(6,6,8,0.35) 40%, rgba(6,6,8,0.75) 100%)",
+          pointerEvents: "none",
+        }} />
+
+        <div className="relative w-full flex flex-col items-center" style={{ zIndex: 2 }}>
 
           {/* ── HEADER ── */}
           <motion.div
@@ -100,8 +130,8 @@ export default function Travels() {
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.2 }}
-            className="w-full grid grid-cols-2 md:grid-cols-4"
-            style={{ maxWidth: 860, gap: 16, marginBottom: 40 }}
+            className="w-full"
+            style={{ maxWidth: 860, marginBottom: 40, display: "flex", overflowX: "auto", gap: 12, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}
           >
             {continents.map((cont) => (
               <button
@@ -109,7 +139,9 @@ export default function Travels() {
                 onClick={() => handleContinentClick(cont.id)}
                 className="relative rounded-xl text-left transition-all duration-300"
                 style={{
-                  padding: "28px 24px",
+                  padding: "20px 18px",
+                  flexShrink: 0,
+                  minWidth: 140,
                   border: active === cont.id ? `1px solid ${cont.color}40` : "1px solid var(--border)",
                   background: active === cont.id ? `${cont.color}12` : "rgba(255,255,255,0.02)",
                 }}
@@ -151,7 +183,7 @@ export default function Travels() {
                 </div>
 
                 {/* Country chips */}
-                <div className="flex flex-wrap" style={{ gap: 8, marginBottom: 24 }}>
+                <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 8, marginBottom: 24, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
                   {activeCont.countries.map((c, i) => {
                     const hasPhotos = !!(dynamicPhotos[c.name] && dynamicPhotos[c.name].length > 0);
                     const isSelected = selectedCountry === c.name;
@@ -166,6 +198,7 @@ export default function Travels() {
                         style={{
                           gap: 8,
                           padding: "8px 16px",
+                          flexShrink: 0,
                           border: isSelected ? `1px solid ${activeCont.color}80` : hasPhotos ? `1px solid ${activeCont.color}30` : "1px solid var(--border)",
                           background: isSelected ? `${activeCont.color}18` : "rgba(255,255,255,0.02)",
                           fontSize: 12,

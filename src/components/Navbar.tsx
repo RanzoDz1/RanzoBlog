@@ -1,25 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
 const NAV_PAGES = [
-  { href: "/",        labelKey: "home"    },
-  { href: "/about",   labelKey: "about"   },
-  { href: "/travels", labelKey: "travels" },
-  { href: "/stories", labelKey: "stories" },
-  { href: "/collab",  labelKey: "collab"  },
+  { sectionId: "hero",    labelKey: "home"    },
+  { sectionId: "about",   labelKey: "about"   },
+  { sectionId: "travels", labelKey: "travels" },
+  { sectionId: "stories", labelKey: "stories" },
+  { sectionId: "collab",  labelKey: "collab"  },
 ] as const;
 
 export default function Navbar() {
   const { t, lang, setLang } = useT();
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
   const lastY = { current: 0 };
 
   const { scrollY } = useScroll();
@@ -29,8 +30,52 @@ export default function Navbar() {
     lastY.current = y;
   });
 
+  // Track which section is in view on the homepage
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const sectionIds = ["hero", "about", "travels", "stories", "collab"];
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        { threshold: 0.25 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, [pathname]);
+
   // Close mobile menu on route change
   useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  const scrollToSection = (sectionId: string) => {
+    if (pathname === "/") {
+      if (sectionId === "hero") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      if (sectionId === "hero") {
+        router.push("/");
+      } else {
+        router.push(`/#${sectionId}`);
+      }
+    }
+    setMobileOpen(false);
+  };
+
+  const getIsActive = (sectionId: string) => {
+    if (pathname === "/") return activeSection === sectionId;
+    // On sub-pages: match pathname
+    return pathname === `/${sectionId}`;
+  };
 
   const navLabels: Record<string, string> = {
     home: t.nav.home, about: t.nav.about, travels: t.nav.travels, stories: t.nav.stories, collab: t.nav.collab,
@@ -72,18 +117,18 @@ export default function Navbar() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Link
-            href="/"
+          <button
+            onClick={() => scrollToSection("hero")}
             className="brand-ltr text-[20px] font-bold tracking-[4px] text-gradient"
-            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0, textDecoration: "none" }}
+            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0, textDecoration: "none", background: "none", border: "none", cursor: "pointer", padding: 0 }}
           >
             RANZODZ
-          </Link>
+          </button>
 
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <LangToggle />
-            <Link
-              href="/collab"
+            <button
+              onClick={() => scrollToSection("collab")}
               className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full"
               style={{
                 padding: "10px 24px",
@@ -91,11 +136,11 @@ export default function Navbar() {
                 boxShadow: "0 4px 20px var(--live-glow)", color: "#fff",
                 transition: "all 0.3s",
                 letterSpacing: lang === "ar" ? "0" : undefined,
-                textDecoration: "none",
+                border: "none", cursor: "pointer",
               }}
             >
               {t.nav.workWithMe}
-            </Link>
+            </button>
             <button
               className="md:hidden flex flex-col gap-[5px] p-2"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -114,15 +159,15 @@ export default function Navbar() {
           style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
         >
           {NAV_PAGES.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = getIsActive(link.sectionId);
             return (
-              <Link
-                key={link.href}
-                href={link.href}
+              <button
+                key={link.sectionId}
+                onClick={() => scrollToSection(link.sectionId)}
                 className="relative text-[11px] font-semibold uppercase transition-colors duration-200"
                 style={{
                   color: isActive ? "var(--white)" : "var(--muted)",
-                  textDecoration: "none",
+                  background: "none", border: "none", cursor: "pointer",
                   padding: "4px 0",
                   letterSpacing: lang === "ar" ? "0" : "2px",
                   fontFamily: lang === "ar" ? "'Cairo', system-ui, sans-serif" : undefined,
@@ -137,7 +182,7 @@ export default function Navbar() {
                     style={{ background: "linear-gradient(to right, var(--live-accent), var(--live-accent-bright))" }}
                   />
                 )}
-              </Link>
+              </button>
             );
           })}
         </div>
@@ -154,21 +199,29 @@ export default function Navbar() {
           >
             <nav className="flex flex-col items-center gap-8">
               {NAV_PAGES.map((link, i) => (
-                <motion.div key={link.href} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
+                <motion.div key={link.sectionId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}>
+                  <button
+                    onClick={() => scrollToSection(link.sectionId)}
                     className="text-[32px] font-light tracking-widest uppercase"
-                    style={{ fontFamily: "var(--font-display)", color: pathname === link.href ? "var(--live-accent-bright)" : "var(--white)", textDecoration: "none", letterSpacing: lang === "ar" ? "0" : undefined }}
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      color: getIsActive(link.sectionId) ? "var(--live-accent-bright)" : "var(--white)",
+                      background: "none", border: "none", cursor: "pointer",
+                      letterSpacing: lang === "ar" ? "0" : undefined,
+                    }}
                   >
                     {navLabels[link.labelKey]}
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-                <Link href="/collab" onClick={() => setMobileOpen(false)} className="mt-4 btn-primary" style={{ textDecoration: "none" }}>
+                <button
+                  onClick={() => scrollToSection("collab")}
+                  className="mt-4 btn-primary"
+                  style={{ border: "none", cursor: "pointer" }}
+                >
                   {t.nav.workWithMe}
-                </Link>
+                </button>
               </motion.div>
             </nav>
             <div className="absolute bottom-12 flex gap-6">

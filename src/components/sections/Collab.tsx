@@ -152,7 +152,7 @@ export default function Collab() {
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", color: "var(--muted)", textAlign: "center", marginBottom: 20 }}>
             {t.collab.workedWith}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+          <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 10, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
             {t.collab.brandCategories.map((cat, i) => (
               <motion.div
                 key={i}
@@ -162,6 +162,7 @@ export default function Collab() {
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "10px 18px", borderRadius: 12,
+                  flexShrink: 0,
                   border: "1px solid var(--border)",
                   background: "rgba(255,255,255,0.025)",
                   cursor: "default",

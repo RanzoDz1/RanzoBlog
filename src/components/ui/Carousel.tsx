@@ -14,6 +14,11 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
   const dragStartX      = useRef(0);
   const dragStartScroll = useRef(0);
 
+  // Velocity tracking for momentum
+  const lastClientX     = useRef(0);
+  const lastTimestamp   = useRef(0);
+  const velocityX       = useRef(0);
+
   const [canLeft,  setCanLeft]  = useState(false);
   const [canRight, setCanRight] = useState(true);
   const [dragging, setDragging] = useState(false);
@@ -27,10 +32,17 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
 
   useEffect(() => { update(); }, [update]);
 
+  const cancelAnim = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  };
+
   const animateScroll = (target: number) => {
     const t = trackRef.current;
     if (!t) return;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    cancelAnim();
     const start    = t.scrollLeft;
     const diff     = target - start;
     if (Math.abs(diff) < 1) return;
@@ -43,7 +55,30 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
       const p = Math.min((ts - startTime) / duration, 1);
       t.scrollLeft = start + diff * ease(p);
       if (p < 1) rafRef.current = requestAnimationFrame(step);
-      else update();
+      else { rafRef.current = null; update(); }
+    };
+    rafRef.current = requestAnimationFrame(step);
+  };
+
+  // Momentum glide after drag release
+  const applyMomentum = (initialVelocity: number) => {
+    const t = trackRef.current;
+    if (!t || Math.abs(initialVelocity) < 0.5) return;
+    cancelAnim();
+    // Friction: velocity decays each frame
+    const friction = 0.92;
+    let vel = initialVelocity;
+    const step = () => {
+      if (!trackRef.current) return;
+      vel *= friction;
+      trackRef.current.scrollLeft += vel;
+      update();
+      if (Math.abs(vel) > 0.5) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        rafRef.current = null;
+        update();
+      }
     };
     rafRef.current = requestAnimationFrame(step);
   };
@@ -52,6 +87,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
   const scroll = (dir: 1 | -1) => {
     const t = trackRef.current;
     if (!t) return;
+    cancelAnim();
     const card = t.querySelector("[data-card]") as HTMLElement | null;
     const step = card ? (card.offsetWidth + gap) * 2 : 500;
     animateScroll(t.scrollLeft + dir * step);
@@ -61,11 +97,14 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const t = trackRef.current;
     if (!t) return;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    isPointerDown.current  = true;
-    didDrag.current        = false;
-    dragStartX.current     = e.clientX;
+    cancelAnim();
+    isPointerDown.current   = true;
+    didDrag.current         = false;
+    dragStartX.current      = e.clientX;
     dragStartScroll.current = t.scrollLeft;
+    lastClientX.current     = e.clientX;
+    lastTimestamp.current   = e.timeStamp;
+    velocityX.current       = 0;
     t.setPointerCapture(e.pointerId);
   };
 
@@ -80,13 +119,28 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     }
     if (didDrag.current) {
       t.scrollLeft = dragStartScroll.current + delta;
+
+      // Track velocity (pixels per ms → convert to per frame ~16ms)
+      const dt = e.timeStamp - lastTimestamp.current;
+      if (dt > 0) {
+        const rawVel = (lastClientX.current - e.clientX) / dt * 16;
+        // Smooth velocity with a little blending
+        velocityX.current = velocityX.current * 0.5 + rawVel * 0.5;
+      }
+      lastClientX.current   = e.clientX;
+      lastTimestamp.current = e.timeStamp;
+
       update();
     }
   };
 
   const onPointerUp = () => {
+    if (!isPointerDown.current) return;
     isPointerDown.current = false;
     setDragging(false);
+    if (didDrag.current) {
+      applyMomentum(velocityX.current);
+    }
   };
 
   // Only block child clicks when a real drag occurred

@@ -117,7 +117,7 @@ export default function Platforms() {
   const isAr = lang === "ar";
 
   return (
-    <section ref={sectionRef} className="section" style={{ background: "var(--black)", paddingTop: "clamp(64px, 8vw, 96px)", paddingBottom: "clamp(64px, 8vw, 96px)" }}>
+    <section id="platforms" ref={sectionRef} className="section" style={{ background: "var(--black)", paddingTop: "clamp(64px, 8vw, 96px)", paddingBottom: "clamp(64px, 8vw, 96px)" }}>
       {/* top accent glow */}
       <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[700px] h-[250px] pointer-events-none"
         style={{ background: "radial-gradient(ellipse at 50% 0%, var(--live-accent-08) 0%, transparent 70%)", filter: "blur(60px)" }} />
@@ -163,13 +163,12 @@ export default function Platforms() {
           {PLATFORMS.map((platform, i) => {
             const PlatformIcon = ICONS[platform.name];
             return (
-              <motion.a
+              <motion.div
                 key={platform.name}
-                href={platform.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                draggable={false}
-                onDragStart={(e: React.DragEvent) => e.preventDefault()}
+                onClick={() => window.open(platform.url, '_blank', 'noopener,noreferrer')}
+                role="link"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') window.open(platform.url, '_blank', 'noopener,noreferrer'); }}
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.07, duration: 0.5, ease }}
@@ -182,7 +181,6 @@ export default function Platforms() {
                   borderRadius: 16,
                   border: `1px solid ${platform.color}22`,
                   background: platform.bg,
-                  textDecoration: "none",
                   position: "relative",
                   overflow: "hidden",
                   cursor: "pointer",
@@ -257,7 +255,7 @@ export default function Platforms() {
                 }}>
                   →
                 </div>
-              </motion.a>
+              </motion.div>
             );
           })}
         </Carousel>
