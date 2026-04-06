@@ -6,6 +6,16 @@ const Preloader    = dynamic(() => import("@/components/ui/Preloader"),    { ssr
 const CustomCursor = dynamic(() => import("@/components/ui/CustomCursor"), { ssr: false });
 const ScrollTheme  = dynamic(() => import("@/components/ui/ScrollTheme"),  { ssr: false });
 
+// Always start at the top on page load / hard refresh
+function ScrollToTop() {
+  useEffect(() => {
+    // Disable browser scroll restoration so it doesn't fight us
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, []);
+  return null;
+}
+
 // Scroll to a target section after page load (URL hash fallback)
 function HashScroll() {
   useEffect(() => {
@@ -46,6 +56,7 @@ function BackInterceptor() {
 export default function ClientShell() {
   return (
     <>
+      <ScrollToTop />
       <HashScroll />
       <BackInterceptor />
       <Preloader />
