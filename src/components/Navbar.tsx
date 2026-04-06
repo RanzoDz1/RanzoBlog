@@ -58,26 +58,34 @@ export default function Navbar() {
     setMobileOpen(false);
     setIsNavigating(true);
 
-    // Phase 1: overlay slides in FROM RIGHT (always, regardless of page)
+    // Phase 1: overlay slides in FROM RIGHT (always)
     await overlayControls.start({
       x: "0%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
     });
 
-    if (pathname !== "/") {
-      // On sub-pages → push to homepage with hash, wait for HashScroll (600 ms + buffer)
-      router.push(sectionId === "hero" ? "/" : `/#${sectionId}`);
-      await new Promise<void>((r) => setTimeout(r, 750));
-    } else {
-      // On homepage → instant scroll while covered
-      if (sectionId === "hero") {
+    if (sectionId === "hero") {
+      // Hero: scroll to top on homepage, navigate to "/" on sub-pages
+      if (pathname === "/") {
         window.scrollTo({ top: 0 });
+        await new Promise<void>((r) => setTimeout(r, 30));
       } else {
-        const el = document.getElementById(sectionId);
-        if (el) el.scrollIntoView();
+        router.push("/");
+        await new Promise<void>((r) => setTimeout(r, 750));
       }
-      // Tiny pause so the new view is ready
-      await new Promise<void>((r) => setTimeout(r, 30));
+    } else {
+      // Check if the target element exists on the CURRENT page
+      const el = document.getElementById(sectionId);
+      if (el) {
+        // Element found → scroll in place (no URL change)
+        el.scrollIntoView();
+        await new Promise<void>((r) => setTimeout(r, 30));
+      } else {
+        // Not on this page → store target and navigate to homepage (clean URL)
+        sessionStorage.setItem("navScrollTo", sectionId);
+        router.push("/");
+        await new Promise<void>((r) => setTimeout(r, 750));
+      }
     }
 
     // Phase 2: overlay slides OUT TO LEFT

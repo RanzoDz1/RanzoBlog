@@ -98,8 +98,8 @@ export default function Travels() {
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.2 }}
-            className="w-full"
-            style={{ maxWidth: 860, marginBottom: 40, display: "flex", justifyContent: "center", overflowX: "auto", gap: 12, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}
+            className="w-full flex md:justify-center overflow-x-auto"
+            style={{ maxWidth: 860, marginBottom: 40, gap: 12, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}
           >
             {continents.map((cont) => (
               <button
@@ -107,9 +107,9 @@ export default function Travels() {
                 onClick={() => handleContinentClick(cont.id)}
                 className="relative rounded-xl text-left transition-all duration-300"
                 style={{
-                  padding: "20px 18px",
+                  padding: "16px 14px",
                   flexShrink: 0,
-                  minWidth: 140,
+                  minWidth: 120,
                   border: active === cont.id ? `1px solid ${cont.color}40` : "1px solid var(--border)",
                   background: active === cont.id ? `${cont.color}12` : "rgba(255,255,255,0.02)",
                 }}
@@ -121,14 +121,14 @@ export default function Travels() {
                     style={{ background: `${cont.color}08`, boxShadow: `0 0 40px ${cont.color}20` }}
                   />
                 )}
-                <div style={{ fontSize: 24, marginBottom: 12 }}>{cont.emoji}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6, color: active === cont.id ? "var(--white)" : "var(--muted)" }}>
+                <div style={{ fontSize: 22, marginBottom: 8 }}>{cont.emoji}</div>
+                <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4, color: active === cont.id ? "var(--white)" : "var(--muted)" }}>
                   {t.travels.continents[cont.id as keyof typeof t.travels.continents] ?? cont.name}
                 </div>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, lineHeight: 1, color: active === cont.id ? cont.color : "var(--muted)" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, lineHeight: 1, color: active === cont.id ? cont.color : "var(--muted)" }}>
                   {cont.countries.length}
                 </div>
-                <div style={{ fontSize: 9, letterSpacing: lang === "ar" ? "0" : "2px", textTransform: "uppercase" as const, color: "var(--muted)", marginTop: 4 }}>{lang === "ar" ? "دولة" : "countries"}</div>
+                <div style={{ fontSize: 9, letterSpacing: lang === "ar" ? "0" : "2px", textTransform: "uppercase" as const, color: "var(--muted)", marginTop: 3 }}>{lang === "ar" ? "دولة" : "countries"}</div>
               </button>
             ))}
           </motion.div>
