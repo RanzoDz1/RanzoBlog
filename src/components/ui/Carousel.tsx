@@ -7,17 +7,15 @@ interface CarouselProps {
 }
 
 export default function Carousel({ children, gap = 16 }: CarouselProps) {
-  const trackRef   = useRef<HTMLDivElement>(null);
-  const rafRef     = useRef<number | null>(null);
+  const trackRef        = useRef<HTMLDivElement>(null);
+  const rafRef          = useRef<number | null>(null);
+  const isPointerDown   = useRef(false);
+  const didDrag         = useRef(false);
+  const dragStartX      = useRef(0);
+  const dragStartScroll = useRef(0);
+
   const [canLeft,  setCanLeft]  = useState(false);
   const [canRight, setCanRight] = useState(true);
-  const [pressing, setPressing] = useState<-1 | 0 | 1>(0);
-
-  // drag state
-  const isPointerDown  = useRef(false);
-  const didDrag        = useRef(false);   // true only if moved >5px
-  const dragStartX     = useRef(0);
-  const dragStartScroll = useRef(0);
   const [dragging, setDragging] = useState(false);
 
   const update = useCallback(() => {
@@ -33,39 +31,40 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     const t = trackRef.current;
     if (!t) return;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    const start = t.scrollLeft;
-    const diff  = target - start;
+    const start    = t.scrollLeft;
+    const diff     = target - start;
     if (Math.abs(diff) < 1) return;
-    const duration = 480;
+    const duration = 420;
     let startTime: number | null = null;
     const ease = (x: number) =>
       x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     const step = (ts: number) => {
       if (!startTime) startTime = ts;
-      const progress = Math.min((ts - startTime) / duration, 1);
-      t.scrollLeft = start + diff * ease(progress);
-      if (progress < 1) rafRef.current = requestAnimationFrame(step);
+      const p = Math.min((ts - startTime) / duration, 1);
+      t.scrollLeft = start + diff * ease(p);
+      if (p < 1) rafRef.current = requestAnimationFrame(step);
       else update();
     };
     rafRef.current = requestAnimationFrame(step);
   };
 
+  // Scroll 2 cards at a time
   const scroll = (dir: 1 | -1) => {
     const t = trackRef.current;
     if (!t) return;
     const card = t.querySelector("[data-card]") as HTMLElement | null;
-    const step = card ? card.offsetWidth + gap : 300;
+    const step = card ? (card.offsetWidth + gap) * 2 : 500;
     animateScroll(t.scrollLeft + dir * step);
   };
 
-  // ── Pointer events (mouse + touch unified) ──────────────────
-  const onPointerDown = (e: React.PointerEvent) => {
+  // ── Pointer drag (unified mouse + touch) ───────────────────
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     const t = trackRef.current;
     if (!t) return;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    isPointerDown.current = true;
-    didDrag.current = false;
-    dragStartX.current = e.clientX;
+    isPointerDown.current  = true;
+    didDrag.current        = false;
+    dragStartX.current     = e.clientX;
     dragStartScroll.current = t.scrollLeft;
     t.setPointerCapture(e.pointerId);
   };
@@ -90,7 +89,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     setDragging(false);
   };
 
-  // Block click on children only if a real drag happened
+  // Only block child clicks when a real drag occurred
   const onClickCapture = (e: React.MouseEvent) => {
     if (didDrag.current) {
       e.stopPropagation();
@@ -99,41 +98,40 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     }
   };
 
-  const BtnArrow = ({ dir }: { dir: 1 | -1 }) => {
+  // ── Arrow button (inside the track bounds) ─────────────────
+  const Arrow = ({ dir }: { dir: 1 | -1 }) => {
     const active = dir === -1 ? canLeft : canRight;
-    const isPress = pressing === dir;
     return (
       <button
-        onClick={() => active && scroll(dir)}
-        onMouseDown={() => active && setPressing(dir)}
-        onMouseUp={() => setPressing(0)}
-        onMouseLeave={() => setPressing(0)}
+        onPointerDown={e => e.stopPropagation()} // don't trigger carousel drag
+        onClick={e => { e.stopPropagation(); active && scroll(dir); }}
         aria-label={dir === -1 ? "Previous" : "Next"}
         style={{
           position: "absolute",
           top: "50%",
-          transform: isPress ? "translateY(-50%) scale(0.88)" : "translateY(-50%) scale(1)",
-          [dir === -1 ? "left" : "right"]: -22,
-          width: 44,
-          height: 44,
+          transform: "translateY(-50%)",
+          [dir === -1 ? "left" : "right"]: 6,
+          zIndex: 20,
+          width: 40,
+          height: 40,
           borderRadius: "50%",
-          border: `1px solid ${active ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.07)"}`,
-          background: active
-            ? isPress ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.10)"
-            : "rgba(255,255,255,0.02)",
-          color: active ? "#fff" : "rgba(255,255,255,0.18)",
-          fontSize: 22,
+          border: `1px solid ${active ? "rgba(255,255,255,0.30)" : "rgba(255,255,255,0.08)"}`,
+          background: active ? "rgba(10,10,14,0.80)" : "rgba(10,10,14,0.40)",
+          backdropFilter: "blur(12px)",
+          color: active ? "#fff" : "rgba(255,255,255,0.20)",
+          fontSize: 20,
           lineHeight: 1,
           cursor: active ? "pointer" : "default",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          zIndex: 10,
-          transition: "background 0.18s, border-color 0.18s, transform 0.12s, color 0.18s",
-          backdropFilter: "blur(10px)",
+          transition: "background 0.18s, border-color 0.18s, color 0.18s, transform 0.12s",
           flexShrink: 0,
           userSelect: "none",
+          pointerEvents: "auto",
         }}
+        onMouseEnter={e => { if (active) (e.currentTarget as HTMLElement).style.background = "rgba(30,30,40,0.95)"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = active ? "rgba(10,10,14,0.80)" : "rgba(10,10,14,0.40)"; }}
       >
         {dir === -1 ? "‹" : "›"}
       </button>
@@ -142,7 +140,9 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
 
   return (
     <div style={{ position: "relative", width: "100%" }}>
-      <BtnArrow dir={-1} />
+      {/* Arrows sit inside the wrapper — never clipped */}
+      <Arrow dir={-1} />
+      <Arrow dir={1} />
 
       {/* Track */}
       <div
@@ -167,13 +167,15 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
         }}
       >
         {children.map((child, i) => (
-          <div key={i} data-card style={{ scrollSnapAlign: "start", flexShrink: 0, display: "flex", alignSelf: "stretch" }}>
+          <div
+            key={i}
+            data-card
+            style={{ scrollSnapAlign: "start", flexShrink: 0, display: "flex", alignSelf: "stretch" }}
+          >
             {child}
           </div>
         ))}
       </div>
-
-      <BtnArrow dir={1} />
 
       <style>{`
         div[style*="overflow-x: auto"]::-webkit-scrollbar { display: none; }
