@@ -49,27 +49,30 @@ export default function Navbar() {
   // ── Page-transition slide ─────────────────────────────────
   const navigateTo = async (sectionId: string) => {
     if (isNavigating) return;
-    setMobileOpen(false);
+    // Do NOT close the mobile menu yet — let the overlay cover it first
     setIsNavigating(true);
 
-    // Phase 1: overlay slides in FROM RIGHT
+    // Phase 1: overlay slides in FROM RIGHT (covers everything including open mobile menu)
     await overlayControls.start({
       x: "0%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
     });
 
-    // Phase 2: instant scroll while covered
+    // Now close mobile menu instantly while hidden under overlay
+    setMobileOpen(false);
+
+    // Phase 2: INSTANT scroll while covered (no visible scroll animation)
     if (sectionId === "hero") {
-      window.scrollTo({ top: 0 });
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     } else {
       const el = document.getElementById(sectionId);
-      if (el) el.scrollIntoView();
+      if (el) el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
     }
 
     // Phase 3: tiny pause so new view is ready
     await new Promise<void>((r) => setTimeout(r, 30));
 
-    // Phase 4: overlay slides OUT TO LEFT
+    // Phase 4: overlay slides OUT TO LEFT revealing the section
     await overlayControls.start({
       x: "-100%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
