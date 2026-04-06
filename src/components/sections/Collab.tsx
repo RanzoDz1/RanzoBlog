@@ -129,7 +129,7 @@ export default function Collab() {
           className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
           <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 16 }}>
             {t.collab.types.map((type, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              <motion.div key={i} initial={false} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease }}
                 className="rounded-xl text-center transition-all duration-300"
                 style={{ padding: "32px 20px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}
@@ -156,7 +156,7 @@ export default function Collab() {
             {t.collab.brandCategories.map((cat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.92 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.32 + i * 0.06, duration: 0.4, ease }}
                 style={{
@@ -208,7 +208,7 @@ export default function Collab() {
                   return (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, x: -16 }}
+                    initial={false}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.38 + i * 0.09, duration: 0.45, ease }}
                     onClick={() => selectPackage(pkg)}

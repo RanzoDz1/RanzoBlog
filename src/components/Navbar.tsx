@@ -7,6 +7,7 @@ import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
 const NAV_PAGES = [
+  { href: "/",        labelKey: "home"    },
   { href: "/about",   labelKey: "about"   },
   { href: "/travels", labelKey: "travels" },
   { href: "/stories", labelKey: "stories" },
@@ -32,7 +33,7 @@ export default function Navbar() {
   useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   const navLabels: Record<string, string> = {
-    about: t.nav.about, travels: t.nav.travels, stories: t.nav.stories, collab: t.nav.collab,
+    home: t.nav.home, about: t.nav.about, travels: t.nav.travels, stories: t.nav.stories, collab: t.nav.collab,
   };
 
   const LangToggle = () => (

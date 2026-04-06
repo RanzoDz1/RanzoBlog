@@ -135,14 +135,8 @@ export default function Travels() {
 
           {/* ── COUNTRY CHIPS + PHOTOS ── */}
           <div className="w-full" style={{ maxWidth: 860 }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={false}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.35, ease }}
-              >
+            <div>
+              <div key={active}>
                 {/* Continent label */}
                 <div className="flex items-center" style={{ gap: 16, marginBottom: 20 }}>
                   <span style={{ fontSize: 32 }}>{activeCont.emoji}</span>
@@ -241,8 +235,8 @@ export default function Travels() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            </div>
 
             <motion.p
               initial={false}

@@ -7,7 +7,7 @@ export type Lang = "en" | "ar";
 // ── English ───────────────────────────────────────────────────────────────────
 const EN = {
   nav: {
-    about: "About", travels: "Travels", stories: "Stories",
+    home: "Home", about: "About", travels: "Travels", stories: "Stories",
     collab: "Collab", workWithMe: "Work With Me",
   },
   hero: {
@@ -209,7 +209,7 @@ const EN = {
 // ── Arabic (Algerian Darija — الدارجة الجزائرية) ─────────────────────────────
 const AR: typeof EN = {
   nav: {
-    about: "عليا", travels: "رحلاتي", stories: "قصصي",
+    home: "الرئيسية", about: "عليا", travels: "رحلاتي", stories: "قصصي",
     collab: "تعاون", workWithMe: "تواصل معايا",
   },
   hero: {

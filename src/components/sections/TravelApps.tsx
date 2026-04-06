@@ -60,8 +60,12 @@ export default function TravelApps() {
                   padding: "32px 24px",
                   border: "1px solid var(--border)",
                   background: "rgba(255,255,255,0.02)",
-                  display: "block",
+                  display: "flex",
+                  flexDirection: "column" as const,
+                  alignItems: "center",
                   width: 220,
+                  height: "100%",
+                  boxSizing: "border-box" as const,
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = `${app.color}50`;

@@ -13,6 +13,12 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
   const [canRight, setCanRight] = useState(true);
   const [pressing, setPressing] = useState<-1 | 0 | 1>(0);
 
+  // drag state
+  const isDragging   = useRef(false);
+  const dragStartX   = useRef(0);
+  const dragStartScroll = useRef(0);
+  const [dragging, setDragging] = useState(false);
+
   const update = useCallback(() => {
     const t = trackRef.current;
     if (!t) return;
@@ -20,7 +26,6 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     setCanRight(t.scrollLeft < t.scrollWidth - t.clientWidth - 8);
   }, []);
 
-  // Initial check
   useEffect(() => { update(); }, [update]);
 
   const animateScroll = (target: number) => {
@@ -32,10 +37,9 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     const diff  = target - start;
     if (Math.abs(diff) < 1) return;
 
-    const duration = 480; // ms — feels snappy but silky
+    const duration = 480;
     let startTime: number | null = null;
 
-    // Cubic ease-in-out
     const ease = (x: number) =>
       x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 
@@ -59,6 +63,51 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     const card = t.querySelector("[data-card]") as HTMLElement | null;
     const step = card ? card.offsetWidth + gap : 300;
     animateScroll(t.scrollLeft + dir * step);
+  };
+
+  // ── Mouse drag ──────────────────────────────────────────────
+  const onMouseDown = (e: React.MouseEvent) => {
+    const t = trackRef.current;
+    if (!t) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    isDragging.current = true;
+    dragStartX.current = e.clientX;
+    dragStartScroll.current = t.scrollLeft;
+    setDragging(true);
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const t = trackRef.current;
+    if (!t) return;
+    const delta = dragStartX.current - e.clientX;
+    t.scrollLeft = dragStartScroll.current + delta;
+    update();
+  };
+  const onMouseUp = () => {
+    isDragging.current = false;
+    setDragging(false);
+  };
+
+  // ── Touch drag ───────────────────────────────────────────────
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = trackRef.current;
+    if (!t) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    isDragging.current = true;
+    dragStartX.current = e.touches[0].clientX;
+    dragStartScroll.current = t.scrollLeft;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging.current) return;
+    const t = trackRef.current;
+    if (!t) return;
+    const delta = dragStartX.current - e.touches[0].clientX;
+    t.scrollLeft = dragStartScroll.current + delta;
+    update();
+  };
+  const onTouchEnd = () => {
+    isDragging.current = false;
+    setDragging(false);
   };
 
   const BtnArrow = ({ dir }: { dir: 1 | -1 }) => {
@@ -108,10 +157,17 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     <div style={{ position: "relative", width: "100%" }}>
       <BtnArrow dir={-1} />
 
-      {/* Track — hide scrollbar */}
+      {/* Track */}
       <div
         ref={trackRef}
         onScroll={update}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
         style={{
           display: "flex",
           gap,
@@ -119,11 +175,13 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
           scrollbarWidth: "none",
           msOverflowStyle: "none",
           padding: "6px 4px 14px",
-          cursor: "grab",
+          cursor: dragging ? "grabbing" : "grab",
+          userSelect: "none",
+          WebkitOverflowScrolling: "touch",
         }}
       >
         {children.map((child, i) => (
-          <div key={i} data-card style={{ scrollSnapAlign: "start", flexShrink: 0 }}>
+          <div key={i} data-card style={{ scrollSnapAlign: "start", flexShrink: 0, display: "flex", alignSelf: "stretch" }}>
             {child}
           </div>
         ))}
@@ -132,7 +190,6 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
       <BtnArrow dir={1} />
 
       <style>{`
-        [data-radix-scroll-area-viewport]::-webkit-scrollbar { display: none; }
         div[style*="overflow-x: auto"]::-webkit-scrollbar { display: none; }
       `}</style>
     </div>
