@@ -116,7 +116,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     const t = trackRef.current;
     if (!t) return;
     const delta = dragStartX.current - e.clientX;
-    if (!didDrag.current && Math.abs(delta) > 5) {
+    if (!didDrag.current && Math.abs(delta) > 12) {
       didDrag.current = true;
       setDragging(true);
     }
