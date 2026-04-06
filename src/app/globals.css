@@ -1,5 +1,6 @@
 /* ── FONTS ── */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
 
 @import "tailwindcss";
 
@@ -277,8 +278,6 @@ button { border: none; background: none; font-family: inherit; }
 .skip-link:focus { top: 0; }
 
 /* ── ARABIC / RTL SUPPORT ── */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
-
 /* When Arabic is active, switch font vars and remove letter-spacing */
 [data-lang="ar"] {
   --font-display: 'Cairo', system-ui, sans-serif;
