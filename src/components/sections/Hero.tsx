@@ -2,7 +2,6 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { IMAGES } from "@/lib/images";
 import { STATS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
@@ -451,17 +450,17 @@ export default function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
         style={{ opacity: useTransform(smoothProgress, [0, 0.3], [1, 0]) as unknown as number }}
       >
-        <Link
-          href="/about"
+        <button
+          onClick={() => { const el = document.getElementById("about"); if (el) el.scrollIntoView({ behavior: "smooth" }); }}
           className="flex flex-col items-center gap-3"
-          style={{ textDecoration: "none" }}
-          aria-label="Go to About"
+          style={{ background: "none", border: "none", cursor: "pointer", textDecoration: "none", padding: 0 }}
+          aria-label="Scroll to About"
         >
           <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "3px", textTransform: "uppercase" as const, color: "var(--muted)" }}>{t.hero.scroll}</span>
           <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
             <div className="w-full h-full" style={{ background: "linear-gradient(to bottom, var(--purple-l), var(--blue-l))", animation: "scroll-line 2.5s ease-in-out infinite" }} />
           </div>
-        </Link>
+        </button>
       </motion.div>
     </section>
   );
