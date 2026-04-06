@@ -89,7 +89,7 @@ export default function Footer() {
             {[
               { id: "about",   en: "About",   ar: "عليا" },
               { id: "travels", en: "Travels", ar: "رحلاتي" },
-              { id: "stories", en: "Stories", ar: "قصصي" },
+              { id: "stories", en: "Stories", ar: "ابني موقعك" },
               { id: "collab",  en: "Collab",  ar: "تعاون" },
             ].map((item, i) => (
               <motion.button
