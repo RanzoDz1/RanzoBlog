@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useAnimation } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
@@ -15,8 +14,6 @@ const NAV_PAGES = [
 
 export default function Navbar() {
   const { t, lang, setLang } = useT();
-  const pathname = usePathname();
-  const router = useRouter();
   const [scrolled, setScrolled]       = useState(false);
   const [hidden, setHidden]           = useState(false);
   const [mobileOpen, setMobileOpen]   = useState(false);
@@ -32,9 +29,8 @@ export default function Navbar() {
     lastY.current = y;
   });
 
-  // Track active section via IntersectionObserver on homepage
+  // Track active section via IntersectionObserver
   useEffect(() => {
-    if (pathname !== "/") return;
     const ids = ["hero", "about", "travels", "stories", "collab"];
     const obs: IntersectionObserver[] = [];
     ids.forEach((id) => {
@@ -48,9 +44,7 @@ export default function Navbar() {
       obs.push(o);
     });
     return () => obs.forEach((o) => o.disconnect());
-  }, [pathname]);
-
-  useEffect(() => { setMobileOpen(false); }, [pathname]);
+  }, []);
 
   // ── Page-transition slide ─────────────────────────────────
   const navigateTo = async (sectionId: string) => {
@@ -58,37 +52,24 @@ export default function Navbar() {
     setMobileOpen(false);
     setIsNavigating(true);
 
-    // Phase 1: overlay slides in FROM RIGHT (always)
+    // Phase 1: overlay slides in FROM RIGHT
     await overlayControls.start({
       x: "0%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
     });
 
+    // Phase 2: instant scroll while covered
     if (sectionId === "hero") {
-      // Hero: scroll to top on homepage, navigate to "/" on sub-pages
-      if (pathname === "/") {
-        window.scrollTo({ top: 0 });
-        await new Promise<void>((r) => setTimeout(r, 30));
-      } else {
-        router.push("/");
-        await new Promise<void>((r) => setTimeout(r, 750));
-      }
+      window.scrollTo({ top: 0 });
     } else {
-      // Check if the target element exists on the CURRENT page
       const el = document.getElementById(sectionId);
-      if (el) {
-        // Element found → scroll in place (no URL change)
-        el.scrollIntoView();
-        await new Promise<void>((r) => setTimeout(r, 30));
-      } else {
-        // Not on this page → store target and navigate to homepage (clean URL)
-        sessionStorage.setItem("navScrollTo", sectionId);
-        router.push("/");
-        await new Promise<void>((r) => setTimeout(r, 750));
-      }
+      if (el) el.scrollIntoView();
     }
 
-    // Phase 2: overlay slides OUT TO LEFT
+    // Phase 3: tiny pause so new view is ready
+    await new Promise<void>((r) => setTimeout(r, 30));
+
+    // Phase 4: overlay slides OUT TO LEFT
     await overlayControls.start({
       x: "-100%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
@@ -99,10 +80,7 @@ export default function Navbar() {
     setIsNavigating(false);
   };
 
-  const getIsActive = (sectionId: string) => {
-    if (pathname === "/") return activeSection === sectionId;
-    return pathname === `/${sectionId}`;
-  };
+  const getIsActive = (sectionId: string) => activeSection === sectionId;
 
   const navLabels: Record<string, string> = {
     home: t.nav.home, about: t.nav.about, travels: t.nav.travels,

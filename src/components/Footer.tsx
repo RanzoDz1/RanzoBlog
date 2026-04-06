@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
@@ -85,19 +84,22 @@ export default function Footer() {
           {/* Nav links */}
           <div className="flex gap-8">
             {[
-              { href: "/about",   en: "About",   ar: "عليا" },
-              { href: "/travels", en: "Travels", ar: "رحلاتي" },
-              { href: "/stories", en: "Stories", ar: "قصصي" },
-              { href: "/collab",  en: "Collab",  ar: "تعاون" },
+              { id: "about",   en: "About",   ar: "عليا" },
+              { id: "travels", en: "Travels", ar: "رحلاتي" },
+              { id: "stories", en: "Stories", ar: "قصصي" },
+              { id: "collab",  en: "Collab",  ar: "تعاون" },
             ].map(item => (
-              <Link
-                key={item.href}
-                href={item.href}
+              <button
+                key={item.id}
+                onClick={() => {
+                  const el = document.getElementById(item.id);
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="text-[10px] font-semibold uppercase transition-colors duration-200 hover:text-white"
-                style={{ color: "var(--muted)", letterSpacing: lang === "ar" ? "0" : "2px", textDecoration: "none" }}
+                style={{ color: "var(--muted)", letterSpacing: lang === "ar" ? "0" : "2px", background: "none", border: "none", cursor: "pointer", padding: 0 }}
               >
                 {lang === "ar" ? item.ar : item.en}
-              </Link>
+              </button>
             ))}
           </div>
 
