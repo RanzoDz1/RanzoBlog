@@ -1,5 +1,6 @@
 "use client";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
@@ -54,6 +55,8 @@ const SOCIAL_ICONS: Record<string, React.ReactNode> = {
 
 export default function Footer() {
   const { t, lang } = useT();
+  const navRef = useRef<HTMLDivElement>(null);
+  const navInView = useInView(navRef, { once: true, margin: "-40px" });
 
   return (
     <footer
@@ -82,15 +85,18 @@ export default function Footer() {
           </div>
 
           {/* Nav links */}
-          <div className="flex gap-8">
+          <div ref={navRef} className="flex gap-8">
             {[
               { id: "about",   en: "About",   ar: "عليا" },
               { id: "travels", en: "Travels", ar: "رحلاتي" },
               { id: "stories", en: "Stories", ar: "قصصي" },
               { id: "collab",  en: "Collab",  ar: "تعاون" },
-            ].map(item => (
-              <button
+            ].map((item, i) => (
+              <motion.button
                 key={item.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={navInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94], delay: i * 0.08 }}
                 onClick={() => {
                   const el = document.getElementById(item.id);
                   if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -99,7 +105,7 @@ export default function Footer() {
                 style={{ color: "var(--muted)", letterSpacing: lang === "ar" ? "0" : "2px", background: "none", border: "none", cursor: "pointer", padding: 0 }}
               >
                 {lang === "ar" ? item.ar : item.en}
-              </button>
+              </motion.button>
             ))}
           </div>
 

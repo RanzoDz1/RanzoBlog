@@ -150,17 +150,40 @@ export default function Travels() {
                   </div>
                 </div>
 
-                {/* Country chips — horizontal scroll on mobile, wrap all visible on desktop */}
-                <div className="flex flex-nowrap overflow-x-auto md:flex-wrap md:overflow-x-visible" style={{ gap: 8, marginBottom: 24, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
+                {/* Country chips — scroll row on mobile, all wrapped on desktop */}
+                <div className="hidden md:flex md:flex-wrap" style={{ gap: 8, marginBottom: 24 }}>
                   {activeCont.countries.map((c, i) => {
                     const hasPhotos = !!(dynamicPhotos[c.name] && dynamicPhotos[c.name].length > 0);
                     const isSelected = selectedCountry === c.name;
                     return (
-                      <motion.button
+                      <button
                         key={c.name}
-                        initial={false}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.03, duration: 0.3 }}
+                        onClick={() => hasPhotos && handleCountryClick(c.name)}
+                        className="flex items-center rounded-full transition-all duration-300"
+                        style={{
+                          gap: 8, padding: "8px 16px",
+                          border: isSelected ? `1px solid ${activeCont.color}80` : hasPhotos ? `1px solid ${activeCont.color}30` : "1px solid var(--border)",
+                          background: isSelected ? `${activeCont.color}18` : "rgba(255,255,255,0.02)",
+                          fontSize: 12,
+                          color: isSelected ? "var(--white)" : hasPhotos ? activeCont.color : "var(--muted)",
+                          cursor: hasPhotos ? "pointer" : "default",
+                        }}
+                      >
+                        <span style={{ fontSize: 16 }}>{c.flag}</span>
+                        <span style={{ fontWeight: 500 }}>{tr(COUNTRY_NAMES_AR, c.name, lang)}</span>
+                        {hasPhotos && <span style={{ fontSize: 10, opacity: 0.7 }}>📷</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+                {/* Mobile: horizontal scroll row */}
+                <div className="flex md:hidden" style={{ flexWrap: "nowrap", overflowX: "auto", gap: 8, marginBottom: 24, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
+                  {activeCont.countries.map((c, i) => {
+                    const hasPhotos = !!(dynamicPhotos[c.name] && dynamicPhotos[c.name].length > 0);
+                    const isSelected = selectedCountry === c.name;
+                    return (
+                      <button
+                        key={c.name}
                         onClick={() => hasPhotos && handleCountryClick(c.name)}
                         className="flex items-center rounded-full transition-all duration-300"
                         style={{
@@ -177,10 +200,10 @@ export default function Travels() {
                         <span style={{ fontSize: 16 }}>{c.flag}</span>
                         <span style={{ fontWeight: 500 }}>{tr(COUNTRY_NAMES_AR, c.name, lang)}</span>
                         {hasPhotos && <span style={{ fontSize: 10, opacity: 0.7 }}>📷</span>}
-                      </motion.button>
+                      </button>
                     );
                   })}
-                </div>
+                </div>{/* end mobile scroll row */}
 
                 {/* Country photos panel */}
                 <AnimatePresence>
