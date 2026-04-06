@@ -56,33 +56,31 @@ export default function Navbar() {
   const navigateTo = async (sectionId: string) => {
     if (isNavigating) return;
     setMobileOpen(false);
-
-    // On sub-pages → push to homepage with hash (HashScroll handles the rest)
-    if (pathname !== "/") {
-      router.push(sectionId === "hero" ? "/" : `/#${sectionId}`);
-      return;
-    }
-
     setIsNavigating(true);
 
-    // Phase 1: overlay slides in FROM RIGHT
+    // Phase 1: overlay slides in FROM RIGHT (always, regardless of page)
     await overlayControls.start({
       x: "0%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
     });
 
-    // Phase 2: instant scroll while covered
-    if (sectionId === "hero") {
-      window.scrollTo({ top: 0 });
+    if (pathname !== "/") {
+      // On sub-pages → push to homepage with hash, wait for HashScroll (600 ms + buffer)
+      router.push(sectionId === "hero" ? "/" : `/#${sectionId}`);
+      await new Promise<void>((r) => setTimeout(r, 750));
     } else {
-      const el = document.getElementById(sectionId);
-      if (el) el.scrollIntoView();
+      // On homepage → instant scroll while covered
+      if (sectionId === "hero") {
+        window.scrollTo({ top: 0 });
+      } else {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView();
+      }
+      // Tiny pause so the new view is ready
+      await new Promise<void>((r) => setTimeout(r, 30));
     }
 
-    // Phase 3: tiny pause so the new view is ready
-    await new Promise<void>((r) => setTimeout(r, 30));
-
-    // Phase 4: overlay slides OUT TO LEFT
+    // Phase 2: overlay slides OUT TO LEFT
     await overlayControls.start({
       x: "-100%",
       transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
@@ -164,7 +162,7 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <LangToggle />
             <button
-              onClick={() => navigateTo("collab")}
+              onClick={() => navigateTo("collab-form")}
               className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full"
               style={{
                 padding: "10px 24px",
@@ -252,7 +250,7 @@ export default function Navbar() {
               ))}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
                 <button
-                  onClick={() => navigateTo("collab")}
+                  onClick={() => navigateTo("collab-form")}
                   className="mt-4 btn-primary"
                   style={{ border: "none", cursor: "pointer" }}
                 >
