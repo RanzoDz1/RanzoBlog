@@ -99,7 +99,7 @@ export default function Travels() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.2 }}
             className="w-full"
-            style={{ maxWidth: 860, marginBottom: 40, display: "flex", overflowX: "auto", gap: 12, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}
+            style={{ maxWidth: 860, marginBottom: 40, display: "flex", justifyContent: "center", overflowX: "auto", gap: 12, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}
           >
             {continents.map((cont) => (
               <button
