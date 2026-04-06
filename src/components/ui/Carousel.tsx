@@ -14,8 +14,9 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
   const [pressing, setPressing] = useState<-1 | 0 | 1>(0);
 
   // drag state
-  const isDragging   = useRef(false);
-  const dragStartX   = useRef(0);
+  const isPointerDown  = useRef(false);
+  const didDrag        = useRef(false);   // true only if moved >5px
+  const dragStartX     = useRef(0);
   const dragStartScroll = useRef(0);
   const [dragging, setDragging] = useState(false);
 
@@ -32,28 +33,20 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     const t = trackRef.current;
     if (!t) return;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-
     const start = t.scrollLeft;
     const diff  = target - start;
     if (Math.abs(diff) < 1) return;
-
     const duration = 480;
     let startTime: number | null = null;
-
     const ease = (x: number) =>
       x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-
     const step = (ts: number) => {
       if (!startTime) startTime = ts;
       const progress = Math.min((ts - startTime) / duration, 1);
       t.scrollLeft = start + diff * ease(progress);
-      if (progress < 1) {
-        rafRef.current = requestAnimationFrame(step);
-      } else {
-        update();
-      }
+      if (progress < 1) rafRef.current = requestAnimationFrame(step);
+      else update();
     };
-
     rafRef.current = requestAnimationFrame(step);
   };
 
@@ -65,49 +58,45 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     animateScroll(t.scrollLeft + dir * step);
   };
 
-  // ── Mouse drag ──────────────────────────────────────────────
-  const onMouseDown = (e: React.MouseEvent) => {
+  // ── Pointer events (mouse + touch unified) ──────────────────
+  const onPointerDown = (e: React.PointerEvent) => {
     const t = trackRef.current;
     if (!t) return;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    isDragging.current = true;
+    isPointerDown.current = true;
+    didDrag.current = false;
     dragStartX.current = e.clientX;
     dragStartScroll.current = t.scrollLeft;
-    setDragging(true);
+    t.setPointerCapture(e.pointerId);
   };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isPointerDown.current) return;
     const t = trackRef.current;
     if (!t) return;
     const delta = dragStartX.current - e.clientX;
-    t.scrollLeft = dragStartScroll.current + delta;
-    update();
+    if (!didDrag.current && Math.abs(delta) > 5) {
+      didDrag.current = true;
+      setDragging(true);
+    }
+    if (didDrag.current) {
+      t.scrollLeft = dragStartScroll.current + delta;
+      update();
+    }
   };
-  const onMouseUp = () => {
-    isDragging.current = false;
+
+  const onPointerUp = () => {
+    isPointerDown.current = false;
     setDragging(false);
   };
 
-  // ── Touch drag ───────────────────────────────────────────────
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = trackRef.current;
-    if (!t) return;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    isDragging.current = true;
-    dragStartX.current = e.touches[0].clientX;
-    dragStartScroll.current = t.scrollLeft;
-  };
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging.current) return;
-    const t = trackRef.current;
-    if (!t) return;
-    const delta = dragStartX.current - e.touches[0].clientX;
-    t.scrollLeft = dragStartScroll.current + delta;
-    update();
-  };
-  const onTouchEnd = () => {
-    isDragging.current = false;
-    setDragging(false);
+  // Block click on children only if a real drag happened
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (didDrag.current) {
+      e.stopPropagation();
+      e.preventDefault();
+      didDrag.current = false;
+    }
   };
 
   const BtnArrow = ({ dir }: { dir: 1 | -1 }) => {
@@ -130,9 +119,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
           borderRadius: "50%",
           border: `1px solid ${active ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.07)"}`,
           background: active
-            ? isPress
-              ? "rgba(255,255,255,0.18)"
-              : "rgba(255,255,255,0.10)"
+            ? isPress ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.10)"
             : "rgba(255,255,255,0.02)",
           color: active ? "#fff" : "rgba(255,255,255,0.18)",
           fontSize: 22,
@@ -161,13 +148,11 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
       <div
         ref={trackRef}
         onScroll={update}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseUp}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onClickCapture={onClickCapture}
         style={{
           display: "flex",
           gap,
@@ -178,6 +163,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
           cursor: dragging ? "grabbing" : "grab",
           userSelect: "none",
           WebkitOverflowScrolling: "touch",
+          touchAction: "pan-y",
         }}
       >
         {children.map((child, i) => (
