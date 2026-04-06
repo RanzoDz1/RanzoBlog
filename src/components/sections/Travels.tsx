@@ -150,8 +150,8 @@ export default function Travels() {
                   </div>
                 </div>
 
-                {/* Country chips */}
-                <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 8, marginBottom: 24, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
+                {/* Country chips — horizontal scroll on mobile, wrap all visible on desktop */}
+                <div className="flex flex-nowrap overflow-x-auto md:flex-wrap md:overflow-x-visible" style={{ gap: 8, marginBottom: 24, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
                   {activeCont.countries.map((c, i) => {
                     const hasPhotos = !!(dynamicPhotos[c.name] && dynamicPhotos[c.name].length > 0);
                     const isSelected = selectedCountry === c.name;
