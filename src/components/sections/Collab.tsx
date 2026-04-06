@@ -128,20 +128,22 @@ export default function Collab() {
         <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.2 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
           <div className="overflow-x-auto md:overflow-x-visible" style={{ scrollbarWidth: "none", msOverflowStyle: "none", paddingBottom: 4 }}>
-          <div className="flex md:grid md:grid-cols-4" style={{ gap: 16 }}>
+          <div className="flex md:grid md:grid-cols-4" style={{ gap: 12 }}>
             {t.collab.types.map((type, i) => (
               <motion.div key={i} initial={false} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease }}
-                className="rounded-xl text-center transition-all duration-300"
-                style={{ flexShrink: 0, minWidth: 190, padding: "32px 20px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}
+                className="rounded-xl transition-all duration-300"
+                style={{ flexShrink: 0, minWidth: 170, padding: "14px 14px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)", display: "flex", alignItems: "flex-start", gap: 12 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${type.color}50`; (e.currentTarget as HTMLElement).style.background = `${type.color}08`; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}>
-                <div className="flex items-center justify-center mx-auto"
-                  style={{ width: 56, height: 56, borderRadius: 14, fontSize: 24, background: `${type.color}15`, border: `1px solid ${type.color}30`, marginBottom: 16 }}>
+                <div className="flex items-center justify-center flex-shrink-0"
+                  style={{ width: 36, height: 36, borderRadius: 10, fontSize: 18, background: `${type.color}15`, border: `1px solid ${type.color}30` }}>
                   {type.icon}
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{type.title}</div>
-                <div style={{ fontSize: 12, color: "var(--muted)", lineHeight: 1.7 }}>{type.desc}</div>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 4, lineHeight: 1.3 }}>{type.title}</div>
+                  <div style={{ fontSize: 11, color: "var(--muted)", lineHeight: 1.6 }}>{type.desc}</div>
+                </div>
               </motion.div>
             ))}
           </div>
