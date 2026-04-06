@@ -156,9 +156,29 @@ export default function Footer() {
           <p className="text-[11px]" style={{ color: "var(--muted)" }}>
             {t.footer.copyright}
           </p>
-          <p className="text-[11px]" style={{ color: "var(--muted)" }}>
-            ranzodzt@gmail.com
-          </p>
+          <div className="flex items-center gap-4">
+            <a
+              href="/privacy-policy"
+              className="text-[11px] transition-colors duration-200"
+              style={{ color: "var(--muted)", textDecoration: "none" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "rgba(248,248,240,0.8)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="/terms"
+              className="text-[11px] transition-colors duration-200"
+              style={{ color: "var(--muted)", textDecoration: "none" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "rgba(248,248,240,0.8)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
+            >
+              Terms
+            </a>
+            <p className="text-[11px]" style={{ color: "var(--muted)" }}>
+              ranzodzt@gmail.com
+            </p>
+          </div>
         </div>
       </div>
     </footer>

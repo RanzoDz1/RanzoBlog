@@ -7,7 +7,8 @@ const prisma = globalForPrisma._prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma._prisma = prisma;
 
 function auth(req: NextRequest) {
-  return req.headers.get("Authorization") === `Bearer ${process.env.ADMIN_SECRET}`;
+  const secret = (process.env.ADMIN_SECRET || "").trim();
+  return req.headers.get("Authorization") === `Bearer ${secret}`;
 }
 
 // GET /api/admin/content?key=...  (public — content is website data)

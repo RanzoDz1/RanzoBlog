@@ -15,7 +15,7 @@ export async function POST(request: Request) {
         }
 
         if (username === validUsername && password === validPassword) {
-            return NextResponse.json({ success: true, token: secretToken });
+            return NextResponse.json({ success: true, token: secretToken.trim() });
         } else {
             return NextResponse.json({ success: false, error: "Invalid credentials" }, { status: 401 });
         }

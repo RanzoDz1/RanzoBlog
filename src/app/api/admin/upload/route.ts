@@ -8,7 +8,8 @@ cloudinary.config({
 });
 
 function auth(req: NextRequest) {
-  return req.headers.get("Authorization") === `Bearer ${process.env.ADMIN_SECRET}`;
+  const secret = (process.env.ADMIN_SECRET || "").trim();
+  return req.headers.get("Authorization") === `Bearer ${secret}`;
 }
 
 export async function POST(req: NextRequest) {
