@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent, useAnimation } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
+import { useNavTransition } from "@/components/NavTransitionProvider";
 
 const NAV_PAGES = [
   { sectionId: "hero",    labelKey: "home"    },
@@ -14,12 +15,11 @@ const NAV_PAGES = [
 
 export default function Navbar() {
   const { t, lang, setLang } = useT();
+  const { navigateTo: slideNavigateTo } = useNavTransition();
   const [scrolled, setScrolled]       = useState(false);
   const [hidden, setHidden]           = useState(false);
   const [mobileOpen, setMobileOpen]   = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
-  const [isNavigating, setIsNavigating]   = useState(false);
-  const overlayControls = useAnimation();
   const lastY = useRef(0);
 
   const { scrollY } = useScroll();
@@ -47,40 +47,9 @@ export default function Navbar() {
   }, []);
 
   // ── Page-transition slide ─────────────────────────────────
-  const navigateTo = async (sectionId: string) => {
-    if (isNavigating) return;
-    // Do NOT close the mobile menu yet — let the overlay cover it first
-    setIsNavigating(true);
-
-    // Phase 1: overlay slides in FROM RIGHT (covers everything including open mobile menu)
-    await overlayControls.start({
-      x: "0%",
-      transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
-    });
-
-    // Now close mobile menu instantly while hidden under overlay
-    setMobileOpen(false);
-
-    // Phase 2: INSTANT scroll while covered (no visible scroll animation)
-    if (sectionId === "hero") {
-      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
-    }
-
-    // Phase 3: tiny pause so new view is ready
-    await new Promise<void>((r) => setTimeout(r, 30));
-
-    // Phase 4: overlay slides OUT TO LEFT revealing the section
-    await overlayControls.start({
-      x: "-100%",
-      transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
-    });
-
-    // Reset to right — ready for next navigation
-    overlayControls.set({ x: "100%" });
-    setIsNavigating(false);
+  const navigateTo = (sectionId: string) => {
+    // Close mobile menu only after overlay fully covers it
+    slideNavigateTo(sectionId, { onCovered: () => setMobileOpen(false) });
   };
 
   const getIsActive = (sectionId: string) => activeSection === sectionId;
@@ -112,18 +81,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Page-transition overlay ── */}
-      <motion.div
-        animate={overlayControls}
-        initial={{ x: "100%" }}
-        style={{
-          position: "fixed", inset: 0,
-          zIndex: 9998,
-          background: "var(--black)",
-          pointerEvents: "none",
-        }}
-      />
-
       {/* ── Navbar ── */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { IMAGES } from "@/lib/images";
 import { STATS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
+import { useNavTransition } from "@/components/NavTransitionProvider";
 
 const ParticleCanvas = dynamic(() => import("@/components/ui/ParticleCanvas"), { ssr: false });
 
@@ -82,6 +83,7 @@ const SOCIAL_LINKS = [
 
 export default function Hero() {
   const { t, lang } = useT();
+  const { navigateTo } = useNavTransition();
   const containerRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const [bgLoaded, setBgLoaded] = useState(false);
@@ -352,10 +354,7 @@ export default function Hero() {
           <button
             className="btn-primary"
             style={{ color: "#000", border: "none", cursor: "pointer" }}
-            onClick={() => {
-              const el = document.getElementById("collab-form");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={() => navigateTo("collab-form")}
           >
             {t.nav.workWithMe}
           </button>
