@@ -2,19 +2,10 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CONTINENTS } from "@/lib/data";
-import { IMAGES } from "@/lib/images";
 import { useT } from "@/lib/i18n";
 import { COUNTRY_NAMES_AR, tr } from "@/lib/dataTranslations";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
-
-// Background image per continent
-const CONTINENT_BG: Record<string, string> = {
-  europe:     IMAGES.fjord1,
-  africa:     IMAGES.tentMarket,
-  middleeast: IMAGES.desertArab,
-  asia:       IMAGES.waterfall,
-};
 
 // Photos mapped to country names — cleared, will be re-added via admin
 const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {};
@@ -76,35 +67,12 @@ export default function Travels() {
 
   return (
     <>
-      <section id="travels" ref={sectionRef} className="section" style={{ background: "var(--black)", position: "relative" }}>
+      <section id="travels" ref={sectionRef} className="section" style={{ background: "var(--surface)" }}>
 
-        {/* ── Crossfading continent background ── */}
-        <AnimatePresence>
-          <motion.div
-            key={active}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.9, ease: "easeInOut" }}
-            style={{
-              position: "absolute", inset: 0,
-              backgroundImage: `url(${CONTINENT_BG[active] ?? ""})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "brightness(0.18) saturate(1.1)",
-              zIndex: 0,
-            }}
-          />
-        </AnimatePresence>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
-        {/* Dark gradient overlay for readability */}
-        <div style={{
-          position: "absolute", inset: 0, zIndex: 1,
-          background: "linear-gradient(to bottom, rgba(6,6,8,0.6) 0%, rgba(6,6,8,0.35) 40%, rgba(6,6,8,0.75) 100%)",
-          pointerEvents: "none",
-        }} />
-
-        <div className="relative w-full flex flex-col items-center" style={{ zIndex: 2 }}>
+        <div className="relative z-10 w-full flex flex-col items-center">
 
           {/* ── HEADER ── */}
           <motion.div

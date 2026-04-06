@@ -127,12 +127,13 @@ export default function Collab() {
         {/* Collab Types */}
         <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.2 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
-          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 16 }}>
+          <div className="overflow-x-auto md:overflow-x-visible" style={{ scrollbarWidth: "none", msOverflowStyle: "none", paddingBottom: 4 }}>
+          <div className="flex md:grid md:grid-cols-4" style={{ gap: 16 }}>
             {t.collab.types.map((type, i) => (
               <motion.div key={i} initial={false} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease }}
                 className="rounded-xl text-center transition-all duration-300"
-                style={{ padding: "32px 20px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}
+                style={{ flexShrink: 0, minWidth: 190, padding: "32px 20px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${type.color}50`; (e.currentTarget as HTMLElement).style.background = `${type.color}08`; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}>
                 <div className="flex items-center justify-center mx-auto"
@@ -144,6 +145,7 @@ export default function Collab() {
               </motion.div>
             ))}
           </div>
+          </div>
         </motion.div>
 
         {/* Brand categories */}
@@ -152,7 +154,7 @@ export default function Collab() {
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", color: "var(--muted)", textAlign: "center", marginBottom: 20 }}>
             {t.collab.workedWith}
           </div>
-          <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 10, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: 10 }}>
             {t.collab.brandCategories.map((cat, i) => (
               <motion.div
                 key={i}
@@ -162,7 +164,6 @@ export default function Collab() {
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
                   padding: "10px 18px", borderRadius: 12,
-                  flexShrink: 0,
                   border: "1px solid var(--border)",
                   background: "rgba(255,255,255,0.025)",
                   cursor: "default",

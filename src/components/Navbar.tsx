@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useAnimation } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
@@ -17,10 +17,12 @@ export default function Navbar() {
   const { t, lang, setLang } = useT();
   const pathname = usePathname();
   const router = useRouter();
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled]       = useState(false);
+  const [hidden, setHidden]           = useState(false);
+  const [mobileOpen, setMobileOpen]   = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [isNavigating, setIsNavigating]   = useState(false);
+  const overlayControls = useAnimation();
   const lastY = { current: 0 };
 
   const { scrollY } = useScroll();
@@ -30,55 +32,75 @@ export default function Navbar() {
     lastY.current = y;
   });
 
-  // Track which section is in view on the homepage
+  // Track active section via IntersectionObserver on homepage
   useEffect(() => {
     if (pathname !== "/") return;
-    const sectionIds = ["hero", "about", "travels", "stories", "collab"];
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
+    const ids = ["hero", "about", "travels", "stories", "collab"];
+    const obs: IntersectionObserver[] = [];
+    ids.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
-      const obs = new IntersectionObserver(
+      const o = new IntersectionObserver(
         ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
         { threshold: 0.25 }
       );
-      obs.observe(el);
-      observers.push(obs);
+      o.observe(el);
+      obs.push(o);
     });
-
-    return () => observers.forEach((o) => o.disconnect());
+    return () => obs.forEach((o) => o.disconnect());
   }, [pathname]);
 
-  // Close mobile menu on route change
   useEffect(() => { setMobileOpen(false); }, [pathname]);
 
-  const scrollToSection = (sectionId: string) => {
-    if (pathname === "/") {
-      if (sectionId === "hero") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        const el = document.getElementById(sectionId);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      if (sectionId === "hero") {
-        router.push("/");
-      } else {
-        router.push(`/#${sectionId}`);
-      }
-    }
+  // ── Page-transition slide ─────────────────────────────────
+  const navigateTo = async (sectionId: string) => {
+    if (isNavigating) return;
     setMobileOpen(false);
+
+    // On sub-pages → push to homepage with hash (HashScroll handles the rest)
+    if (pathname !== "/") {
+      router.push(sectionId === "hero" ? "/" : `/#${sectionId}`);
+      return;
+    }
+
+    setIsNavigating(true);
+
+    // Phase 1: overlay slides in FROM RIGHT
+    await overlayControls.start({
+      x: "0%",
+      transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
+    });
+
+    // Phase 2: instant scroll while covered
+    if (sectionId === "hero") {
+      window.scrollTo({ top: 0 });
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView();
+    }
+
+    // Phase 3: tiny pause so the new view is ready
+    await new Promise<void>((r) => setTimeout(r, 30));
+
+    // Phase 4: overlay slides OUT TO LEFT
+    await overlayControls.start({
+      x: "-100%",
+      transition: { duration: 0.26, ease: [0.4, 0, 0.2, 1] },
+    });
+
+    // Reset to right — ready for next navigation
+    overlayControls.set({ x: "100%" });
+    setIsNavigating(false);
   };
 
   const getIsActive = (sectionId: string) => {
     if (pathname === "/") return activeSection === sectionId;
-    // On sub-pages: match pathname
     return pathname === `/${sectionId}`;
   };
 
   const navLabels: Record<string, string> = {
-    home: t.nav.home, about: t.nav.about, travels: t.nav.travels, stories: t.nav.stories, collab: t.nav.collab,
+    home: t.nav.home, about: t.nav.about, travels: t.nav.travels,
+    stories: t.nav.stories, collab: t.nav.collab,
   };
 
   const LangToggle = () => (
@@ -103,12 +125,26 @@ export default function Navbar() {
 
   return (
     <>
+      {/* ── Page-transition overlay ── */}
+      <motion.div
+        animate={overlayControls}
+        initial={{ x: "100%" }}
+        style={{
+          position: "fixed", inset: 0,
+          zIndex: 9998,
+          background: "var(--black)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* ── Navbar ── */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: hidden ? -100 : 0, opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="fixed top-0 left-0 right-0 z-50"
+        className="fixed top-0 left-0 right-0"
         style={{
+          zIndex: 9999,
           padding: scrolled ? "12px clamp(16px, 5vw, 40px)" : "16px clamp(16px, 5vw, 40px)",
           background: scrolled ? "rgba(6,6,8,0.90)" : "transparent",
           backdropFilter: scrolled ? "blur(24px)" : "none",
@@ -118,9 +154,9 @@ export default function Navbar() {
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button
-            onClick={() => scrollToSection("hero")}
+            onClick={() => navigateTo("hero")}
             className="brand-ltr text-[20px] font-bold tracking-[4px] text-gradient"
-            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0, textDecoration: "none", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}
           >
             RANZODZ
           </button>
@@ -128,7 +164,7 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
             <LangToggle />
             <button
-              onClick={() => scrollToSection("collab")}
+              onClick={() => navigateTo("collab")}
               className="hidden md:block text-[11px] font-semibold tracking-[2px] uppercase rounded-full"
               style={{
                 padding: "10px 24px",
@@ -163,7 +199,7 @@ export default function Navbar() {
             return (
               <button
                 key={link.sectionId}
-                onClick={() => scrollToSection(link.sectionId)}
+                onClick={() => navigateTo(link.sectionId)}
                 className="relative text-[11px] font-semibold uppercase transition-colors duration-200"
                 style={{
                   color: isActive ? "var(--white)" : "var(--muted)",
@@ -192,16 +228,16 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 flex flex-col justify-center items-center"
-            style={{ background: "rgba(6,6,8,0.97)", backdropFilter: "blur(24px)" }}
+            initial={{ opacity: 0, x: "100%" }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed inset-0 flex flex-col justify-center items-center"
+            style={{ background: "rgba(6,6,8,0.97)", backdropFilter: "blur(24px)", zIndex: 9997 }}
           >
             <nav className="flex flex-col items-center gap-8">
               {NAV_PAGES.map((link, i) => (
                 <motion.div key={link.sectionId} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}>
                   <button
-                    onClick={() => scrollToSection(link.sectionId)}
+                    onClick={() => navigateTo(link.sectionId)}
                     className="text-[32px] font-light tracking-widest uppercase"
                     style={{
                       fontFamily: "var(--font-display)",
@@ -216,7 +252,7 @@ export default function Navbar() {
               ))}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
                 <button
-                  onClick={() => scrollToSection("collab")}
+                  onClick={() => navigateTo("collab")}
                   className="mt-4 btn-primary"
                   style={{ border: "none", cursor: "pointer" }}
                 >
