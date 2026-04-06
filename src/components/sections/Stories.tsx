@@ -53,10 +53,24 @@ export default function Stories() {
       .catch(() => {});
   }, []);
 
-  // Lock body scroll when modal open
+  // Lock body scroll when modal open; register with global modal tracker
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    const w = window as any;
+    if (!w.__ranzodz_modals) w.__ranzodz_modals = new Set<string>();
+    if (open) w.__ranzodz_modals.add("story");
+    else       w.__ranzodz_modals.delete("story");
+    return () => {
+      document.body.style.overflow = "";
+      w.__ranzodz_modals?.delete("story");
+    };
+  }, [open]);
+
+  // Mobile back button (and ESC fallback via BackInterceptor custom event) closes modal
+  useEffect(() => {
+    const handler = () => { if (open) setOpen(null); };
+    window.addEventListener("ranzodz:close-modal", handler);
+    return () => window.removeEventListener("ranzodz:close-modal", handler);
   }, [open]);
 
   // Navigation helpers

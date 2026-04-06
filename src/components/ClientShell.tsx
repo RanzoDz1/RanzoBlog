@@ -31,14 +31,23 @@ function HashScroll() {
 }
 
 // Intercept browser back button:
-//   • If scrolled down → scroll to top first
-//   • If already at top → let browser navigate away normally
+//   • If a modal/lightbox is open → close it first (dispatches ranzodz:close-modal)
+//   • Else if scrolled down → scroll to top first
+//   • Else → let browser navigate away normally
 function BackInterceptor() {
   useEffect(() => {
     // Push a state so we can intercept the first back press
     history.pushState({ __ranzodz: true }, "");
 
     const onPopState = () => {
+      // Check if any modal is currently open
+      const modals = (window as any).__ranzodz_modals as Set<string> | undefined;
+      if (modals && modals.size > 0) {
+        // Signal open modals to close, then re-push so next back scrolls to top
+        window.dispatchEvent(new CustomEvent("ranzodz:close-modal"));
+        history.pushState({ __ranzodz: true }, "");
+        return;
+      }
       if (window.scrollY > 50) {
         // Not at top — scroll up and put the interceptor back
         window.scrollTo({ top: 0, behavior: "smooth" });

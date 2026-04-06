@@ -11,6 +11,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
   const rafRef          = useRef<number | null>(null);
   const isPointerDown   = useRef(false);
   const didDrag         = useRef(false);
+  const blockingClick   = useRef(false);   // blocks the ghost-click that fires after a drag
   const dragStartX      = useRef(0);
   const dragStartScroll = useRef(0);
 
@@ -105,7 +106,9 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     lastClientX.current     = e.clientX;
     lastTimestamp.current   = e.timeStamp;
     velocityX.current       = 0;
-    t.setPointerCapture(e.pointerId);
+    // Do NOT call setPointerCapture — it re-routes click events away from child
+    // elements in some browsers, making cards un-clickable on PC.
+    // Instead we use onPointerLeave to handle "drag off element" cleanly.
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -140,15 +143,20 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
     setDragging(false);
     if (didDrag.current) {
       applyMomentum(velocityX.current);
+      // Block the synthetic click that fires immediately after drag-end
+      blockingClick.current = true;
+      setTimeout(() => { blockingClick.current = false; }, 120);
     }
+    didDrag.current = false;
   };
 
-  // Only block child clicks when a real drag occurred
+  // Only block child clicks when a real drag occurred (uses blockingClick, not didDrag,
+  // so the flag is already cleared before the next pointerdown — no stale-state issue)
   const onClickCapture = (e: React.MouseEvent) => {
-    if (didDrag.current) {
+    if (blockingClick.current) {
       e.stopPropagation();
       e.preventDefault();
-      didDrag.current = false;
+      blockingClick.current = false;
     }
   };
 
@@ -206,6 +214,7 @@ export default function Carousel({ children, gap = 16 }: CarouselProps) {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
+        onPointerLeave={() => { if (isPointerDown.current) onPointerUp(); }}
         onClickCapture={onClickCapture}
         onDragStart={e => e.preventDefault()}
         style={{

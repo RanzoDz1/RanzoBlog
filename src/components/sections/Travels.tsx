@@ -27,6 +27,27 @@ export default function Travels() {
   const [active, setActive] = useState("europe");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<{ src: string; caption: string } | null>(null);
+
+  // Register lightbox with global modal tracker + ESC key + mobile back button
+  useEffect(() => {
+    const w = window as any;
+    if (!w.__ranzodz_modals) w.__ranzodz_modals = new Set<string>();
+    if (lightbox) w.__ranzodz_modals.add("lightbox");
+    else           w.__ranzodz_modals.delete("lightbox");
+    return () => { w.__ranzodz_modals?.delete("lightbox"); };
+  }, [lightbox]);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey   = (e: KeyboardEvent)  => { if (e.key === "Escape") setLightbox(null); };
+    const onClose = ()                  => { setLightbox(null); };
+    window.addEventListener("keydown",             onKey);
+    window.addEventListener("ranzodz:close-modal", onClose);
+    return () => {
+      window.removeEventListener("keydown",             onKey);
+      window.removeEventListener("ranzodz:close-modal", onClose);
+    };
+  }, [lightbox]);
   const [dynamicContinents, setDynamicContinents] = useState<ContinentData[] | null>(null);
   const [dynamicPhotos, setDynamicPhotos] = useState<Record<string, { src: string; caption: string }[]>>(COUNTRY_PHOTOS);
 
