@@ -1,6 +1,6 @@
 "use client";
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useT } from "@/lib/i18n";
 
 const ease = [0.25, 0.46, 0.45, 0.94] as const;
@@ -9,7 +9,15 @@ type FormState = "idle" | "loading" | "success" | "error";
 export default function Collab() {
   const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView   = useInView(sectionRef, { once: true, margin: "-10% 0px" });
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const check = () => { if (el.getBoundingClientRect().top < window.innerHeight) { setIsInView(true); window.removeEventListener('scroll', check); } };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, []);
   const [form, setForm]         = useState({ name: "", email: "", brand: "", message: "" });
   const [formState, setFormState] = useState<FormState>("idle");
   const [selectedPkg, setSelectedPkg] = useState("");
@@ -72,7 +80,7 @@ export default function Collab() {
       <div className="relative z-10 w-full flex flex-col items-center">
 
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease }}
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease }}
           className="w-full text-center" style={{ maxWidth: 600, marginBottom: 48 }}>
           <div className="eyebrow justify-center" style={{ marginBottom: 24 }}>{t.collab.eyebrow}</div>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5.5vw, 64px)", fontWeight: 700, lineHeight: 1, marginBottom: 24 }}>
@@ -87,7 +95,7 @@ export default function Collab() {
         </motion.div>
 
         {/* Reach banner */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, ease, delay: 0.12 }}
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease, delay: 0.12 }}
           className="w-full text-center" style={{ maxWidth: 800, marginBottom: 28 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 10,
@@ -103,7 +111,7 @@ export default function Collab() {
         </motion.div>
 
         {/* Audience Stats */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease, delay: 0.18 }}
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.18 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 40 }}>
           <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 14 }}>
             {t.collab.stats.map((stat) => (
@@ -117,11 +125,11 @@ export default function Collab() {
         </motion.div>
 
         {/* Collab Types */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease, delay: 0.2 }}
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.2 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
           <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 16 }}>
             {t.collab.types.map((type, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease }}
                 className="rounded-xl text-center transition-all duration-300"
                 style={{ padding: "32px 20px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}
@@ -139,7 +147,7 @@ export default function Collab() {
         </motion.div>
 
         {/* Brand categories */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, ease, delay: 0.28 }}
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.28 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase", color: "var(--muted)", textAlign: "center", marginBottom: 20 }}>
             {t.collab.workedWith}
@@ -149,7 +157,7 @@ export default function Collab() {
               <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0.92 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.32 + i * 0.06, duration: 0.4, ease }}
                 style={{
                   display: "flex", alignItems: "center", gap: 10,
@@ -179,7 +187,7 @@ export default function Collab() {
         </motion.div>
 
         {/* Pricing + Contact Form */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, ease, delay: 0.3 }}
+        <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.3 }}
           className="w-full" style={{ maxWidth: 1060 }}>
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr]" style={{ gap: 20, alignItems: "start" }}>
 
@@ -201,7 +209,7 @@ export default function Collab() {
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -16 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.38 + i * 0.09, duration: 0.45, ease }}
                     onClick={() => selectPackage(pkg)}
                     whileHover={{ scale: 1.015 }}

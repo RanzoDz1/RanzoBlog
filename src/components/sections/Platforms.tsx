@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useT } from "@/lib/i18n";
 import Carousel from "@/components/ui/Carousel";
 
@@ -105,7 +105,15 @@ const ICONS: Record<string, () => React.ReactElement> = {
 export default function Platforms() {
   const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const check = () => { if (el.getBoundingClientRect().top < window.innerHeight) { setIsInView(true); window.removeEventListener('scroll', check); } };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, []);
   const isAr = lang === "ar";
 
   return (
@@ -118,8 +126,8 @@ export default function Platforms() {
 
         {/* ── Section header ── */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease }}
           className="text-center"
           style={{ marginBottom: 52 }}
@@ -160,8 +168,8 @@ export default function Platforms() {
                 href={platform.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 24 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                initial={false}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + i * 0.07, duration: 0.5, ease }}
                 whileHover={{ scale: 1.025 }}
                 style={{
@@ -254,8 +262,8 @@ export default function Platforms() {
 
         {/* ── Total reach strip ── */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.5, ease }}
           className="flex flex-wrap items-center justify-center"
           style={{ gap: 10, marginTop: 40 }}

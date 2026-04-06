@@ -1,6 +1,6 @@
 "use client";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { TRAVEL_APPS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import { APP_CATEGORIES_AR, tr } from "@/lib/dataTranslations";
@@ -11,7 +11,15 @@ const ease = [0.25, 0.46, 0.45, 0.94] as const;
 export default function TravelApps() {
   const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const check = () => { if (el.getBoundingClientRect().top < window.innerHeight) { setIsInView(true); window.removeEventListener('scroll', check); } };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, []);
 
   return (
     <section ref={sectionRef} className="section" style={{ background: "var(--surface)" }}>
@@ -19,8 +27,8 @@ export default function TravelApps() {
 
         {/* ── HEADER ── */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease }}
           className="text-center w-full"
           style={{ maxWidth: 520, marginBottom: 56 }}
@@ -44,8 +52,8 @@ export default function TravelApps() {
                 href={app.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                initial={false}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06, duration: 0.5, ease }}
                 className="rounded-xl text-center transition-all duration-300"
                 style={{

@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { CONTINENTS } from "@/lib/data";
 import { IMAGES } from "@/lib/images";
 import { useT } from "@/lib/i18n";
@@ -16,7 +16,15 @@ type ContinentData = { id: string; name: string; emoji: string; color: string; c
 export default function Travels() {
   const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const check = () => { if (el.getBoundingClientRect().top < window.innerHeight) { setIsInView(true); window.removeEventListener('scroll', check); } };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, []);
   const [active, setActive] = useState("europe");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<{ src: string; caption: string } | null>(null);
@@ -70,8 +78,8 @@ export default function Travels() {
 
           {/* ── HEADER ── */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease }}
             className="text-center w-full"
             style={{ maxWidth: 560, marginBottom: 56 }}
@@ -89,8 +97,8 @@ export default function Travels() {
 
           {/* ── CONTINENT SELECTOR ── */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease, delay: 0.2 }}
             className="w-full grid grid-cols-2 md:grid-cols-4"
             style={{ maxWidth: 860, gap: 16, marginBottom: 40 }}
@@ -130,7 +138,7 @@ export default function Travels() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, y: 16 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.35, ease }}
@@ -156,7 +164,7 @@ export default function Travels() {
                     return (
                       <motion.button
                         key={c.name}
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={false}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: i * 0.03, duration: 0.3 }}
                         onClick={() => hasPhotos && handleCountryClick(c.name)}
@@ -237,8 +245,8 @@ export default function Travels() {
             </AnimatePresence>
 
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
+              initial={false}
+              animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.5 }}
               style={{ fontSize: 12, letterSpacing: "1px", color: "var(--muted)", marginTop: 8 }}
             >

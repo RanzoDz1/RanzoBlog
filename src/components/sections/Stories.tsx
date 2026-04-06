@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { STORIES } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import { STORY_TAGS_AR, STORY_LOCATIONS_AR, STORY_TITLES_AR, STORY_EXCERPTS_AR, STORY_SUBTITLES_AR, STORY_BODIES_AR, tr } from "@/lib/dataTranslations";
@@ -16,7 +16,15 @@ type Story = typeof STORIES[number] & {
 export default function Stories() {
   const { t, lang } = useT();
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const check = () => { if (el.getBoundingClientRect().top < window.innerHeight) { setIsInView(true); window.removeEventListener('scroll', check); } };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, []);
   const [stories, setStories] = useState<Story[]>(STORIES);
   const [open, setOpen] = useState<Story | null>(null);
 
@@ -94,8 +102,8 @@ export default function Stories() {
 
           {/* ── HEADER ── */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease }}
             className="text-center w-full"
             style={{ maxWidth: 480, marginBottom: 56 }}
@@ -116,8 +124,8 @@ export default function Stories() {
               {stories.map((story, i) => (
                 <motion.div
                   key={story.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  initial={false}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.08, duration: 0.6, ease }}
                   className="story-card group relative rounded-xl overflow-hidden"
                   style={{ height: 420, width: 300, border: `1px solid var(--border)`, cursor: "pointer", transition: "border-color 0.3s" }}
