@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useAnimation } from "framer-motion";
 import { SOCIALS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
@@ -20,7 +20,7 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("hero");
   const [isNavigating, setIsNavigating]   = useState(false);
   const overlayControls = useAnimation();
-  const lastY = { current: 0 };
+  const lastY = useRef(0);
 
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => {
