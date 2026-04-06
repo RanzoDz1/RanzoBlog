@@ -257,7 +257,7 @@ export default function Hero() {
       {/* Main content — CENTERED */}
       <motion.div
         className="relative z-10 flex flex-col items-center text-center"
-        style={{ y: contentY, opacity, padding: "0 20px", paddingTop: isMobile ? "22vh" : "16vh", maxWidth: 720, width: "100%" }}
+        style={{ y: contentY, opacity, padding: "0 20px", paddingTop: isMobile ? "12vh" : "16vh", maxWidth: 720, width: "100%" }}
       >
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -357,7 +357,7 @@ export default function Hero() {
           >
             {t.nav.workWithMe}
           </button>
-          <a href="https://ranzo-portfolio.vercel.app" target="_blank" rel="noopener noreferrer" className="btn-ghost">
+          <a href="https://ranzo.dev" target="_blank" rel="noopener noreferrer" className="btn-ghost">
             {t.hero.storiesBtn}
           </a>
         </motion.div>
