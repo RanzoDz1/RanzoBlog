@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     type: "website", locale: "en_US", url: "https://ranzodz.com", siteName: "RanzoDz",
     title: "RanzoDz | Travel. Risk. Experience.",
     description: "50+ countries. 6 continents. 1M+ followers. Stories from the edges of the world.",
-    images: [{ url: "https://ranzodz.com/og-image.jpg", width: 1200, height: 630, alt: "RanzoDz | Travel Creator" }],
+    images: [{ url: "https://ranzodz.com/opengraph-image", width: 1200, height: 630, alt: "RanzoDz | Travel Creator" }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@ranzodz",
     title: "RanzoDz | Travel. Risk. Experience.",
     description: "50+ countries. 6 continents. 1M+ followers.",
-    images: ["https://ranzodz.com/og-image.jpg"],
+    images: ["https://ranzodz.com/opengraph-image"],
   },
   robots: {
     index: true,
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               alternateName: "RanzoDz",
               description: "Travel content creator and IRL streamer with 50+ countries visited across 6 continents.",
               url: "https://ranzodz.com",
-              image: "https://ranzodz.com/og-image.jpg",
+              image: "https://ranzodz.com/opengraph-image",
               sameAs: [
                 "https://instagram.com/ranzodz",
                 "https://youtube.com/@ranzodz",
