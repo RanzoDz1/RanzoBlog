@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { IMAGES } from "@/lib/images";
@@ -19,7 +20,13 @@ interface PageHeroProps {
 }
 
 export default function PageHero({ page, eyebrow, title, titleAccent, subtitle }: PageHeroProps) {
-  const bg = BG_MAP[page];
+  const [bg, setBg] = useState(BG_MAP[page]);
+  useEffect(() => {
+    fetch("/api/admin/content?key=page-heroes")
+      .then(r => r.json())
+      .then(d => { if (d.data?.[page]) setBg(d.data[page]); })
+      .catch(() => {});
+  }, [page]);
   return (
     <section style={{
       position: "relative",

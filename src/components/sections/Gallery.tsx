@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { GALLERY_ITEMS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
@@ -22,14 +22,22 @@ export default function Gallery() {
   const isInView = useInView(sectionRef, { once: true, margin: "-10% 0px" });
   const [category, setCategory] = useState<Category>("all");
   const [lightbox, setLightbox] = useState<typeof GALLERY_ITEMS[0] | null>(null);
+  const [galleryItems, setGalleryItems] = useState(GALLERY_ITEMS);
+
+  useEffect(() => {
+    fetch("/api/admin/content?key=gallery-items")
+      .then(r => r.json())
+      .then(d => { if (d.data && Array.isArray(d.data) && d.data.length > 0) setGalleryItems(d.data); })
+      .catch(() => {});
+  }, []);
 
   const groups = CATEGORIES.filter(c => c.id !== "all").map(cat => ({
     ...cat,
-    items: GALLERY_ITEMS.filter(i => i.category === cat.id),
+    items: galleryItems.filter(i => i.category === cat.id),
   })).filter(g => g.items.length > 0);
 
   const singleCategoryItems = category !== "all"
-    ? GALLERY_ITEMS.filter(i => i.category === category)
+    ? galleryItems.filter(i => i.category === category)
     : [];
 
   return (

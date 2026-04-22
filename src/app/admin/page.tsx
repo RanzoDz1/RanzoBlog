@@ -6,7 +6,7 @@ import { STORY_TITLES_AR, STORY_LOCATIONS_AR, STORY_BODIES_AR, STORY_EXCERPTS_AR
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Msg { id: string; name: string; email: string; brand?: string; message: string; date: string; read: boolean; }
-type Tab = "messages" | "countries" | "stories" | "apps" | "settings";
+type Tab = "messages" | "countries" | "stories" | "gallery" | "apps" | "settings";
 type Story = (typeof STORIES)[0] & {
   imageX?: number; imageY?: number; imageZoom?: number;
   titleAr?: string; locationAr?: string; tagAr?: string; excerptAr?: string; bodyAr?: string[];
@@ -21,6 +21,96 @@ const btnP:  React.CSSProperties = { padding: "9px 22px", borderRadius: 8, fontS
 const btnG:  React.CSSProperties = { padding: "9px 22px", borderRadius: 8, fontSize: 12, fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", cursor: "pointer", background: "rgba(255,255,255,0.06)", color: "rgba(248,248,240,0.6)", border: "1px solid rgba(255,255,255,0.1)" };
 const btnD:  React.CSSProperties = { padding: "9px 22px", borderRadius: 8, fontSize: 12, fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", cursor: "pointer", border: "none", background: "rgba(239,68,68,0.12)", color: "#f87171" };
 const fmt = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+// ── Shared image utilities ─────────────────────────────────────────────────────
+const compressImage = (file: File, maxPx = 2000, quality = 0.85): Promise<File> =>
+  new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > maxPx || height > maxPx) {
+        const ratio = Math.min(maxPx / width, maxPx / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { resolve(file); return; }
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => resolve(blob ? new File([blob], file.name.replace(/\.\w+$/, ".jpg"), { type: "image/jpeg" }) : file),
+        "image/jpeg", quality
+      );
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+
+function UploadZone({ token, onUpload, multiple = false, label = "Drop image here or click to upload" }: {
+  token: string;
+  onUpload: (url: string) => void;
+  multiple?: boolean;
+  label?: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState("");
+  const [dragging, setDragging] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const upload = async (file: File) => {
+    setUploading(true); setErr("");
+    try {
+      const compressed = await compressImage(file);
+      const fd = new FormData(); fd.append("file", compressed);
+      const r = await fetch("/api/admin/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
+      const d = await r.json();
+      if (d.url) onUpload(d.url);
+      else setErr(d.error || "Upload failed");
+    } catch { setErr("Network error"); }
+    finally { setUploading(false); }
+  };
+
+  const handleFiles = (files: FileList | null) => {
+    if (!files) return;
+    Array.from(files).forEach(upload);
+  };
+
+  return (
+    <div>
+      <input ref={fileRef} type="file" accept="image/*" multiple={multiple} style={{ display: "none" }}
+        onChange={e => { handleFiles(e.target.files); e.target.value = ""; }} />
+      <div
+        onClick={() => !uploading && fileRef.current?.click()}
+        onDragOver={e => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={e => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files); }}
+        style={{
+          border: `2px dashed ${dragging ? "#7c3aed" : "rgba(124,58,237,0.35)"}`,
+          borderRadius: 10, padding: "22px 16px",
+          textAlign: "center" as const, cursor: uploading ? "wait" : "pointer",
+          background: dragging ? "rgba(124,58,237,0.1)" : "rgba(124,58,237,0.04)",
+          transition: "all 0.2s",
+        }}
+        onMouseEnter={e => { if (!uploading) (e.currentTarget as HTMLElement).style.borderColor = "#7c3aed"; }}
+        onMouseLeave={e => { if (!dragging) (e.currentTarget as HTMLElement).style.borderColor = "rgba(124,58,237,0.35)"; }}
+      >
+        {uploading ? (
+          <div style={{ color: "#a78bfa", fontSize: 13 }}>⏳ Uploading to Cloudinary…</div>
+        ) : (
+          <>
+            <div style={{ fontSize: 26, marginBottom: 6 }}>☁️</div>
+            <div style={{ fontSize: 13, color: "#a78bfa", fontWeight: 600, marginBottom: 3 }}>Click to upload or drag & drop</div>
+            <div style={{ fontSize: 11, color: "rgba(248,248,240,0.3)" }}>{label}</div>
+          </>
+        )}
+      </div>
+      {err && <div style={{ fontSize: 11, color: "#f87171", marginTop: 6 }}>⚠ {err}</div>}
+    </div>
+  );
+}
 
 // ── Login ─────────────────────────────────────────────────────────────────────
 function Login({ onLogin }: { onLogin: (t: string) => void }) {
@@ -73,6 +163,7 @@ const TABS: { id: Tab; label: string; labelAr: string; icon: string }[] = [
   { id: "messages",  label: "Messages",    labelAr: "الرسائل",    icon: "✉" },
   { id: "countries", label: "Countries",   labelAr: "الدول",      icon: "🌍" },
   { id: "stories",   label: "Stories",     labelAr: "القصص",      icon: "📖" },
+  { id: "gallery",   label: "Gallery",     labelAr: "المعرض",     icon: "🖼️" },
   { id: "apps",      label: "Travel Apps", labelAr: "تطبيقات",    icon: "📱" },
   { id: "settings",  label: "⚙ Settings",  labelAr: "الإعدادات",  icon: "🎛️" },
 ];
@@ -270,33 +361,6 @@ function Countries({ token }: { token: string }) {
     if (!editCountry) return;
     setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).map((p, i) => i === pi ? { ...p, x, y, zoom } : p) } : co) } : c));
   };
-
-  // Compress image client-side before upload to stay under Vercel's 4.5 MB limit
-  const compressImage = (file: File, maxPx = 2000, quality = 0.85): Promise<File> =>
-    new Promise((resolve) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = () => {
-        URL.revokeObjectURL(url);
-        let { width, height } = img;
-        if (width > maxPx || height > maxPx) {
-          const ratio = Math.min(maxPx / width, maxPx / height);
-          width = Math.round(width * ratio);
-          height = Math.round(height * ratio);
-        }
-        const canvas = document.createElement("canvas");
-        canvas.width = width; canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) { resolve(file); return; }
-        ctx.drawImage(img, 0, 0, width, height);
-        canvas.toBlob(
-          (blob) => resolve(blob ? new File([blob], file.name.replace(/\.\w+$/, ".jpg"), { type: "image/jpeg" }) : file),
-          "image/jpeg", quality
-        );
-      };
-      img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
-      img.src = url;
-    });
 
   const uploadFile = async (file: File) => {
     if (!editCountry) return;
@@ -965,7 +1029,12 @@ function StoriesTab({ token, lang }: { token: string; lang: "en" | "ar" }) {
                     <div><span style={label}>{ar ? "الوسم" : "Tag Label"}</span><input style={{ ...inp, direction: ar ? "rtl" : "ltr", textAlign: ar ? "right" : "left" }} value={ar ? (s.tagAr ?? s.tag) : s.tag} onChange={e => upd(i, ar ? "tagAr" : "tag", e.target.value)} /></div>
                     <div><span style={label}>{ar ? "اللون" : "Accent Color"}</span><input style={inp} value={s.color} onChange={e => upd(i, "color", e.target.value)} /></div>
                     <div style={{ gridColumn: "1/-1" }}><span style={label}>{ar ? "الوصف القصير" : "Short Description"}</span><textarea style={{ ...inp, minHeight: 80, resize: "none" as const, direction: ar ? "rtl" : "ltr", textAlign: ar ? "right" : "left" }} value={ar ? (s.excerptAr ?? "") : s.excerpt} onChange={e => upd(i, ar ? "excerptAr" : "excerpt", e.target.value)} /></div>
-                    <div style={{ gridColumn: "1/-1" }}><span style={label}>{ar ? "رابط الصورة" : "Image URL"}</span><input style={inp} value={s.image} onChange={e => upd(i, "image", e.target.value)} /></div>
+                    <div style={{ gridColumn: "1/-1" }}>
+                      <span style={label}>{ar ? "صورة القصة" : "Story Image"}</span>
+                      <UploadZone token={token} onUpload={url => upd(i, "image", url)} label="Upload story cover photo · stored on Cloudinary" />
+                      <div style={{ fontSize: 11, color: "rgba(248,248,240,0.3)", margin: "10px 0 6px" }}>Or paste URL:</div>
+                      <input style={inp} value={s.image} onChange={e => upd(i, "image", e.target.value)} placeholder="https://res.cloudinary.com/…" />
+                    </div>
 
                     {/* ── Body paragraphs editor ────────────────────────────── */}
                     <div style={{ gridColumn: "1/-1" }}>
@@ -1016,6 +1085,111 @@ function StoriesTab({ token, lang }: { token: string; lang: "en" | "ar" }) {
                 </motion.div>
               )}
             </AnimatePresence>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Gallery ───────────────────────────────────────────────────────────────────
+type GalleryItem = { id: number; src: string; category: string; title: string; location: string; aspect: string };
+const GALLERY_CATEGORIES_ADMIN = ["nature", "cities", "culture", "adventures"];
+
+function GalleryTab({ token }: { token: string }) {
+  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveErr, setSaveErr] = useState("");
+  const [editIdx, setEditIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/content?key=gallery-items", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => {
+        if (d.data && Array.isArray(d.data) && d.data.length > 0) setItems(d.data);
+        else {
+          // Bootstrap from GALLERY_ITEMS in data.ts — import is already at top
+          import("@/lib/data").then(m => setItems(m.GALLERY_ITEMS.map(g => ({ ...g }))));
+        }
+      })
+      .catch(() => { import("@/lib/data").then(m => setItems(m.GALLERY_ITEMS.map(g => ({ ...g })))); });
+  }, [token]);
+
+  const addImage = (url: string) => {
+    setItems(is => [...is, { id: Date.now(), src: url, category: "nature", title: "New Photo", location: "", aspect: "portrait" }]);
+    setEditIdx(null); // will auto-expand the last item for editing
+  };
+
+  const upd = (i: number, f: string, v: string) => setItems(is => is.map((item, j) => j === i ? { ...item, [f]: v } : item));
+  const remove = (i: number) => { if (!confirm("Remove this photo from the gallery?")) return; setItems(is => is.filter((_, j) => j !== i)); if (editIdx === i) setEditIdx(null); };
+
+  const save = async () => {
+    setSaving(true); setSaveErr("");
+    try {
+      const r = await fetch("/api/admin/content", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ key: "gallery-items", data: items }) });
+      if (r.ok) { setSaved(true); setEditIdx(null); setTimeout(() => setSaved(false), 2500); }
+      else { const d = await r.json().catch(() => ({})); setSaveErr(d.error || `Error ${r.status}`); }
+    } catch { setSaveErr("Network error"); }
+    finally { setSaving(false); }
+  };
+
+  return (
+    <div style={{ padding: 36, maxWidth: 920 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+        <div>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>Gallery</h2>
+          <p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>Manage photos shown in the gallery lightbox. Upload, categorise, and reorder.</p>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+          {saveErr && <div style={{ fontSize: 12, color: "#f87171" }}>{saveErr}</div>}
+          <button onClick={save} disabled={saving} style={btnP}>{saving ? "Saving…" : saved ? "✓ Saved!" : "Save All"}</button>
+        </div>
+      </div>
+
+      {/* Upload zone */}
+      <div style={{ ...card, marginBottom: 28 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: "#f8f8f0", marginBottom: 12 }}>Add Photos</div>
+        <UploadZone token={token} onUpload={addImage} multiple label="Multiple images at once · stored on Cloudinary · edit details below" />
+      </div>
+
+      {/* Photo grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: 14 }}>
+        {items.map((item, i) => (
+          <div key={item.id} style={{ ...card, padding: 0, overflow: "hidden" }}>
+            <div style={{ position: "relative", height: 130, background: "#111" }}>
+              <img src={item.src} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.15"; }} />
+              <button onClick={() => remove(i)} style={{ position: "absolute", top: 6, right: 6, width: 22, height: 22, borderRadius: "50%", border: "none", background: "rgba(239,68,68,0.85)", color: "#fff", fontSize: 11, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>✕</button>
+            </div>
+            <div style={{ padding: 10 }}>
+              {editIdx === i ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div><span style={label}>Title</span><input style={{ ...inp, fontSize: 12, padding: "7px 10px" }} value={item.title} onChange={e => upd(i, "title", e.target.value)} /></div>
+                  <div><span style={label}>Location</span><input style={{ ...inp, fontSize: 12, padding: "7px 10px" }} value={item.location} onChange={e => upd(i, "location", e.target.value)} /></div>
+                  <div>
+                    <span style={label}>Category</span>
+                    <select style={{ ...inp, fontSize: 12, padding: "7px 10px" }} value={item.category} onChange={e => upd(i, "category", e.target.value)}>
+                      {GALLERY_CATEGORIES_ADMIN.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <span style={label}>Aspect</span>
+                    <select style={{ ...inp, fontSize: 12, padding: "7px 10px" }} value={item.aspect} onChange={e => upd(i, "aspect", e.target.value)}>
+                      <option value="portrait">Portrait</option>
+                      <option value="landscape">Landscape</option>
+                    </select>
+                  </div>
+                  <button onClick={() => setEditIdx(null)} style={{ ...btnG, padding: "7px 0", fontSize: 11, width: "100%" }}>Done ✓</button>
+                </div>
+              ) : (
+                <>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: "#f8f8f0", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.title || "Untitled"}</div>
+                  <div style={{ fontSize: 10, color: "rgba(248,248,240,0.4)", marginBottom: 2 }}>📍 {item.location || "—"}</div>
+                  <div style={{ fontSize: 9, color: "#a78bfa", textTransform: "uppercase" as const, letterSpacing: "1px", marginBottom: 8 }}>{item.category}</div>
+                  <button onClick={() => setEditIdx(i)} style={{ ...btnG, padding: "6px 0", fontSize: 11, width: "100%" }}>Edit</button>
+                </>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -1116,8 +1290,6 @@ function AboutSlides({ token }: { token: string }) {
   const [newUrl, setNewUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch("/api/admin/content?key=about-slides", { headers: { Authorization: `Bearer ${token}` } })
@@ -1144,17 +1316,6 @@ function AboutSlides({ token }: { token: string }) {
   const remove = (i: number) => setSlides(s => s.filter((_, j) => j !== i));
   const moveUp = (i: number) => { if (i === 0) return; setSlides(s => { const a = [...s]; [a[i-1], a[i]] = [a[i], a[i-1]]; return a; }); };
   const moveDown = (i: number) => { if (i === slides.length - 1) return; setSlides(s => { const a = [...s]; [a[i], a[i+1]] = [a[i+1], a[i]]; return a; }); };
-
-  const uploadFile = async (file: File) => {
-    setUploading(true);
-    try {
-      const fd = new FormData(); fd.append("file", file);
-      const r = await fetch("/api/admin/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body: fd });
-      const d = await r.json();
-      if (d.url) setSlides(s => [...s, d.url]);
-    } catch {}
-    setUploading(false);
-  };
 
   const save = async () => {
     setSaving(true);
@@ -1197,12 +1358,64 @@ function AboutSlides({ token }: { token: string }) {
       {/* Upload file */}
       <div style={{ ...card, marginBottom: 24 }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: "#f8f8f0", marginBottom: 12 }}>Upload from computer</div>
-        <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f); e.target.value = ""; }} />
-        <button onClick={() => fileRef.current?.click()} disabled={uploading} style={{ ...btnG }}>{uploading ? "Uploading…" : "Choose Photo"}</button>
+        <UploadZone token={token} onUpload={url => setSlides(s => [...s, url])} multiple label="Multiple images supported · stored on Cloudinary" />
       </div>
 
       <button onClick={save} disabled={saving} style={{ ...btnP, padding: "14px 48px", fontSize: 13 }}>
         {saving ? "Saving…" : saved ? "✓ Saved!" : "Save Slides →"}
+      </button>
+    </div>
+  );
+}
+
+// ── Page Hero Banners ─────────────────────────────────────────────────────────
+const PAGE_HERO_PAGES = [
+  { id: "about",   label: "About Page" },
+  { id: "travels", label: "Travels Page" },
+  { id: "stories", label: "Stories Page" },
+  { id: "collab",  label: "Collab Page" },
+] as const;
+
+function PageHeroes({ token }: { token: string }) {
+  const [heroes, setHeroes] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/content?key=page-heroes", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => { if (d.data && typeof d.data === "object") setHeroes(d.data); })
+      .catch(() => {});
+  }, [token]);
+
+  const save = async () => {
+    setSaving(true);
+    await fetch("/api/admin/content", { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, body: JSON.stringify({ key: "page-heroes", data: heroes }) });
+    setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 3000);
+  };
+
+  return (
+    <div style={{ marginTop: 48, paddingTop: 40, borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+      <div style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 6 }}>Page Banner Images</div>
+      <div style={{ fontSize: 13, color: "rgba(248,248,240,0.4)", marginBottom: 24, lineHeight: 1.7 }}>
+        Background photos for the About, Travels, Stories, and Collab page headers.
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 28 }}>
+        {PAGE_HERO_PAGES.map(p => (
+          <div key={p.id} style={card}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#a78bfa", marginBottom: 12, textTransform: "uppercase" as const, letterSpacing: "1.5px" }}>{p.label}</div>
+            {heroes[p.id] && (
+              <div style={{ marginBottom: 12, borderRadius: 8, overflow: "hidden", height: 90, border: "1px solid rgba(255,255,255,0.08)" }}>
+                <img src={heroes[p.id]} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }} />
+              </div>
+            )}
+            <UploadZone token={token} onUpload={url => setHeroes(h => ({ ...h, [p.id]: url }))} label="Upload banner photo" />
+            <input style={{ ...inp, marginTop: 8, fontSize: 11 }} placeholder="Or paste URL…" value={heroes[p.id] || ""} onChange={e => setHeroes(h => ({ ...h, [p.id]: e.target.value }))} />
+          </div>
+        ))}
+      </div>
+      <button onClick={save} disabled={saving} style={{ ...btnP, padding: "14px 48px", fontSize: 13 }}>
+        {saving ? "Saving…" : saved ? "✓ Saved!" : "Save Banners →"}
       </button>
     </div>
   );
@@ -1288,14 +1501,13 @@ function Settings({ token }: { token: string }) {
       {/* Background Image */}
       <div style={{ ...card, marginBottom: 24 }}>
         <div style={{ fontSize: 13, fontWeight: 700, color: "#f8f8f0", marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
-          🖼️ Background Image URL
+          🖼️ Homepage Hero Image
         </div>
-        <div style={{ fontSize: 12, color: "rgba(248,248,240,0.4)", marginBottom: 12 }}>
-          Paste a direct image URL (Google Drive, Imgur, etc.). Leave empty to use the default aurora photo.
-        </div>
+        <UploadZone token={token} onUpload={url => setPos(p => ({ ...p, imageUrl: url }))} label="Upload hero photo · stored on Cloudinary" />
+        <div style={{ fontSize: 11, color: "rgba(248,248,240,0.3)", margin: "12px 0 8px" }}>Or paste a direct URL:</div>
         <input
           style={inp}
-          placeholder="https://lh3.googleusercontent.com/d/..."
+          placeholder="https://res.cloudinary.com/…"
           value={pos.imageUrl}
           onChange={e => setPos(p => ({ ...p, imageUrl: e.target.value }))}
         />
@@ -1338,6 +1550,7 @@ function Settings({ token }: { token: string }) {
         : "Save Position →"}
       </button>
 
+      <PageHeroes token={token} />
       <AboutSlides token={token} />
     </div>
   );
@@ -1362,8 +1575,9 @@ export default function AdminPage() {
           <motion.div key={tab} initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
             {tab === "messages"  && <Messages   token={token} />}
             {tab === "countries" && <Countries  token={token} />}
-            {tab === "stories"   && <StoriesTab token={token} lang={lang} />}
-            {tab === "apps"      && <AppsTab    token={token} />}
+            {tab === "stories"   && <StoriesTab  token={token} lang={lang} />}
+            {tab === "gallery"   && <GalleryTab  token={token} />}
+            {tab === "apps"      && <AppsTab     token={token} />}
             {tab === "settings"  && <Settings   token={token} />}
           </motion.div>
         </AnimatePresence>
