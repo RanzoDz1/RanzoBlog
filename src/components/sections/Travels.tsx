@@ -198,7 +198,7 @@ export default function Travels() {
                   })}
                 </div>
                 {/* Mobile: horizontal scroll row */}
-                <div className="flex md:hidden" style={{ flexWrap: "nowrap", overflowX: "auto", gap: 8, marginBottom: 24, scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" as any, paddingBottom: 4 }}>
+                <div className="flex md:hidden" style={{ flexWrap: "wrap", gap: 8, marginBottom: 24 }}>
                   {activeCont.countries.map((c, i) => {
                     const hasPhotos = !!(dynamicPhotos[c.name] && dynamicPhotos[c.name].length > 0);
                     const isSelected = selectedCountry === c.name;
