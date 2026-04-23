@@ -511,6 +511,19 @@ function Countries({ token }: { token: string }) {
           {cont.countries.map((c, i) => {
             const isDropTarget = dropTarget === c.name;
             const isSelected = editCountry === c.name;
+            const draftCount = (c.photos || []).filter(p => p.published === false).length;
+            const hasDraft = draftCount > 0;
+            // Amber color family when the country has unpublished drafts
+            const bg = isDropTarget
+              ? `${cont.color}40`
+              : isSelected
+                ? (hasDraft ? "rgba(251,191,36,0.25)" : `${cont.color}22`)
+                : (hasDraft ? "rgba(251,191,36,0.14)" : `${cont.color}14`);
+            const br = isDropTarget
+              ? cont.color
+              : isSelected
+                ? (hasDraft ? "rgba(251,191,36,0.75)" : cont.color + "50")
+                : (hasDraft ? "rgba(251,191,36,0.55)" : cont.color + "30");
             return (
               <div
                 key={i}
@@ -529,9 +542,9 @@ function Countries({ token }: { token: string }) {
                   display: "inline-flex", alignItems: "center", gap: 6,
                   padding: "7px 14px", borderRadius: 999, fontSize: 13,
                   cursor: "pointer", transition: "all 0.15s",
-                  background: isDropTarget ? `${cont.color}40` : isSelected ? `${cont.color}22` : `${cont.color}14`,
-                  border: `1px solid ${isDropTarget ? cont.color : isSelected ? cont.color + "50" : cont.color + "30"}`,
-                  color: isDropTarget || isSelected ? "#f8f8f0" : "rgba(248,248,240,0.75)",
+                  background: bg,
+                  border: `1px solid ${br}`,
+                  color: isDropTarget || isSelected ? "#f8f8f0" : hasDraft ? "#fde68a" : "rgba(248,248,240,0.75)",
                   outline: isDropTarget ? `2px dashed ${cont.color}` : "none",
                   outlineOffset: 2,
                   transform: isDropTarget ? "scale(1.06)" : "scale(1)",
@@ -540,6 +553,11 @@ function Countries({ token }: { token: string }) {
                 <span style={{ fontSize: 17 }}>{c.flag}</span>
                 <span>{c.name}</span>
                 {c.photos && c.photos.length > 0 && <span style={{ fontSize: 10, opacity: 0.65, marginLeft: 2 }}>📷 {c.photos.length}</span>}
+                {hasDraft && (
+                  <span title={`${draftCount} draft${draftCount === 1 ? "" : "s"} pending`} style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.5px", padding: "2px 6px", borderRadius: 4, background: "rgba(251,191,36,0.95)", color: "#111" }}>
+                    {draftCount} DRAFT
+                  </span>
+                )}
                 {isDropTarget && <span style={{ fontSize: 10, color: cont.color, fontWeight: 700 }}>drop here</span>}
                 <button onClick={e => { e.stopPropagation(); removeCountry(i); }} style={{ background: "none", border: "none", color: "rgba(248,248,240,0.3)", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1, marginLeft: 4 }}>×</button>
               </div>

@@ -81,18 +81,35 @@ function pickBest(records, n) {
     for (const co of cont.countries)
       existing.set(co.name, (co.photos || []).length);
 
-  // 3. Plan uploads
+  // 3. Plan uploads — dedupe by original basename already uploaded to this country
   const byCc = {};
   for (const r of report.records) (byCc[r.cc] = byCc[r.cc] || []).push(r);
+
+  // Build a per-country set of basenames already in the KV
+  const uploadedBasenames = new Map();
+  for (const cont of continents)
+    for (const co of cont.countries) {
+      const set = new Set();
+      for (const p of co.photos || []) {
+        // URL looks like .../ranzodz/countries/{Name}/20230921_160338-ntcuuf.jpg
+        const tail = (p.src || "").split("/").pop() || "";
+        const m = tail.match(/^(.+?)-[a-z0-9]{4,8}\.[^.]+$/i);
+        if (m) set.add(m[1]);
+      }
+      uploadedBasenames.set(co.name, set);
+    }
 
   const plan = [];
   for (const [cc, records] of Object.entries(byCc)) {
     const name = ISO_TO_NAME[cc];
     if (!name) { console.log(`Skip ${cc}: not in target list`); continue; }
     if (CO_FLAG && CO_FLAG !== name) continue;
-    const picks = pickBest(records, TARGETS[cc] || 10);
+    const already = uploadedBasenames.get(name) || new Set();
+    const picks = pickBest(records, TARGETS[cc] || 10)
+      .filter(r => !already.has(path.basename(r.path).replace(/\.[^.]+$/, "")));
+    if (picks.length === 0) { console.log(`${cc} ${name}: all targets already uploaded, skipping`); continue; }
     plan.push({ cc, name, picks });
-    console.log(`${cc} ${name}: ${picks.length} to upload (existing: ${existing.get(name) || 0})`);
+    console.log(`${cc} ${name}: ${picks.length} new to upload (already uploaded: ${already.size}, existing: ${existing.get(name) || 0})`);
   }
 
   if (DRY) { console.log("\n[DRY RUN] No uploads performed."); await prisma.$disconnect(); return; }
@@ -104,7 +121,14 @@ function pickBest(records, n) {
       const basename = path.basename(r.path).replace(/\.[^.]+$/, "");
       const publicId = `${basename}-${Math.random().toString(36).slice(2, 8)}`;
       try {
-        const result = await cloudinary.uploader.upload(r.path, {
+        // Pre-downscale locally if the file exceeds Cloudinary's 10MB free-tier limit.
+        let uploadPath = r.path;
+        if (r.size > 10 * 1024 * 1024) {
+          const sharp = require("sharp");
+          const buf = await sharp(r.path).rotate().resize({ width: 2400, withoutEnlargement: true }).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+          uploadPath = `data:image/jpeg;base64,${buf.toString("base64")}`;
+        }
+        const result = await cloudinary.uploader.upload(uploadPath, {
           folder: `ranzodz/countries/${name}`,
           public_id: publicId,
           resource_type: "image",
