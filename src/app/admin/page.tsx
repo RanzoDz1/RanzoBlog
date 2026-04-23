@@ -265,7 +265,7 @@ function Messages({ token }: { token: string }) {
 }
 
 // ── Countries ─────────────────────────────────────────────────────────────────
-type Photo = { src: string; caption: string; x?: number; y?: number; zoom?: number };
+type Photo = { src: string; caption: string; x?: number; y?: number; zoom?: number; published?: boolean };
 type CountryEntry = { name: string; flag: string; photos?: Photo[] };
 type ContinentEntry = { id: string; name: string; emoji: string; color: string; countries: CountryEntry[] };
 
@@ -358,6 +358,31 @@ function Countries({ token }: { token: string }) {
   };
   const toggleSelect = (pi: number) => setSelectedPhotos(s => { const n = new Set(s); n.has(pi) ? n.delete(pi) : n.add(pi); return n; });
 
+  // ── Draft / publish controls ─────────────────────────────────────────────
+  const togglePublish = (pi: number) => {
+    if (!editCountry) return;
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).map((p, i) => i === pi ? { ...p, published: p.published === false ? true : false } : p) } : co) } : c));
+  };
+  const publishAllInCountry = () => {
+    if (!editCountry) return;
+    setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).map(p => ({ ...p, published: true })) } : co) } : c));
+  };
+  const publishAllDrafts = () => {
+    setContinents(cs => cs.map(c => ({ ...c, countries: c.countries.map(co => ({ ...co, photos: (co.photos || []).map(p => ({ ...p, published: true })) })) })));
+  };
+  // Count drafts across all continents
+  const draftStats = (() => {
+    let total = 0;
+    const byCountry: { name: string; flag: string; count: number }[] = [];
+    for (const c of continents) {
+      for (const co of c.countries) {
+        const n = (co.photos || []).filter(p => p.published === false).length;
+        if (n > 0) { total += n; byCountry.push({ name: co.name, flag: co.flag, count: n }); }
+      }
+    }
+    return { total, byCountry };
+  })();
+
   const updatePhotoPos = (pi: number, x: number, y: number, zoom: number) => {
     if (!editCountry) return;
     setContinents(cs => cs.map(c => c.id === active ? { ...c, countries: c.countries.map(co => co.name === editCountry ? { ...co, photos: (co.photos || []).map((p, i) => i === pi ? { ...p, x, y, zoom } : p) } : co) } : c));
@@ -446,6 +471,28 @@ function Countries({ token }: { token: string }) {
         </div>
       </div>
 
+      {/* Drafts banner — visible whenever there are unpublished photos anywhere */}
+      {draftStats.total > 0 && (
+        <div style={{ ...card, marginBottom: 20, borderColor: "rgba(251,191,36,0.4)", background: "rgba(251,191,36,0.06)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#fbbf24", letterSpacing: "1px", textTransform: "uppercase" as const, marginBottom: 6 }}>
+                🟡 {draftStats.total} draft{draftStats.total === 1 ? "" : "s"} pending — hidden from public site
+              </div>
+              <div style={{ fontSize: 12, color: "rgba(248,248,240,0.6)", lineHeight: 1.5 }}>
+                {draftStats.byCountry.map(x => `${x.flag} ${x.name} (${x.count})`).join(" · ")}
+              </div>
+            </div>
+            <button
+              onClick={() => { if (confirm(`Publish all ${draftStats.total} drafts to the public site?`)) { publishAllDrafts(); setTimeout(save, 50); } }}
+              style={{ ...btnP, background: "#10b981", borderColor: "#10b981" }}
+            >
+              🚀 Publish All Drafts
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Continent tabs */}
       <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
         {continents.map(c => (
@@ -510,9 +557,21 @@ function Countries({ token }: { token: string }) {
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" as const, color: cont.color }}>
                   📷 Photos for {editCountry} · {(editingCountry.photos || []).length} photo(s)
+                  {(() => {
+                    const d = (editingCountry.photos || []).filter(p => p.published === false).length;
+                    return d > 0 ? <span style={{ marginLeft: 8, color: "#fbbf24" }}>· {d} draft{d===1?"":"s"}</span> : null;
+                  })()}
                 </div>
                 {(editingCountry.photos || []).length > 0 && (
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                    {(editingCountry.photos || []).some(p => p.published === false) && (
+                      <button
+                        onClick={() => { publishAllInCountry(); setTimeout(save, 50); }}
+                        style={{ padding: "5px 12px", fontSize: 11, borderRadius: 6, border: "1px solid #10b981", background: "rgba(16,185,129,0.15)", color: "#10b981", fontWeight: 700, cursor: "pointer", letterSpacing: "0.5px", textTransform: "uppercase" as const }}
+                      >
+                        🚀 Publish all {editingCountry.name ? "in " + editingCountry.name : ""}
+                      </button>
+                    )}
                     <button
                       onClick={() => selectedPhotos.size === (editingCountry.photos || []).length ? setSelectedPhotos(new Set()) : setSelectedPhotos(new Set((editingCountry.photos || []).map((_, i) => i)))}
                       style={{ ...btnG, padding: "5px 12px", fontSize: 11 }}
@@ -581,9 +640,15 @@ function Countries({ token }: { token: string }) {
                             {/* Photo */}
                             <img
                               src={photo.src} alt={photo.caption || ""}
-                              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`, transform: `scale(${photo.zoom ?? 1})`, transformOrigin: `${photo.x ?? 50}% ${photo.y ?? 50}%`, filter: "brightness(0.85) saturate(1.1)", display: "block", pointerEvents: "none" }}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${photo.x ?? 50}% ${photo.y ?? 50}%`, transform: `scale(${photo.zoom ?? 1})`, transformOrigin: `${photo.x ?? 50}% ${photo.y ?? 50}%`, filter: photo.published === false ? "brightness(0.6) saturate(0.9) grayscale(0.3)" : "brightness(0.85) saturate(1.1)", display: "block", pointerEvents: "none" }}
                               onError={e => { (e.target as HTMLImageElement).style.opacity = "0.2"; }}
                             />
+                            {/* Persistent DRAFT badge (visible without hover) */}
+                            {photo.published === false && (
+                              <div style={{ position: "absolute", top: 6, left: 6, padding: "3px 8px", borderRadius: 4, background: "rgba(251,191,36,0.95)", color: "#111", fontSize: 9, fontWeight: 800, letterSpacing: "0.5px", zIndex: 2, pointerEvents: "none" }}>
+                                DRAFT
+                              </div>
+                            )}
 
                             {/* Hover overlay — caption + controls */}
                             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(6,6,8,0.92) 0%, rgba(6,6,8,0.3) 50%, transparent 100%)", opacity: 0, transition: "opacity 0.25s" }}
@@ -599,6 +664,7 @@ function Countries({ token }: { token: string }) {
                                 <button onClick={() => reorderPhoto(pi, pi - 1)} disabled={pi === 0} title="Move left" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: "rgba(0,0,0,0.55)", color: pi === 0 ? "rgba(255,255,255,0.15)" : "#f8f8f0", fontSize: 11, cursor: pi === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>←</button>
                                 <button onClick={() => reorderPhoto(pi, pi + 1)} disabled={pi === photos.length - 1} title="Move right" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: "rgba(0,0,0,0.55)", color: pi === photos.length - 1 ? "rgba(255,255,255,0.15)" : "#f8f8f0", fontSize: 11, cursor: pi === photos.length - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>→</button>
                                 <button onClick={e => { e.stopPropagation(); setEditPhotoIdx(isEditingPos ? null : pi); }} title="Crop / position" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: isEditingPos ? "rgba(124,58,237,0.7)" : "rgba(0,0,0,0.55)", color: isEditingPos ? "#fff" : "#f8f8f0", fontSize: 11, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✥</button>
+                                <button onClick={e => { e.stopPropagation(); togglePublish(pi); }} title={photo.published === false ? "Publish (show on site)" : "Unpublish (hide from site)"} style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: photo.published === false ? "rgba(16,185,129,0.75)" : "rgba(251,191,36,0.75)", color: "#fff", fontSize: 12, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>{photo.published === false ? "✓" : "👁"}</button>
                                 <button onClick={e => { e.stopPropagation(); removePhoto(pi); }} title="Remove" style={{ width: 24, height: 24, borderRadius: 5, border: "none", background: "rgba(239,68,68,0.6)", color: "#fff", fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
                               </div>
                               {/* Checkbox top-left */}

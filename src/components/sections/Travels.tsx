@@ -10,7 +10,8 @@ const ease = [0.25, 0.46, 0.45, 0.94] as const;
 // Photos mapped to country names — cleared, will be re-added via admin
 const COUNTRY_PHOTOS: Record<string, { src: string; caption: string }[]> = {};
 
-type ContinentData = { id: string; name: string; emoji: string; color: string; countries: { name: string; flag: string; photos?: { src: string; caption: string }[] }[] };
+type Photo = { src: string; caption: string; published?: boolean };
+type ContinentData = { id: string; name: string; emoji: string; color: string; countries: { name: string; flag: string; photos?: Photo[] }[] };
 
 export default function Travels() {
   const { t, lang } = useT();
@@ -63,7 +64,9 @@ export default function Travels() {
           for (const cont of d.data as ContinentData[]) {
             for (const country of cont.countries) {
               if (country.photos && country.photos.length > 0) {
-                merged[country.name] = country.photos;
+                // Hide drafts (published === false) from the public site
+                const published = country.photos.filter(p => p.published !== false);
+                if (published.length > 0) merged[country.name] = published;
               }
             }
           }

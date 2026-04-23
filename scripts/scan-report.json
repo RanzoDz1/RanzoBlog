@@ -1,0 +1,6297 @@
+{
+ "root": "D:\\Images\\Camera & Video ALL",
+ "total_jpgs": 3105,
+ "with_gps": 628,
+ "countries": {
+  "ZW": 213,
+  "DZ": 129,
+  "TZ": 121,
+  "SA": 60,
+  "ZM": 46,
+  "DE": 34,
+  "FR": 23,
+  "ES": 2
+ },
+ "records": [
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20150615_132740.jpg",
+   "size": 96493,
+   "lat": 48.00031194444445,
+   "lon": 7.7964525,
+   "dt": "2015:06:15 13:27:40",
+   "cc": "DE",
+   "city": "Umkirch",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20150615_150954.jpg",
+   "size": 97212,
+   "lat": 48.00031194444445,
+   "lon": 7.7964525,
+   "dt": "2015:06:15 15:09:54",
+   "cc": "DE",
+   "city": "Umkirch",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20150615_173220.jpg",
+   "size": 91892,
+   "lat": 48.00031194444445,
+   "lon": 7.7964525,
+   "dt": "2015:06:15 17:32:20",
+   "cc": "DE",
+   "city": "Umkirch",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20150615_173558.jpg",
+   "size": 73672,
+   "lat": 48.00031194444445,
+   "lon": 7.7964525,
+   "dt": "2015:06:15 17:35:58",
+   "cc": "DE",
+   "city": "Umkirch",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20150816_212505.jpg",
+   "size": 58828,
+   "lat": 48.000277777777775,
+   "lon": 7.796388888888889,
+   "dt": "2015:08:16 21:25:05",
+   "cc": "DE",
+   "city": "Umkirch",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20201219_202812.jpg",
+   "size": 2801998,
+   "lat": 48.0098046,
+   "lon": 7.8314601999999995,
+   "dt": "2020:12:19 20:28:12",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20201219_203248.jpg",
+   "size": 4524511,
+   "lat": 48.0098484,
+   "lon": 7.831490999722222,
+   "dt": "2020:12:19 20:32:48",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20201219_203447.jpg",
+   "size": 2949633,
+   "lat": 48.009843699722225,
+   "lon": 7.831490299722222,
+   "dt": "2020:12:19 20:34:47",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20201219_203513.jpg",
+   "size": 2916814,
+   "lat": 48.0098429,
+   "lon": 7.831489599999999,
+   "dt": "2020:12:19 20:35:14",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20201219_203947.jpg",
+   "size": 2376307,
+   "lat": 48.00984199972222,
+   "lon": 7.831483399722222,
+   "dt": "2020:12:19 20:39:47",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230421_120317.jpg",
+   "size": 3493417,
+   "lat": 47.771011099999996,
+   "lon": 7.335921199722222,
+   "dt": "2023:04:21 12:03:17",
+   "cc": "FR",
+   "city": "Illzach",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230429_142545.jpg",
+   "size": 4207173,
+   "lat": 47.8862152,
+   "lon": 7.7247813,
+   "dt": "2023:04:29 14:25:45",
+   "cc": "DE",
+   "city": "Bad Krozingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230502_141028.jpg",
+   "size": 3652428,
+   "lat": 48.06642709972222,
+   "lon": 8.457120999999999,
+   "dt": "2023:05:02 14:10:28",
+   "cc": "DE",
+   "city": "Villingen-Schwenningen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230510_145206.jpg",
+   "size": 2790676,
+   "lat": 48.49732589972222,
+   "lon": 7.8243054,
+   "dt": "2023:05:10 14:52:06",
+   "cc": "DE",
+   "city": "Willstatt",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230510_145213.jpg",
+   "size": 3121359,
+   "lat": 48.4973329,
+   "lon": 7.824303399722222,
+   "dt": "2023:05:10 14:52:13",
+   "cc": "DE",
+   "city": "Willstatt",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230519_120901.jpg",
+   "size": 2293656,
+   "lat": 47.99691789972222,
+   "lon": 7.843113799999999,
+   "dt": "2023:05:19 12:09:01",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230519_143959.jpg",
+   "size": 1584800,
+   "lat": 48.0224057,
+   "lon": 7.839643199999999,
+   "dt": "2023:05:19 14:40:00",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230523_095632.jpg",
+   "size": 2942709,
+   "lat": 48.0859904,
+   "lon": 7.8075719999999995,
+   "dt": "2023:05:23 09:56:33",
+   "cc": "DE",
+   "city": "Teningen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230606_101415.jpg",
+   "size": 1844909,
+   "lat": 47.5631269,
+   "lon": 7.9390682,
+   "dt": "2023:06:06 10:14:15",
+   "cc": "DE",
+   "city": "Bad Sackingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230623_194127.jpg",
+   "size": 2837018,
+   "lat": 48.03199299972222,
+   "lon": 7.5872443,
+   "dt": "2023:06:23 19:41:27",
+   "cc": "DE",
+   "city": "Breisach am Rhein",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230623_194224.jpg",
+   "size": 3021981,
+   "lat": 48.031984,
+   "lon": 7.587235199999999,
+   "dt": "2023:06:23 19:42:24",
+   "cc": "DE",
+   "city": "Breisach am Rhein",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230628_101712.jpg",
+   "size": 3723435,
+   "lat": 47.80502129972222,
+   "lon": 7.333763599999999,
+   "dt": "2023:06:28 10:17:12",
+   "cc": "FR",
+   "city": "Wittenheim",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230628_101721.jpg",
+   "size": 4279575,
+   "lat": 47.805024499999995,
+   "lon": 7.3337471999999995,
+   "dt": "2023:06:28 10:17:20",
+   "cc": "FR",
+   "city": "Wittenheim",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_150747.jpg",
+   "size": 1952909,
+   "lat": 44.1313443,
+   "lon": 4.7889463999999995,
+   "dt": "2023:07:05 15:07:48",
+   "cc": "FR",
+   "city": "Orange",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_161836.jpg",
+   "size": 2661339,
+   "lat": 43.337159499722226,
+   "lon": 5.348356199722222,
+   "dt": "2023:07:05 16:18:36",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_161841.jpg",
+   "size": 2100847,
+   "lat": 43.3371441,
+   "lon": 5.348357499722222,
+   "dt": "2023:07:05 16:18:41",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_174735.jpg",
+   "size": 1659311,
+   "lat": 43.338930599722225,
+   "lon": 5.345391299999999,
+   "dt": "2023:07:05 17:47:35",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_175025.jpg",
+   "size": 2865902,
+   "lat": 43.338938499722225,
+   "lon": 5.345040499722222,
+   "dt": "2023:07:05 17:50:26",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_175549.jpg",
+   "size": 476761,
+   "lat": 43.339339199722225,
+   "lon": 5.344978299999999,
+   "dt": "2023:07:05 17:55:49",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_181119.jpg",
+   "size": 2787120,
+   "lat": 43.33853009972223,
+   "lon": 5.3444424,
+   "dt": "2023:07:05 18:11:19",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_201240.jpg",
+   "size": 2680050,
+   "lat": 43.31783049972223,
+   "lon": 5.296472699722222,
+   "dt": "2023:07:05 20:12:40",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_203055.jpg",
+   "size": 2465108,
+   "lat": 43.2399069,
+   "lon": 5.2605953,
+   "dt": "2023:07:05 20:30:55",
+   "cc": "FR",
+   "city": "Marseille 07",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_203151.jpg",
+   "size": 2582736,
+   "lat": 43.2354307,
+   "lon": 5.263151399722222,
+   "dt": "2023:07:05 20:31:51",
+   "cc": "FR",
+   "city": "Marseille 07",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_203231.jpg",
+   "size": 3206046,
+   "lat": 43.2354307,
+   "lon": 5.263151399722222,
+   "dt": "2023:07:05 20:32:31",
+   "cc": "FR",
+   "city": "Marseille 07",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230705_203315.jpg",
+   "size": 3005109,
+   "lat": 43.23041849972223,
+   "lon": 5.2659782,
+   "dt": "2023:07:05 20:33:15",
+   "cc": "FR",
+   "city": "Marseille 07",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230706_143853.jpg",
+   "size": 2514660,
+   "lat": 36.9900293,
+   "lon": 5.1299513999999995,
+   "dt": "2023:07:06 14:38:53",
+   "cc": "DZ",
+   "city": "Bejaia",
+   "admin1": "Bejaia"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230706_143901.jpg",
+   "size": 2636472,
+   "lat": 36.98946589972223,
+   "lon": 5.129902399722222,
+   "dt": "2023:07:06 14:39:01",
+   "cc": "DZ",
+   "city": "Bejaia",
+   "admin1": "Bejaia"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230706_145103.jpg",
+   "size": 1031652,
+   "lat": 36.923606799999995,
+   "lon": 5.127014899722222,
+   "dt": "2023:07:06 14:51:02",
+   "cc": "DZ",
+   "city": "Bejaia",
+   "admin1": "Bejaia"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_201949.jpg",
+   "size": 2192581,
+   "lat": 36.750804,
+   "lon": 2.9520854997222226,
+   "dt": "2023:07:07 20:19:49",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_202009.jpg",
+   "size": 2849952,
+   "lat": 36.750804,
+   "lon": 2.9520854997222226,
+   "dt": "2023:07:07 20:20:09",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_202031.jpg",
+   "size": 2873287,
+   "lat": 36.7508026,
+   "lon": 2.9520911,
+   "dt": "2023:07:07 20:20:31",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_202049.jpg",
+   "size": 2911323,
+   "lat": 36.7508064,
+   "lon": 2.9520911997222226,
+   "dt": "2023:07:07 20:20:49",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_202320.jpg",
+   "size": 2136338,
+   "lat": 36.7507838,
+   "lon": 2.9521065,
+   "dt": "2023:07:07 20:23:20",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_202446.jpg",
+   "size": 1925650,
+   "lat": 36.75080369972222,
+   "lon": 2.9521023,
+   "dt": "2023:07:07 20:24:46",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230707_202545.jpg",
+   "size": 2230111,
+   "lat": 36.7507761,
+   "lon": 2.9521212,
+   "dt": "2023:07:07 20:25:45",
+   "cc": "DZ",
+   "city": "Cheraga",
+   "admin1": "Tipaza"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161301.jpg",
+   "size": 3767604,
+   "lat": 36.7163325,
+   "lon": 3.1988652999999996,
+   "dt": "2023:07:10 16:13:01",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161311.jpg",
+   "size": 3882000,
+   "lat": 36.7163325,
+   "lon": 3.1988652999999996,
+   "dt": "2023:07:10 16:13:12",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161327.jpg",
+   "size": 4109479,
+   "lat": 36.7163564,
+   "lon": 3.198909399722222,
+   "dt": "2023:07:10 16:13:28",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161351.jpg",
+   "size": 3693314,
+   "lat": 36.7163776,
+   "lon": 3.1989077999999997,
+   "dt": "2023:07:10 16:13:51",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161435.jpg",
+   "size": 3705999,
+   "lat": 36.7163776,
+   "lon": 3.1989077999999997,
+   "dt": "2023:07:10 16:14:35",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161446.jpg",
+   "size": 3170802,
+   "lat": 36.716327399722225,
+   "lon": 3.1987267999999998,
+   "dt": "2023:07:10 16:14:46",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161540.jpg",
+   "size": 3421886,
+   "lat": 36.71634459972223,
+   "lon": 3.1987108999999996,
+   "dt": "2023:07:10 16:15:40",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161556.jpg",
+   "size": 4079831,
+   "lat": 36.71632209972223,
+   "lon": 3.198735999722222,
+   "dt": "2023:07:10 16:15:56",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161659.jpg",
+   "size": 2866627,
+   "lat": 36.7162622,
+   "lon": 3.198828499722222,
+   "dt": "2023:07:10 16:16:59",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161754.jpg",
+   "size": 4211699,
+   "lat": 36.71626249972223,
+   "lon": 3.1988179999999997,
+   "dt": "2023:07:10 16:17:55",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161802.jpg",
+   "size": 4354941,
+   "lat": 36.71626249972223,
+   "lon": 3.1988179999999997,
+   "dt": "2023:07:10 16:18:02",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161824.jpg",
+   "size": 3272928,
+   "lat": 36.7162938,
+   "lon": 3.1988068999999997,
+   "dt": "2023:07:10 16:18:24",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161905.jpg",
+   "size": 3099548,
+   "lat": 36.71635309972223,
+   "lon": 3.1988238,
+   "dt": "2023:07:10 16:19:05",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161911.jpg",
+   "size": 3182198,
+   "lat": 36.71635309972223,
+   "lon": 3.1988238,
+   "dt": "2023:07:10 16:19:11",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_161919.jpg",
+   "size": 3306510,
+   "lat": 36.71635309972223,
+   "lon": 3.1988238,
+   "dt": "2023:07:10 16:19:19",
+   "cc": "DZ",
+   "city": "Dar el Beida",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_195430.jpg",
+   "size": 2827572,
+   "lat": 36.7304924,
+   "lon": 3.1552845,
+   "dt": "2023:07:10 19:54:30",
+   "cc": "DZ",
+   "city": "Bab Ezzouar",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_195436.jpg",
+   "size": 2999842,
+   "lat": 36.7312535,
+   "lon": 3.153764499722222,
+   "dt": "2023:07:10 19:54:36",
+   "cc": "DZ",
+   "city": "Bab Ezzouar",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230710_195438.jpg",
+   "size": 2404967,
+   "lat": 36.7314918,
+   "lon": 3.153327399722222,
+   "dt": "2023:07:10 19:54:38",
+   "cc": "DZ",
+   "city": "Bab Ezzouar",
+   "admin1": "Alger"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_153930.jpg",
+   "size": 5043237,
+   "lat": 36.9128606,
+   "lon": 6.883301199722223,
+   "dt": "2023:07:15 15:39:30",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_153938.jpg",
+   "size": 5317877,
+   "lat": 36.9128606,
+   "lon": 6.883301199722223,
+   "dt": "2023:07:15 15:39:38",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_153950.jpg",
+   "size": 5062815,
+   "lat": 36.9128606,
+   "lon": 6.883301199722223,
+   "dt": "2023:07:15 15:39:50",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_154026.jpg",
+   "size": 5845523,
+   "lat": 36.9128557,
+   "lon": 6.883337899722222,
+   "dt": "2023:07:15 15:40:26",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_154032.jpg",
+   "size": 6220299,
+   "lat": 36.9128557,
+   "lon": 6.883337899722222,
+   "dt": "2023:07:15 15:40:32",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_173007.jpg",
+   "size": 2432958,
+   "lat": 36.912887999999995,
+   "lon": 6.883273499722223,
+   "dt": "2023:07:15 17:30:07",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230715_173020.jpg",
+   "size": 3247432,
+   "lat": 36.91288639972222,
+   "lon": 6.883287199722223,
+   "dt": "2023:07:15 17:30:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_103432.jpg",
+   "size": 2611589,
+   "lat": 36.8703105,
+   "lon": 6.911642299722223,
+   "dt": "2023:07:16 10:34:32",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_192959.jpg",
+   "size": 3331251,
+   "lat": 36.935334999999995,
+   "lon": 7.766286,
+   "dt": "2023:07:16 19:29:59",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193014.jpg",
+   "size": 2849875,
+   "lat": 36.935347199999995,
+   "lon": 7.766270399722222,
+   "dt": "2023:07:16 19:30:14",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193129.jpg",
+   "size": 4448708,
+   "lat": 36.935334399999995,
+   "lon": 7.7662896,
+   "dt": "2023:07:16 19:31:29",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193132.jpg",
+   "size": 3130802,
+   "lat": 36.935334399999995,
+   "lon": 7.7662896,
+   "dt": "2023:07:16 19:31:32",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193347.jpg",
+   "size": 4265057,
+   "lat": 36.935334399999995,
+   "lon": 7.7662914,
+   "dt": "2023:07:16 19:33:47",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193426.jpg",
+   "size": 4655057,
+   "lat": 36.935334399999995,
+   "lon": 7.7662912,
+   "dt": "2023:07:16 19:34:26",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193506.jpg",
+   "size": 4166967,
+   "lat": 36.935326999999994,
+   "lon": 7.766292299722222,
+   "dt": "2023:07:16 19:35:06",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193515.jpg",
+   "size": 4651527,
+   "lat": 36.935326999999994,
+   "lon": 7.766292299722222,
+   "dt": "2023:07:16 19:35:16",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193623.jpg",
+   "size": 3415703,
+   "lat": 36.935347199999995,
+   "lon": 7.766288799722222,
+   "dt": "2023:07:16 19:36:23",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193647.jpg",
+   "size": 2960021,
+   "lat": 36.935337499999996,
+   "lon": 7.7662896,
+   "dt": "2023:07:16 19:36:46",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_193653.jpg",
+   "size": 3561858,
+   "lat": 36.935337499999996,
+   "lon": 7.7662896,
+   "dt": "2023:07:16 19:36:53",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_210420.jpg",
+   "size": 5222519,
+   "lat": 36.92456409972222,
+   "lon": 7.761738499722222,
+   "dt": "2023:07:16 21:04:20",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_210438.jpg",
+   "size": 5127546,
+   "lat": 36.92456409972222,
+   "lon": 7.761738499722222,
+   "dt": "2023:07:16 21:04:38",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230716_210545.jpg",
+   "size": 2654709,
+   "lat": 36.9245643,
+   "lon": 7.761738799722222,
+   "dt": "2023:07:16 21:05:45",
+   "cc": "DZ",
+   "city": "Annaba",
+   "admin1": "Annaba"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230718_154827.jpg",
+   "size": 2757224,
+   "lat": 36.86901089972222,
+   "lon": 6.913066299722223,
+   "dt": "2023:07:18 15:48:28",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230718_155125.jpg",
+   "size": 2902792,
+   "lat": 36.8666624,
+   "lon": 6.915023999722223,
+   "dt": "2023:07:18 15:51:26",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_012947.jpg",
+   "size": 4798743,
+   "lat": 36.8714523,
+   "lon": 6.915142,
+   "dt": "2023:07:20 01:29:46",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_013013.jpg",
+   "size": 2764315,
+   "lat": 36.8714523,
+   "lon": 6.915142,
+   "dt": "2023:07:20 01:30:13",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_013029.jpg",
+   "size": 2833922,
+   "lat": 36.8714523,
+   "lon": 6.915142,
+   "dt": "2023:07:20 01:30:29",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_013039.jpg",
+   "size": 6073109,
+   "lat": 36.8714547,
+   "lon": 6.9151607,
+   "dt": "2023:07:20 01:30:39",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_013044.jpg",
+   "size": 6764462,
+   "lat": 36.8714547,
+   "lon": 6.9151607,
+   "dt": "2023:07:20 01:30:44",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_013051.jpg",
+   "size": 5626817,
+   "lat": 36.8714547,
+   "lon": 6.9151607,
+   "dt": "2023:07:20 01:30:51",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230720_013142.jpg",
+   "size": 2388099,
+   "lat": 36.871487299722226,
+   "lon": 6.915211499722223,
+   "dt": "2023:07:20 01:31:42",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_003020.jpg",
+   "size": 2660833,
+   "lat": 36.869382,
+   "lon": 6.914545699722223,
+   "dt": "2023:07:22 00:30:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_003021.jpg",
+   "size": 2074353,
+   "lat": 36.869382,
+   "lon": 6.914545699722223,
+   "dt": "2023:07:22 00:30:21",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_163446.jpg",
+   "size": 4417502,
+   "lat": 36.895711399999996,
+   "lon": 7.022881899722222,
+   "dt": "2023:07:22 16:34:46",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_163855.jpg",
+   "size": 5591762,
+   "lat": 36.8956986,
+   "lon": 7.022901199722222,
+   "dt": "2023:07:22 16:38:55",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_163901.jpg",
+   "size": 5430096,
+   "lat": 36.8956992,
+   "lon": 7.0229007999999995,
+   "dt": "2023:07:22 16:39:01",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_163941.jpg",
+   "size": 5332152,
+   "lat": 36.8957404,
+   "lon": 7.0228722,
+   "dt": "2023:07:22 16:39:41",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_163946.jpg",
+   "size": 6048810,
+   "lat": 36.8957404,
+   "lon": 7.0228722,
+   "dt": "2023:07:22 16:39:46",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_163949.jpg",
+   "size": 5324411,
+   "lat": 36.8957404,
+   "lon": 7.0228722,
+   "dt": "2023:07:22 16:39:49",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_164228.jpg",
+   "size": 6061126,
+   "lat": 36.89545809972222,
+   "lon": 7.022586699722222,
+   "dt": "2023:07:22 16:42:28",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_164257.jpg",
+   "size": 6124935,
+   "lat": 36.89546059972222,
+   "lon": 7.022652199722222,
+   "dt": "2023:07:22 16:42:58",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165040.jpg",
+   "size": 5517334,
+   "lat": 36.89555839972222,
+   "lon": 7.0224608,
+   "dt": "2023:07:22 16:50:40",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165144.jpg",
+   "size": 5225132,
+   "lat": 36.8955872,
+   "lon": 7.0224231999999995,
+   "dt": "2023:07:22 16:51:44",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165204.jpg",
+   "size": 5302368,
+   "lat": 36.895610599722225,
+   "lon": 7.022403299722222,
+   "dt": "2023:07:22 16:52:04",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165244.jpg",
+   "size": 5822224,
+   "lat": 36.8956096,
+   "lon": 7.0224064,
+   "dt": "2023:07:22 16:52:44",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165627.jpg",
+   "size": 2444043,
+   "lat": 36.895648,
+   "lon": 7.022316799722222,
+   "dt": "2023:07:22 16:56:27",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165636.jpg",
+   "size": 2070477,
+   "lat": 36.895648,
+   "lon": 7.022316799722222,
+   "dt": "2023:07:22 16:56:36",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_165654.jpg",
+   "size": 2351599,
+   "lat": 36.895484099722225,
+   "lon": 7.0223573,
+   "dt": "2023:07:22 16:56:54",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_171035.jpg",
+   "size": 5614764,
+   "lat": 36.8955423,
+   "lon": 7.0224928,
+   "dt": "2023:07:22 17:10:35",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_171059.jpg",
+   "size": 4848392,
+   "lat": 36.8955423,
+   "lon": 7.0224928,
+   "dt": "2023:07:22 17:10:59",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_171105.jpg",
+   "size": 4863231,
+   "lat": 36.895564999722225,
+   "lon": 7.0224621,
+   "dt": "2023:07:22 17:11:05",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_171109.jpg",
+   "size": 5707338,
+   "lat": 36.895537499999996,
+   "lon": 7.022486999722222,
+   "dt": "2023:07:22 17:11:08",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_171120.jpg",
+   "size": 5523551,
+   "lat": 36.895537499999996,
+   "lon": 7.022486999722222,
+   "dt": "2023:07:22 17:11:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230722_171724.jpg",
+   "size": 6346297,
+   "lat": 36.895488,
+   "lon": 7.022554399722222,
+   "dt": "2023:07:22 17:17:24",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230723_183023.jpg",
+   "size": 2075648,
+   "lat": 36.8420009,
+   "lon": 6.9540742,
+   "dt": "2023:07:23 18:30:23",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184351.jpg",
+   "size": 5091247,
+   "lat": 36.785118399999995,
+   "lon": 6.871237899722223,
+   "dt": "2023:07:25 18:43:51",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184436.jpg",
+   "size": 5511143,
+   "lat": 36.78512549972222,
+   "lon": 6.8712473,
+   "dt": "2023:07:25 18:44:36",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184704.jpg",
+   "size": 5234690,
+   "lat": 36.78514239972222,
+   "lon": 6.871247999722223,
+   "dt": "2023:07:25 18:47:04",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184707.jpg",
+   "size": 2921011,
+   "lat": 36.78514239972222,
+   "lon": 6.871247999722223,
+   "dt": "2023:07:25 18:47:07",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184713.jpg",
+   "size": 5549567,
+   "lat": 36.78514239972222,
+   "lon": 6.871247999722223,
+   "dt": "2023:07:25 18:47:13",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184817.jpg",
+   "size": 2759198,
+   "lat": 36.78514559972222,
+   "lon": 6.8712334,
+   "dt": "2023:07:25 18:48:17",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_184926.jpg",
+   "size": 2793558,
+   "lat": 36.785174399999995,
+   "lon": 6.871183199722223,
+   "dt": "2023:07:25 18:49:26",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185025.jpg",
+   "size": 5950924,
+   "lat": 36.78516309972222,
+   "lon": 6.871192699722223,
+   "dt": "2023:07:25 18:50:25",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185032.jpg",
+   "size": 5590479,
+   "lat": 36.78515949972222,
+   "lon": 6.871190499722223,
+   "dt": "2023:07:25 18:50:32",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185043.jpg",
+   "size": 5081477,
+   "lat": 36.785136699999995,
+   "lon": 6.8711788,
+   "dt": "2023:07:25 18:50:43",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185100.jpg",
+   "size": 5155144,
+   "lat": 36.78506949972222,
+   "lon": 6.871202099722223,
+   "dt": "2023:07:25 18:51:00",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185120.jpg",
+   "size": 4695057,
+   "lat": 36.78509259972222,
+   "lon": 6.871186699722223,
+   "dt": "2023:07:25 18:51:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185131.jpg",
+   "size": 5241297,
+   "lat": 36.785095899999995,
+   "lon": 6.871191099722223,
+   "dt": "2023:07:25 18:51:31",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185211.jpg",
+   "size": 5446236,
+   "lat": 36.785167699999995,
+   "lon": 6.8711805,
+   "dt": "2023:07:25 18:52:11",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185234.jpg",
+   "size": 5910320,
+   "lat": 36.785148799999995,
+   "lon": 6.8711896,
+   "dt": "2023:07:25 18:52:34",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185412.jpg",
+   "size": 6358370,
+   "lat": 36.785141599999996,
+   "lon": 6.871191699722223,
+   "dt": "2023:07:25 18:54:12",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185417.jpg",
+   "size": 6981823,
+   "lat": 36.785141599999996,
+   "lon": 6.871191699722223,
+   "dt": "2023:07:25 18:54:17",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185457.jpg",
+   "size": 4998075,
+   "lat": 36.78514239972222,
+   "lon": 6.871191999722223,
+   "dt": "2023:07:25 18:54:57",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185531.jpg",
+   "size": 5659042,
+   "lat": 36.785162899999996,
+   "lon": 6.871168299722223,
+   "dt": "2023:07:25 18:55:31",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185539.jpg",
+   "size": 5892958,
+   "lat": 36.78516559972222,
+   "lon": 6.871203699722223,
+   "dt": "2023:07:25 18:55:39",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185606.jpg",
+   "size": 5965386,
+   "lat": 36.78512239972222,
+   "lon": 6.8712007,
+   "dt": "2023:07:25 18:56:06",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185620.jpg",
+   "size": 3225298,
+   "lat": 36.7851219,
+   "lon": 6.871207899722223,
+   "dt": "2023:07:25 18:56:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185645.jpg",
+   "size": 3022686,
+   "lat": 36.7851232,
+   "lon": 6.871208,
+   "dt": "2023:07:25 18:56:45",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185649.jpg",
+   "size": 3588401,
+   "lat": 36.7851232,
+   "lon": 6.871208,
+   "dt": "2023:07:25 18:56:49",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185658.jpg",
+   "size": 2745553,
+   "lat": 36.7851232,
+   "lon": 6.871208,
+   "dt": "2023:07:25 18:56:58",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185713.jpg",
+   "size": 3915250,
+   "lat": 36.78512369972222,
+   "lon": 6.8712039,
+   "dt": "2023:07:25 18:57:13",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185739.jpg",
+   "size": 3270715,
+   "lat": 36.7851232,
+   "lon": 6.871203999722223,
+   "dt": "2023:07:25 18:57:39",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185805.jpg",
+   "size": 3457657,
+   "lat": 36.78512369972222,
+   "lon": 6.871203799722223,
+   "dt": "2023:07:25 18:58:05",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_185918.jpg",
+   "size": 3108225,
+   "lat": 36.78514239972222,
+   "lon": 6.871208,
+   "dt": "2023:07:25 18:59:18",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190021.jpg",
+   "size": 2561622,
+   "lat": 36.78514559972222,
+   "lon": 6.8712216,
+   "dt": "2023:07:25 19:00:21",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190101.jpg",
+   "size": 5790911,
+   "lat": 36.78514239972222,
+   "lon": 6.8712336,
+   "dt": "2023:07:25 19:01:01",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190126.jpg",
+   "size": 5688365,
+   "lat": 36.78514239972222,
+   "lon": 6.8712336,
+   "dt": "2023:07:25 19:01:26",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190216.jpg",
+   "size": 5798219,
+   "lat": 36.785103899999996,
+   "lon": 6.8712232,
+   "dt": "2023:07:25 19:02:16",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190244.jpg",
+   "size": 2693924,
+   "lat": 36.785103899999996,
+   "lon": 6.8712232,
+   "dt": "2023:07:25 19:02:44",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190505.jpg",
+   "size": 5035788,
+   "lat": 36.785164699999996,
+   "lon": 6.871199999722223,
+   "dt": "2023:07:25 19:05:05",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190659.jpg",
+   "size": 5452539,
+   "lat": 36.78513499972222,
+   "lon": 6.871197399722223,
+   "dt": "2023:07:25 19:06:59",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190750.jpg",
+   "size": 5127088,
+   "lat": 36.7851506,
+   "lon": 6.8711577,
+   "dt": "2023:07:25 19:07:50",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190834.jpg",
+   "size": 5688485,
+   "lat": 36.78514499972222,
+   "lon": 6.871196699722223,
+   "dt": "2023:07:25 19:08:34",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190905.jpg",
+   "size": 5648336,
+   "lat": 36.78514499972222,
+   "lon": 6.871196699722223,
+   "dt": "2023:07:25 19:09:05",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_190920.jpg",
+   "size": 5144991,
+   "lat": 36.78514499972222,
+   "lon": 6.871196699722223,
+   "dt": "2023:07:25 19:09:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_191126.jpg",
+   "size": 5367122,
+   "lat": 36.785165299999996,
+   "lon": 6.871183199722223,
+   "dt": "2023:07:25 19:11:26",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230725_191221.jpg",
+   "size": 5021217,
+   "lat": 36.78514559972222,
+   "lon": 6.871155199722223,
+   "dt": "2023:07:25 19:12:21",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230728_190920.jpg",
+   "size": 6262191,
+   "lat": 36.933584399999994,
+   "lon": 6.852544199722222,
+   "dt": "2023:07:28 19:09:20",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230728_191155.jpg",
+   "size": 4675011,
+   "lat": 36.93357999972222,
+   "lon": 6.852533099722222,
+   "dt": "2023:07:28 19:11:56",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230728_191326.jpg",
+   "size": 4746371,
+   "lat": 36.93358039972222,
+   "lon": 6.852557999999999,
+   "dt": "2023:07:28 19:13:26",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230728_191500.jpg",
+   "size": 4948485,
+   "lat": 36.93358039972222,
+   "lon": 6.8525494,
+   "dt": "2023:07:28 19:15:00",
+   "cc": "DZ",
+   "city": "Skikda",
+   "admin1": "Skikda"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230731_032740.jpg",
+   "size": 3796563,
+   "lat": 41.16614299972222,
+   "lon": 5.426687499722222,
+   "dt": "2023:07:31 03:27:41",
+   "cc": "ES",
+   "city": "Es Castell",
+   "admin1": "Balearic Islands"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230731_032752.jpg",
+   "size": 4372029,
+   "lat": 41.166966099999996,
+   "lon": 5.426715599722223,
+   "dt": "2023:07:31 03:27:53",
+   "cc": "ES",
+   "city": "Es Castell",
+   "admin1": "Balearic Islands"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230731_112051.jpg",
+   "size": 4800733,
+   "lat": 43.3442025,
+   "lon": 5.3268781999999995,
+   "dt": "2023:07:31 11:20:51",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230731_112110.jpg",
+   "size": 4392575,
+   "lat": 43.343665,
+   "lon": 5.3278625,
+   "dt": "2023:07:31 11:21:10",
+   "cc": "FR",
+   "city": "Marseille 16",
+   "admin1": "Provence-Alpes-Cote d'Azur"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230731_223009.jpg",
+   "size": 4128482,
+   "lat": 48.00973309972222,
+   "lon": 7.8315383999999995,
+   "dt": "2023:07:31 22:30:16",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230825_112341.jpg",
+   "size": 5532546,
+   "lat": 47.559659499999995,
+   "lon": 7.9463669,
+   "dt": "2023:08:25 11:23:41",
+   "cc": "DE",
+   "city": "Bad Sackingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230831_092835.jpg",
+   "size": 4668856,
+   "lat": 48.0880853,
+   "lon": 7.9487648,
+   "dt": "2023:08:31 09:28:35",
+   "cc": "DE",
+   "city": "Waldkirch",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20230921_160338.jpg",
+   "size": 8406544,
+   "lat": 50.626585599722226,
+   "lon": 9.451916799722222,
+   "dt": "2023:09:21 16:03:38",
+   "cc": "DE",
+   "city": "Lauterbach",
+   "admin1": "Hesse"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231027_201022.jpg",
+   "size": 2736514,
+   "lat": 47.7642984,
+   "lon": 7.3525719,
+   "dt": "2023:10:27 20:10:23",
+   "cc": "FR",
+   "city": "Illzach",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231027_202512.jpg",
+   "size": 2086125,
+   "lat": 47.761043,
+   "lon": 7.351661999999999,
+   "dt": "2023:10:27 20:25:13",
+   "cc": "FR",
+   "city": "Riedisheim",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231027_202529.jpg",
+   "size": 3076831,
+   "lat": 47.76102449722222,
+   "lon": 7.351667197222222,
+   "dt": "2023:10:27 20:25:32",
+   "cc": "FR",
+   "city": "Riedisheim",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231027_210855.jpg",
+   "size": 3318987,
+   "lat": 47.76118819972222,
+   "lon": 7.351213399722222,
+   "dt": "2023:10:27 21:08:56",
+   "cc": "FR",
+   "city": "Illzach",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231027_211932.jpg",
+   "size": 2794977,
+   "lat": 47.7610229,
+   "lon": 7.351690199999999,
+   "dt": "2023:10:27 21:19:34",
+   "cc": "FR",
+   "city": "Riedisheim",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231027_213853.jpg",
+   "size": 2867330,
+   "lat": 47.7610243,
+   "lon": 7.351683599999999,
+   "dt": "2023:10:27 21:38:57",
+   "cc": "FR",
+   "city": "Riedisheim",
+   "admin1": "Alsace"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231029_152643.jpg",
+   "size": 2969307,
+   "lat": 48.00822169972222,
+   "lon": 7.828399799722222,
+   "dt": "2023:10:29 15:26:43",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231102_160920.jpg",
+   "size": 1940818,
+   "lat": 48.007136199722225,
+   "lon": 7.840061999722222,
+   "dt": "2023:11:02 16:09:20",
+   "cc": "DE",
+   "city": "Freiburg",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231123_145420.jpg",
+   "size": 2757269,
+   "lat": 47.8932682,
+   "lon": 8.4403324,
+   "dt": "2023:11:23 14:54:20",
+   "cc": "DE",
+   "city": "Braunlingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231130_110757.jpg",
+   "size": 3066604,
+   "lat": 47.972799199722225,
+   "lon": 8.8389948,
+   "dt": "2023:11:30 11:07:57",
+   "cc": "DE",
+   "city": "Tuttlingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231130_131951.jpg",
+   "size": 3118741,
+   "lat": 47.9725582,
+   "lon": 8.833489999722223,
+   "dt": "2023:11:30 13:19:50",
+   "cc": "DE",
+   "city": "Tuttlingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231130_133156.jpg",
+   "size": 4118054,
+   "lat": 47.9727983,
+   "lon": 8.838960899722222,
+   "dt": "2023:11:30 13:31:56",
+   "cc": "DE",
+   "city": "Tuttlingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20231201_140848.jpg",
+   "size": 2067598,
+   "lat": 47.9599157,
+   "lon": 8.5039504,
+   "dt": "2023:12:01 14:08:48",
+   "cc": "DE",
+   "city": "Donaueschingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240101_214341.jpg",
+   "size": 3299937,
+   "lat": 21.3598557,
+   "lon": 39.6628958,
+   "dt": "2024:01:01 21:43:41",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000614.jpg",
+   "size": 3238727,
+   "lat": 21.423016,
+   "lon": 39.826617599722226,
+   "dt": "2024:01:02 00:06:14",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000725.jpg",
+   "size": 1670718,
+   "lat": 21.4229896,
+   "lon": 39.8265742,
+   "dt": "2024:01:02 00:07:24",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000726.jpg",
+   "size": 2855820,
+   "lat": 21.4229896,
+   "lon": 39.8265742,
+   "dt": "2024:01:02 00:07:26",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000816.jpg",
+   "size": 5210144,
+   "lat": 21.422981,
+   "lon": 39.826582,
+   "dt": "2024:01:02 00:08:16",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000842.jpg",
+   "size": 5175092,
+   "lat": 21.4229726,
+   "lon": 39.82657749972223,
+   "dt": "2024:01:02 00:08:42",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000858.jpg",
+   "size": 4694628,
+   "lat": 21.422979699722223,
+   "lon": 39.8265953,
+   "dt": "2024:01:02 00:08:58",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000908.jpg",
+   "size": 3948675,
+   "lat": 21.422979699722223,
+   "lon": 39.8265953,
+   "dt": "2024:01:02 00:09:08",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000926.jpg",
+   "size": 4519890,
+   "lat": 21.422982499722224,
+   "lon": 39.8265888,
+   "dt": "2024:01:02 00:09:26",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_000959.jpg",
+   "size": 4653977,
+   "lat": 21.422982499722224,
+   "lon": 39.8265888,
+   "dt": "2024:01:02 00:10:00",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_020236.jpg",
+   "size": 2236630,
+   "lat": 21.4200409,
+   "lon": 39.8261796,
+   "dt": "2024:01:02 02:02:37",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_080448.jpg",
+   "size": 2376286,
+   "lat": 21.41408129972222,
+   "lon": 39.8273561,
+   "dt": "2024:01:02 08:04:49",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_080501.jpg",
+   "size": 2358805,
+   "lat": 21.41408129972222,
+   "lon": 39.8273561,
+   "dt": "2024:01:02 08:05:02",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_080543.jpg",
+   "size": 2413071,
+   "lat": 21.414066599999998,
+   "lon": 39.827375699722225,
+   "dt": "2024:01:02 08:05:43",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_082547.jpg",
+   "size": 2678632,
+   "lat": 21.39896309972222,
+   "lon": 39.8477916,
+   "dt": "2024:01:02 08:25:48",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_082556.jpg",
+   "size": 2118890,
+   "lat": 21.39896309972222,
+   "lon": 39.8477916,
+   "dt": "2024:01:02 08:25:56",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_092123.jpg",
+   "size": 5993068,
+   "lat": 21.3547161,
+   "lon": 39.984140799722226,
+   "dt": "2024:01:02 09:21:24",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_092145.jpg",
+   "size": 5177124,
+   "lat": 21.3547216,
+   "lon": 39.9841412,
+   "dt": "2024:01:02 09:21:45",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240102_093418.jpg",
+   "size": 2978218,
+   "lat": 21.3524928,
+   "lon": 39.98213859972223,
+   "dt": "2024:01:02 09:34:18",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141528.jpg",
+   "size": 2357812,
+   "lat": 21.4206018,
+   "lon": 39.824825699722226,
+   "dt": "2024:01:03 14:15:28",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141549.jpg",
+   "size": 2438487,
+   "lat": 21.4206018,
+   "lon": 39.824825699722226,
+   "dt": "2024:01:03 14:15:49",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141627.jpg",
+   "size": 2263257,
+   "lat": 21.4205937,
+   "lon": 39.82481549972223,
+   "dt": "2024:01:03 14:16:27",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141638.jpg",
+   "size": 2474288,
+   "lat": 21.4205937,
+   "lon": 39.82481549972223,
+   "dt": "2024:01:03 14:16:38",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141656.jpg",
+   "size": 2334037,
+   "lat": 21.420622099722223,
+   "lon": 39.82483979972223,
+   "dt": "2024:01:03 14:16:56",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141702.jpg",
+   "size": 2323909,
+   "lat": 21.420633299722223,
+   "lon": 39.824865099722224,
+   "dt": "2024:01:03 14:17:02",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141710.jpg",
+   "size": 2718472,
+   "lat": 21.420646099722223,
+   "lon": 39.8248759,
+   "dt": "2024:01:03 14:17:10",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141717.jpg",
+   "size": 2263441,
+   "lat": 21.420646099722223,
+   "lon": 39.8248759,
+   "dt": "2024:01:03 14:17:17",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141820.jpg",
+   "size": 4730165,
+   "lat": 21.4206584,
+   "lon": 39.8247988,
+   "dt": "2024:01:03 14:18:20",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141823.jpg",
+   "size": 4815660,
+   "lat": 21.4206584,
+   "lon": 39.8247988,
+   "dt": "2024:01:03 14:18:23",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141827.jpg",
+   "size": 4750168,
+   "lat": 21.4206584,
+   "lon": 39.8247988,
+   "dt": "2024:01:03 14:18:27",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141911.jpg",
+   "size": 4789731,
+   "lat": 21.420616299722223,
+   "lon": 39.824875499722225,
+   "dt": "2024:01:03 14:19:11",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141913.jpg",
+   "size": 4695042,
+   "lat": 21.420616299722223,
+   "lon": 39.824875499722225,
+   "dt": "2024:01:03 14:19:13",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141915.jpg",
+   "size": 4659504,
+   "lat": 21.420616299722223,
+   "lon": 39.824875499722225,
+   "dt": "2024:01:03 14:19:15",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_141922.jpg",
+   "size": 5449663,
+   "lat": 21.420616299722223,
+   "lon": 39.824875499722225,
+   "dt": "2024:01:03 14:19:22",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_142415.jpg",
+   "size": 4648373,
+   "lat": 21.420727599722223,
+   "lon": 39.8248431,
+   "dt": "2024:01:03 14:24:15",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_142422.jpg",
+   "size": 5586251,
+   "lat": 21.420727599722223,
+   "lon": 39.8248431,
+   "dt": "2024:01:03 14:24:22",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240103_142429.jpg",
+   "size": 5601351,
+   "lat": 21.420727599722223,
+   "lon": 39.8248431,
+   "dt": "2024:01:03 14:24:29",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182138.jpg",
+   "size": 4439483,
+   "lat": 21.423315599722223,
+   "lon": 39.8284943,
+   "dt": "2024:01:04 18:21:38",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182147.jpg",
+   "size": 4746059,
+   "lat": 21.4233106,
+   "lon": 39.8284906,
+   "dt": "2024:01:04 18:21:47",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182329.jpg",
+   "size": 5319482,
+   "lat": 21.4232917,
+   "lon": 39.8284529,
+   "dt": "2024:01:04 18:23:29",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182333.jpg",
+   "size": 5744234,
+   "lat": 21.4232917,
+   "lon": 39.8284529,
+   "dt": "2024:01:04 18:23:33",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182435.jpg",
+   "size": 2388988,
+   "lat": 21.4232863,
+   "lon": 39.828450599722224,
+   "dt": "2024:01:04 18:24:35",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182456.jpg",
+   "size": 2598389,
+   "lat": 21.4232863,
+   "lon": 39.828450599722224,
+   "dt": "2024:01:04 18:24:56",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182501.jpg",
+   "size": 2224216,
+   "lat": 21.4232863,
+   "lon": 39.828450599722224,
+   "dt": "2024:01:04 18:25:01",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182600.jpg",
+   "size": 2167866,
+   "lat": 21.4232361,
+   "lon": 39.828435499722225,
+   "dt": "2024:01:04 18:26:00",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240104_182633.jpg",
+   "size": 2528849,
+   "lat": 21.4232361,
+   "lon": 39.828435499722225,
+   "dt": "2024:01:04 18:26:33",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240107_195810.jpg",
+   "size": 2492126,
+   "lat": 21.4219785,
+   "lon": 39.8245322,
+   "dt": "2024:01:07 19:58:10",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240107_195821.jpg",
+   "size": 2037835,
+   "lat": 21.4219785,
+   "lon": 39.8245322,
+   "dt": "2024:01:07 19:58:21",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240107_195934.jpg",
+   "size": 2140155,
+   "lat": 21.4219864,
+   "lon": 39.824539299722225,
+   "dt": "2024:01:07 19:59:34",
+   "cc": "SA",
+   "city": "Mecca",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240108_230739.jpg",
+   "size": 4333134,
+   "lat": 24.466728399999997,
+   "lon": 39.608133199722225,
+   "dt": "2024:01:08 23:07:38",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240108_230744.jpg",
+   "size": 3972237,
+   "lat": 24.466729599999997,
+   "lon": 39.6081329,
+   "dt": "2024:01:08 23:07:44",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240108_230808.jpg",
+   "size": 5033403,
+   "lat": 24.466722599999997,
+   "lon": 39.60813339972222,
+   "dt": "2024:01:08 23:08:08",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240110_091151.jpg",
+   "size": 5388994,
+   "lat": 24.439454999722223,
+   "lon": 39.61723969972222,
+   "dt": "2024:01:10 09:11:51",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240110_091156.jpg",
+   "size": 5404971,
+   "lat": 24.439454999722223,
+   "lon": 39.61723969972222,
+   "dt": "2024:01:10 09:11:56",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240110_091447.jpg",
+   "size": 4905671,
+   "lat": 24.439421299722223,
+   "lon": 39.617245099722226,
+   "dt": "2024:01:10 09:14:47",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240110_235635.jpg",
+   "size": 5968861,
+   "lat": 24.4872367,
+   "lon": 39.6494634,
+   "dt": "2024:01:10 23:56:35",
+   "cc": "SA",
+   "city": "Medina",
+   "admin1": "Al Madinah al Munawwarah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240112_121628.jpg",
+   "size": 7627740,
+   "lat": 21.66089589972222,
+   "lon": 39.17354449972222,
+   "dt": "2024:01:12 12:16:28",
+   "cc": "SA",
+   "city": "Jeddah",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240112_121706.jpg",
+   "size": 6787019,
+   "lat": 21.660880499999998,
+   "lon": 39.17370489972222,
+   "dt": "2024:01:12 12:17:06",
+   "cc": "SA",
+   "city": "Jeddah",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240112_121713.jpg",
+   "size": 6783221,
+   "lat": 21.660940099999998,
+   "lon": 39.1736712,
+   "dt": "2024:01:12 12:17:13",
+   "cc": "SA",
+   "city": "Jeddah",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240112_121723.jpg",
+   "size": 7919884,
+   "lat": 21.660940099999998,
+   "lon": 39.1736712,
+   "dt": "2024:01:12 12:17:23",
+   "cc": "SA",
+   "city": "Jeddah",
+   "admin1": "Makkah"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20240119_194152.jpg",
+   "size": 2089693,
+   "lat": 48.05140029972222,
+   "lon": 7.6815052,
+   "dt": "2024:01:19 19:41:52",
+   "cc": "DE",
+   "city": "Merdingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250502_131349.jpg",
+   "size": 3335615,
+   "lat": 48.067529399722225,
+   "lon": 7.719031,
+   "dt": "2025:05:02 13:13:49",
+   "cc": "DE",
+   "city": "Botzingen",
+   "admin1": "Baden-Wuerttemberg"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250503_202822.jpg",
+   "size": 1726312,
+   "lat": 50.04729849972222,
+   "lon": 8.5752857,
+   "dt": "2025:05:03 20:28:22",
+   "cc": "DE",
+   "city": "Kelsterbach",
+   "admin1": "Hesse"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_110130.jpg",
+   "size": 4965114,
+   "lat": -17.82481459972222,
+   "lon": 31.044406699722224,
+   "dt": "2025:05:05 11:01:30",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_112721.jpg",
+   "size": 4053275,
+   "lat": -17.8134109,
+   "lon": 31.041338799722222,
+   "dt": "2025:05:05 11:27:21",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_112822.jpg",
+   "size": 9969543,
+   "lat": -17.813309799722223,
+   "lon": 31.041365599722223,
+   "dt": "2025:05:05 11:28:22",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_112848.jpg",
+   "size": 9263636,
+   "lat": -17.813309799722223,
+   "lon": 31.041365599722223,
+   "dt": "2025:05:05 11:28:48",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_112934.jpg",
+   "size": 4250660,
+   "lat": -17.813378199722223,
+   "lon": 31.041361999722223,
+   "dt": "2025:05:05 11:29:34",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_130038.jpg",
+   "size": 6895830,
+   "lat": -17.802035299722224,
+   "lon": 31.037981699722224,
+   "dt": "2025:05:05 13:00:38",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_130043.jpg",
+   "size": 6858922,
+   "lat": -17.802035299722224,
+   "lon": 31.037981699722224,
+   "dt": "2025:05:05 13:00:43",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_130059.jpg",
+   "size": 3600252,
+   "lat": -17.802035299722224,
+   "lon": 31.037981699722224,
+   "dt": "2025:05:05 13:00:59",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_130102.jpg",
+   "size": 3750208,
+   "lat": -17.8019499,
+   "lon": 31.038049799722224,
+   "dt": "2025:05:05 13:01:02",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_132711.jpg",
+   "size": 3474713,
+   "lat": -17.802691899722223,
+   "lon": 31.0370181,
+   "dt": "2025:05:05 13:27:11",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_150621.jpg",
+   "size": 4202752,
+   "lat": -17.83573129972222,
+   "lon": 31.089913499999998,
+   "dt": "2025:05:05 15:06:21",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_152458.jpg",
+   "size": 7596306,
+   "lat": -17.83764539972222,
+   "lon": 31.08889669972222,
+   "dt": "2025:05:05 15:24:58",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_152507.jpg",
+   "size": 7979265,
+   "lat": -17.83764539972222,
+   "lon": 31.08889669972222,
+   "dt": "2025:05:05 15:25:07",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_152529.jpg",
+   "size": 6801700,
+   "lat": -17.83764539972222,
+   "lon": 31.08889669972222,
+   "dt": "2025:05:05 15:25:29",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_152626.jpg",
+   "size": 5752678,
+   "lat": -17.83762679972222,
+   "lon": 31.088851599999998,
+   "dt": "2025:05:05 15:26:26",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_152635.jpg",
+   "size": 3863201,
+   "lat": -17.83762679972222,
+   "lon": 31.088851599999998,
+   "dt": "2025:05:05 15:26:35",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153710.jpg",
+   "size": 9863185,
+   "lat": -17.8424595,
+   "lon": 31.0876014,
+   "dt": "2025:05:05 15:37:10",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153728.jpg",
+   "size": 11138810,
+   "lat": -17.8424595,
+   "lon": 31.0876014,
+   "dt": "2025:05:05 15:37:29",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153732.jpg",
+   "size": 11675990,
+   "lat": -17.8424595,
+   "lon": 31.0876014,
+   "dt": "2025:05:05 15:37:32",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153746.jpg",
+   "size": 9227746,
+   "lat": -17.842500099722223,
+   "lon": 31.08765819972222,
+   "dt": "2025:05:05 15:37:46",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153812.jpg",
+   "size": 12282659,
+   "lat": -17.842456799999997,
+   "lon": 31.087630999722222,
+   "dt": "2025:05:05 15:38:12",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153835.jpg",
+   "size": 9093669,
+   "lat": -17.842456799999997,
+   "lon": 31.087630999722222,
+   "dt": "2025:05:05 15:38:35",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_153845.jpg",
+   "size": 8983159,
+   "lat": -17.842456799999997,
+   "lon": 31.087630999722222,
+   "dt": "2025:05:05 15:38:45",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_154941.jpg",
+   "size": 5019464,
+   "lat": -17.843486499999997,
+   "lon": 31.093852299999998,
+   "dt": "2025:05:05 15:49:41",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_155032.jpg",
+   "size": 4475837,
+   "lat": -17.84354229972222,
+   "lon": 31.094464899722222,
+   "dt": "2025:05:05 15:50:32",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_155043.jpg",
+   "size": 5314205,
+   "lat": -17.8435646,
+   "lon": 31.094499799999998,
+   "dt": "2025:05:05 15:50:43",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_155157.jpg",
+   "size": 4454743,
+   "lat": -17.843987199999997,
+   "lon": 31.094988899999997,
+   "dt": "2025:05:05 15:51:57",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_160045.jpg",
+   "size": 3008367,
+   "lat": -17.83811779972222,
+   "lon": 31.0937105,
+   "dt": "2025:05:05 16:00:45",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_160116.jpg",
+   "size": 3174665,
+   "lat": -17.83784449972222,
+   "lon": 31.093375599999998,
+   "dt": "2025:05:05 16:01:16",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_160126.jpg",
+   "size": 3693713,
+   "lat": -17.83784449972222,
+   "lon": 31.093375599999998,
+   "dt": "2025:05:05 16:01:26",
+   "cc": "ZW",
+   "city": "Harare",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250505_175156.jpg",
+   "size": 1001409,
+   "lat": -18.01943149972222,
+   "lon": 31.066973999722222,
+   "dt": "2025:05:05 17:51:56",
+   "cc": "ZW",
+   "city": "Chitungwiza",
+   "admin1": "Harare"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120019.jpg",
+   "size": 3525355,
+   "lat": -17.928450399722223,
+   "lon": 25.8571753,
+   "dt": "2025:05:07 12:00:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120045.jpg",
+   "size": 3708563,
+   "lat": -17.928454399722224,
+   "lon": 25.857178,
+   "dt": "2025:05:07 12:00:45",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120103.jpg",
+   "size": 3899991,
+   "lat": -17.9284384,
+   "lon": 25.857189399722223,
+   "dt": "2025:05:07 12:01:03",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120119.jpg",
+   "size": 4129092,
+   "lat": -17.9284384,
+   "lon": 25.857189399722223,
+   "dt": "2025:05:07 12:01:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120145(0).jpg",
+   "size": 8478571,
+   "lat": -17.9284688,
+   "lon": 25.857138599722223,
+   "dt": "2025:05:07 12:01:46",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120241.jpg",
+   "size": 5726280,
+   "lat": -17.928448299722223,
+   "lon": 25.8571479,
+   "dt": "2025:05:07 12:02:41",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120332.jpg",
+   "size": 2507505,
+   "lat": -17.9283979,
+   "lon": 25.857119,
+   "dt": "2025:05:07 12:03:32",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120345.jpg",
+   "size": 2821672,
+   "lat": -17.9283979,
+   "lon": 25.857119,
+   "dt": "2025:05:07 12:03:45",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120400.jpg",
+   "size": 3804846,
+   "lat": -17.9283979,
+   "lon": 25.857119,
+   "dt": "2025:05:07 12:04:00",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120420.jpg",
+   "size": 2724995,
+   "lat": -17.9283171,
+   "lon": 25.857193399722224,
+   "dt": "2025:05:07 12:04:20",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120923.jpg",
+   "size": 3693500,
+   "lat": -17.9284201,
+   "lon": 25.857110899722223,
+   "dt": "2025:05:07 12:09:23",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_120932.jpg",
+   "size": 3746354,
+   "lat": -17.9284168,
+   "lon": 25.857109,
+   "dt": "2025:05:07 12:09:32",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_145718.jpg",
+   "size": 3791911,
+   "lat": -17.9222836,
+   "lon": 25.8261545,
+   "dt": "2025:05:07 14:57:18",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_145757.jpg",
+   "size": 3666738,
+   "lat": -17.922273199722223,
+   "lon": 25.826167399722223,
+   "dt": "2025:05:07 14:57:57",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_153251.jpg",
+   "size": 3005695,
+   "lat": -17.922263,
+   "lon": 25.837539699999997,
+   "dt": "2025:05:07 15:32:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165210.jpg",
+   "size": 4022244,
+   "lat": -17.90106319972222,
+   "lon": 25.8192726,
+   "dt": "2025:05:07 16:52:10",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165247.jpg",
+   "size": 4924794,
+   "lat": -17.901060599999997,
+   "lon": 25.8192956,
+   "dt": "2025:05:07 16:52:47",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165251.jpg",
+   "size": 4404957,
+   "lat": -17.901060599999997,
+   "lon": 25.8192956,
+   "dt": "2025:05:07 16:52:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165256.jpg",
+   "size": 5091258,
+   "lat": -17.901060599999997,
+   "lon": 25.8192956,
+   "dt": "2025:05:07 16:52:56",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165328.jpg",
+   "size": 7727671,
+   "lat": -17.901060599999997,
+   "lon": 25.8192956,
+   "dt": "2025:05:07 16:53:28",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165333.jpg",
+   "size": 8574803,
+   "lat": -17.901060599999997,
+   "lon": 25.8192956,
+   "dt": "2025:05:07 16:53:33",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165337.jpg",
+   "size": 8776386,
+   "lat": -17.901060599999997,
+   "lon": 25.8192956,
+   "dt": "2025:05:07 16:53:37",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_165353.jpg",
+   "size": 9177966,
+   "lat": -17.90105919972222,
+   "lon": 25.819321299722223,
+   "dt": "2025:05:07 16:53:53",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_170643.jpg",
+   "size": 7745642,
+   "lat": -17.90108569972222,
+   "lon": 25.819406499722223,
+   "dt": "2025:05:07 17:06:44",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_170645.jpg",
+   "size": 7934230,
+   "lat": -17.90108569972222,
+   "lon": 25.819406499722223,
+   "dt": "2025:05:07 17:06:46",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_170753.jpg",
+   "size": 7063117,
+   "lat": -17.90106379972222,
+   "lon": 25.819392,
+   "dt": "2025:05:07 17:07:53",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_170800.jpg",
+   "size": 7594251,
+   "lat": -17.90106379972222,
+   "lon": 25.819392,
+   "dt": "2025:05:07 17:08:00",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250507_170802.jpg",
+   "size": 7764763,
+   "lat": -17.90106379972222,
+   "lon": 25.819392,
+   "dt": "2025:05:07 17:08:03",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_093619.jpg",
+   "size": 4440277,
+   "lat": -17.992246999722223,
+   "lon": 25.792796299722223,
+   "dt": "2025:05:08 09:36:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_093643.jpg",
+   "size": 4019525,
+   "lat": -17.992246999722223,
+   "lon": 25.792796299722223,
+   "dt": "2025:05:08 09:36:43",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094350.jpg",
+   "size": 4015413,
+   "lat": -17.992226099722224,
+   "lon": 25.7928022,
+   "dt": "2025:05:08 09:43:49",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094411.jpg",
+   "size": 10431032,
+   "lat": -17.9922323,
+   "lon": 25.7928162,
+   "dt": "2025:05:08 09:44:11",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094422.jpg",
+   "size": 5740037,
+   "lat": -17.9922323,
+   "lon": 25.7928162,
+   "dt": "2025:05:08 09:44:22",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094436.jpg",
+   "size": 5057051,
+   "lat": -17.992232308333335,
+   "lon": 25.79281623888889,
+   "dt": "2025:05:08 09:44:36",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094519.jpg",
+   "size": 7325665,
+   "lat": -17.992256972222222,
+   "lon": 25.792819972222222,
+   "dt": "2025:05:08 09:45:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094524.jpg",
+   "size": 10222412,
+   "lat": -17.9922566,
+   "lon": 25.792820299722223,
+   "dt": "2025:05:08 09:45:24",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094525.jpg",
+   "size": 10446015,
+   "lat": -17.9922566,
+   "lon": 25.792820299722223,
+   "dt": "2025:05:08 09:45:26",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094529.jpg",
+   "size": 10485068,
+   "lat": -17.9922566,
+   "lon": 25.792820299722223,
+   "dt": "2025:05:08 09:45:29",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094532.jpg",
+   "size": 6258947,
+   "lat": -17.9922566,
+   "lon": 25.792820299722223,
+   "dt": "2025:05:08 09:45:32",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094538.jpg",
+   "size": 5220042,
+   "lat": -17.99225668888889,
+   "lon": 25.792820358333334,
+   "dt": "2025:05:08 09:45:38",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094543.jpg",
+   "size": 5392345,
+   "lat": -17.99225668888889,
+   "lon": 25.792820358333334,
+   "dt": "2025:05:08 09:45:43",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094603.jpg",
+   "size": 10265303,
+   "lat": -17.9922529,
+   "lon": 25.792821899722224,
+   "dt": "2025:05:08 09:46:03",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094607.jpg",
+   "size": 10184908,
+   "lat": -17.9922529,
+   "lon": 25.792821899722224,
+   "dt": "2025:05:08 09:46:07",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094608.jpg",
+   "size": 10626181,
+   "lat": -17.9922529,
+   "lon": 25.792821899722224,
+   "dt": "2025:05:08 09:46:09",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_094649.jpg",
+   "size": 9747588,
+   "lat": -17.992252499722223,
+   "lon": 25.7928238,
+   "dt": "2025:05:08 09:46:49",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095059.jpg",
+   "size": 4026093,
+   "lat": -17.9920775,
+   "lon": 25.792303,
+   "dt": "2025:05:08 09:51:00",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095111.jpg",
+   "size": 2964320,
+   "lat": -17.9920775,
+   "lon": 25.792303,
+   "dt": "2025:05:08 09:51:11",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095131.jpg",
+   "size": 8788655,
+   "lat": -17.992082299722224,
+   "lon": 25.792301399722223,
+   "dt": "2025:05:08 09:51:31",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095338.jpg",
+   "size": 5834094,
+   "lat": -17.992082599722224,
+   "lon": 25.7923006,
+   "dt": "2025:05:08 09:53:38",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095351.jpg",
+   "size": 11599504,
+   "lat": -17.992082599722224,
+   "lon": 25.7923006,
+   "dt": "2025:05:08 09:53:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095629.jpg",
+   "size": 3015174,
+   "lat": -17.9926405,
+   "lon": 25.7917875,
+   "dt": "2025:05:08 09:56:29",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095649.jpg",
+   "size": 4447603,
+   "lat": -17.9927092,
+   "lon": 25.7917579,
+   "dt": "2025:05:08 09:56:49",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095838.jpg",
+   "size": 11937528,
+   "lat": -17.993186,
+   "lon": 25.791321599722224,
+   "dt": "2025:05:08 09:58:38",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095850.jpg",
+   "size": 10919763,
+   "lat": -17.993186,
+   "lon": 25.791321599722224,
+   "dt": "2025:05:08 09:58:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095919.jpg",
+   "size": 5390674,
+   "lat": -17.993474777777777,
+   "lon": 25.791155019444446,
+   "dt": "2025:05:08 09:59:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095933.jpg",
+   "size": 5371459,
+   "lat": -17.9934747,
+   "lon": 25.791154999722224,
+   "dt": "2025:05:08 09:59:34",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095936.jpg",
+   "size": 5523039,
+   "lat": -17.9934747,
+   "lon": 25.791154999722224,
+   "dt": "2025:05:08 09:59:36",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_095940.jpg",
+   "size": 9692550,
+   "lat": -17.9934747,
+   "lon": 25.791154999722224,
+   "dt": "2025:05:08 09:59:41",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_100035.jpg",
+   "size": 10327857,
+   "lat": -17.9936109,
+   "lon": 25.7909113,
+   "dt": "2025:05:08 10:00:36",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_100050.jpg",
+   "size": 5693403,
+   "lat": -17.993610969444447,
+   "lon": 25.790911308333335,
+   "dt": "2025:05:08 10:00:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_100202.jpg",
+   "size": 10882626,
+   "lat": -17.9936365,
+   "lon": 25.790920799722223,
+   "dt": "2025:05:08 10:02:03",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_100223.jpg",
+   "size": 10215614,
+   "lat": -17.993632699722223,
+   "lon": 25.790908999722223,
+   "dt": "2025:05:08 10:02:23",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_100237.jpg",
+   "size": 4857873,
+   "lat": -17.99363273888889,
+   "lon": 25.790909058333334,
+   "dt": "2025:05:08 10:02:37",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_102001.jpg",
+   "size": 8245496,
+   "lat": -17.9927956,
+   "lon": 25.792908,
+   "dt": "2025:05:08 10:20:01",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_102046.jpg",
+   "size": 3715856,
+   "lat": -17.992794199722223,
+   "lon": 25.792904899722224,
+   "dt": "2025:05:08 10:20:46",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113548.jpg",
+   "size": 8366583,
+   "lat": -17.9008842,
+   "lon": 25.8181611,
+   "dt": "2025:05:08 11:35:48",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113551.jpg",
+   "size": 9053601,
+   "lat": -17.9008842,
+   "lon": 25.8181611,
+   "dt": "2025:05:08 11:35:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113553.jpg",
+   "size": 9055396,
+   "lat": -17.9008842,
+   "lon": 25.8181611,
+   "dt": "2025:05:08 11:35:53",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113713.jpg",
+   "size": 5978189,
+   "lat": -17.901156,
+   "lon": 25.818124799722224,
+   "dt": "2025:05:08 11:37:13",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113718.jpg",
+   "size": 5723260,
+   "lat": -17.90139639972222,
+   "lon": 25.8176768,
+   "dt": "2025:05:08 11:37:18",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113721.jpg",
+   "size": 5827431,
+   "lat": -17.901382899999998,
+   "lon": 25.817706999722223,
+   "dt": "2025:05:08 11:37:21",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113740.jpg",
+   "size": 6585007,
+   "lat": -17.901382899999998,
+   "lon": 25.817706999722223,
+   "dt": "2025:05:08 11:37:40",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113837.jpg",
+   "size": 8375748,
+   "lat": -17.90166729972222,
+   "lon": 25.81706259972222,
+   "dt": "2025:05:08 11:38:37",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113840.jpg",
+   "size": 7718074,
+   "lat": -17.90166729972222,
+   "lon": 25.81706259972222,
+   "dt": "2025:05:08 11:38:39",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113842.jpg",
+   "size": 8119586,
+   "lat": -17.90166729972222,
+   "lon": 25.81706259972222,
+   "dt": "2025:05:08 11:38:42",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113844.jpg",
+   "size": 8484712,
+   "lat": -17.90166729972222,
+   "lon": 25.81706259972222,
+   "dt": "2025:05:08 11:38:44",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113920.jpg",
+   "size": 7738379,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:20",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113923.jpg",
+   "size": 7497722,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:23",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113928.jpg",
+   "size": 6645133,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:28",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113931.jpg",
+   "size": 6758302,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:31",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113934.jpg",
+   "size": 7548951,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:34",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113937.jpg",
+   "size": 7391807,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:37",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113939.jpg",
+   "size": 6863837,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:39",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_113950.jpg",
+   "size": 8009707,
+   "lat": -17.90167239972222,
+   "lon": 25.816379,
+   "dt": "2025:05:08 11:39:50",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114007.jpg",
+   "size": 6841471,
+   "lat": -17.90175849972222,
+   "lon": 25.8160664,
+   "dt": "2025:05:08 11:40:07",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114408.jpg",
+   "size": 6008973,
+   "lat": -17.90336029972222,
+   "lon": 25.8143005,
+   "dt": "2025:05:08 11:44:08",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114409.jpg",
+   "size": 6391989,
+   "lat": -17.90336029972222,
+   "lon": 25.8143005,
+   "dt": "2025:05:08 11:44:09",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114410.jpg",
+   "size": 6678949,
+   "lat": -17.90336029972222,
+   "lon": 25.8143005,
+   "dt": "2025:05:08 11:44:10",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114413.jpg",
+   "size": 5809691,
+   "lat": -17.90336029972222,
+   "lon": 25.8143005,
+   "dt": "2025:05:08 11:44:14",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114440.jpg",
+   "size": 8475342,
+   "lat": -17.90336029972222,
+   "lon": 25.8143005,
+   "dt": "2025:05:08 11:44:40",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114458.jpg",
+   "size": 6928127,
+   "lat": -17.903835099722222,
+   "lon": 25.8142394,
+   "dt": "2025:05:08 11:44:58",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114459.jpg",
+   "size": 7511198,
+   "lat": -17.903835099722222,
+   "lon": 25.8142394,
+   "dt": "2025:05:08 11:45:00",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114500.jpg",
+   "size": 7572291,
+   "lat": -17.903835099722222,
+   "lon": 25.8142394,
+   "dt": "2025:05:08 11:45:01",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_114526.jpg",
+   "size": 6021430,
+   "lat": -17.90393949972222,
+   "lon": 25.814259499722223,
+   "dt": "2025:05:08 11:45:27",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115302.jpg",
+   "size": 3826218,
+   "lat": -17.906017499999997,
+   "lon": 25.8147501,
+   "dt": "2025:05:08 11:53:02",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115303.jpg",
+   "size": 3871518,
+   "lat": -17.906017499999997,
+   "lon": 25.8147501,
+   "dt": "2025:05:08 11:53:03",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115307(0).jpg",
+   "size": 4217026,
+   "lat": -17.906017499999997,
+   "lon": 25.8147501,
+   "dt": "2025:05:08 11:53:07",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115512.jpg",
+   "size": 9194201,
+   "lat": -17.906087199999998,
+   "lon": 25.814795499722223,
+   "dt": "2025:05:08 11:55:12",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115515.jpg",
+   "size": 8729526,
+   "lat": -17.906087199999998,
+   "lon": 25.814795499722223,
+   "dt": "2025:05:08 11:55:15",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115518.jpg",
+   "size": 8466643,
+   "lat": -17.906087199999998,
+   "lon": 25.814795499722223,
+   "dt": "2025:05:08 11:55:18",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115527.jpg",
+   "size": 7852755,
+   "lat": -17.906087199999998,
+   "lon": 25.814795499722223,
+   "dt": "2025:05:08 11:55:27",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115531.jpg",
+   "size": 8532025,
+   "lat": -17.906087199999998,
+   "lon": 25.814795499722223,
+   "dt": "2025:05:08 11:55:31",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115845.jpg",
+   "size": 6278994,
+   "lat": -17.904891199999998,
+   "lon": 25.815859499722222,
+   "dt": "2025:05:08 11:58:45",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_115952.jpg",
+   "size": 3102176,
+   "lat": -17.90440519972222,
+   "lon": 25.816042299722223,
+   "dt": "2025:05:08 11:59:52",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121051.jpg",
+   "size": 7948774,
+   "lat": -17.90131429972222,
+   "lon": 25.817708599722224,
+   "dt": "2025:05:08 12:10:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121053.jpg",
+   "size": 8909868,
+   "lat": -17.90131429972222,
+   "lon": 25.817708599722224,
+   "dt": "2025:05:08 12:10:53",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121055.jpg",
+   "size": 9154379,
+   "lat": -17.90131429972222,
+   "lon": 25.817708599722224,
+   "dt": "2025:05:08 12:10:55",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121056.jpg",
+   "size": 9193058,
+   "lat": -17.90131429972222,
+   "lon": 25.817708599722224,
+   "dt": "2025:05:08 12:10:56",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121105.jpg",
+   "size": 6850504,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:06",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121107.jpg",
+   "size": 7117438,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:07",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121109.jpg",
+   "size": 7125492,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:10",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121117.jpg",
+   "size": 7768180,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:17",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121142.jpg",
+   "size": 8044550,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:43",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121146.jpg",
+   "size": 9022744,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:46",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121147.jpg",
+   "size": 9023398,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:48",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121150(0).jpg",
+   "size": 9022350,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:51",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121150.jpg",
+   "size": 8461756,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:50",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121153.jpg",
+   "size": 8673346,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:53",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121154.jpg",
+   "size": 8286575,
+   "lat": -17.901315399999998,
+   "lon": 25.817739599722223,
+   "dt": "2025:05:08 12:11:54",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121219.jpg",
+   "size": 2922740,
+   "lat": -17.90131669722222,
+   "lon": 25.81772205,
+   "dt": "2025:05:08 12:12:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121229(0).jpg",
+   "size": 2934319,
+   "lat": -17.90131669722222,
+   "lon": 25.81772205,
+   "dt": "2025:05:08 12:12:29",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121232.jpg",
+   "size": 2883896,
+   "lat": -17.90131669722222,
+   "lon": 25.81772205,
+   "dt": "2025:05:08 12:12:32",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121327.jpg",
+   "size": 8116669,
+   "lat": -17.901321399999997,
+   "lon": 25.8177172,
+   "dt": "2025:05:08 12:13:27",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121331.jpg",
+   "size": 8990202,
+   "lat": -17.901321399999997,
+   "lon": 25.8177172,
+   "dt": "2025:05:08 12:13:31",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121332.jpg",
+   "size": 8626147,
+   "lat": -17.901321399999997,
+   "lon": 25.8177172,
+   "dt": "2025:05:08 12:13:32",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121340.jpg",
+   "size": 7883486,
+   "lat": -17.901321399999997,
+   "lon": 25.8177172,
+   "dt": "2025:05:08 12:13:40",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121352.jpg",
+   "size": 7597720,
+   "lat": -17.901367599999997,
+   "lon": 25.817652899722223,
+   "dt": "2025:05:08 12:13:52",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121440(0).jpg",
+   "size": 7319042,
+   "lat": -17.901439099999997,
+   "lon": 25.817592699722223,
+   "dt": "2025:05:08 12:14:40",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121445.jpg",
+   "size": 7838669,
+   "lat": -17.901439099999997,
+   "lon": 25.817592699722223,
+   "dt": "2025:05:08 12:14:45",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121447.jpg",
+   "size": 8390973,
+   "lat": -17.901439099999997,
+   "lon": 25.817592699722223,
+   "dt": "2025:05:08 12:14:46",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121452.jpg",
+   "size": 7685378,
+   "lat": -17.901439099999997,
+   "lon": 25.817592699722223,
+   "dt": "2025:05:08 12:14:52",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121455.jpg",
+   "size": 8250158,
+   "lat": -17.901439099999997,
+   "lon": 25.817592699722223,
+   "dt": "2025:05:08 12:14:55",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121459.jpg",
+   "size": 7879172,
+   "lat": -17.90142859972222,
+   "lon": 25.8175981,
+   "dt": "2025:05:08 12:14:59",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121509.jpg",
+   "size": 7953072,
+   "lat": -17.90142589972222,
+   "lon": 25.8175999,
+   "dt": "2025:05:08 12:15:09",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121514.jpg",
+   "size": 7859932,
+   "lat": -17.90142589972222,
+   "lon": 25.8175999,
+   "dt": "2025:05:08 12:15:14",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121516.jpg",
+   "size": 7530356,
+   "lat": -17.90142589972222,
+   "lon": 25.8175999,
+   "dt": "2025:05:08 12:15:16",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121520.jpg",
+   "size": 8791807,
+   "lat": -17.90142589972222,
+   "lon": 25.8175999,
+   "dt": "2025:05:08 12:15:20",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121523.jpg",
+   "size": 7729123,
+   "lat": -17.90142589972222,
+   "lon": 25.8175999,
+   "dt": "2025:05:08 12:15:23",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121535.jpg",
+   "size": 9637054,
+   "lat": -17.90142589972222,
+   "lon": 25.8175999,
+   "dt": "2025:05:08 12:15:35",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121617.jpg",
+   "size": 8725296,
+   "lat": -17.90142829972222,
+   "lon": 25.8175978,
+   "dt": "2025:05:08 12:16:17",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121618.jpg",
+   "size": 8986489,
+   "lat": -17.90142829972222,
+   "lon": 25.8175978,
+   "dt": "2025:05:08 12:16:18",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_121725.jpg",
+   "size": 7233536,
+   "lat": -17.90144199972222,
+   "lon": 25.8175916,
+   "dt": "2025:05:08 12:17:25",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_132938.jpg",
+   "size": 2990631,
+   "lat": -17.9263437,
+   "lon": 25.849101999722222,
+   "dt": "2025:05:08 13:29:38",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_135614.jpg",
+   "size": 2849883,
+   "lat": -17.929310399722223,
+   "lon": 25.859448499722223,
+   "dt": "2025:05:08 13:56:14",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_155017.jpg",
+   "size": 3028036,
+   "lat": -17.882570999722223,
+   "lon": 25.840856499999997,
+   "dt": "2025:05:08 15:50:17",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_155935.jpg",
+   "size": 3528881,
+   "lat": -17.880980799722224,
+   "lon": 25.835493999999997,
+   "dt": "2025:05:08 15:59:35",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_160008.jpg",
+   "size": 3313984,
+   "lat": -17.880970999722223,
+   "lon": 25.835461199999997,
+   "dt": "2025:05:08 16:00:08",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_160024.jpg",
+   "size": 3796365,
+   "lat": -17.8809724,
+   "lon": 25.83546899972222,
+   "dt": "2025:05:08 16:00:24",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_160149.jpg",
+   "size": 3093141,
+   "lat": -17.8809712,
+   "lon": 25.83546589972222,
+   "dt": "2025:05:08 16:01:49",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_160154.jpg",
+   "size": 2977174,
+   "lat": -17.8809712,
+   "lon": 25.83546589972222,
+   "dt": "2025:05:08 16:01:54",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_160212.jpg",
+   "size": 2902158,
+   "lat": -17.8809712,
+   "lon": 25.83546589972222,
+   "dt": "2025:05:08 16:02:12",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_160810.jpg",
+   "size": 4402318,
+   "lat": -17.8809694,
+   "lon": 25.835500399999997,
+   "dt": "2025:05:08 16:08:10",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_161419.jpg",
+   "size": 3215641,
+   "lat": -17.878243199722224,
+   "lon": 25.829882,
+   "dt": "2025:05:08 16:14:18",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_161812.jpg",
+   "size": 6356775,
+   "lat": -17.877202499722223,
+   "lon": 25.823716499722224,
+   "dt": "2025:05:08 16:18:12",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_161831.jpg",
+   "size": 3812234,
+   "lat": -17.8770506,
+   "lon": 25.8235664,
+   "dt": "2025:05:08 16:18:31",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_162036.jpg",
+   "size": 5543990,
+   "lat": -17.877256299722223,
+   "lon": 25.8237105,
+   "dt": "2025:05:08 16:20:36",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_162108.jpg",
+   "size": 5723813,
+   "lat": -17.8772652,
+   "lon": 25.823731899722222,
+   "dt": "2025:05:08 16:21:09",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_162935.jpg",
+   "size": 4834269,
+   "lat": -17.8767695,
+   "lon": 25.822514599999998,
+   "dt": "2025:05:08 16:29:35",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_162946.jpg",
+   "size": 4972717,
+   "lat": -17.8767695,
+   "lon": 25.822514599999998,
+   "dt": "2025:05:08 16:29:46",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_163051.jpg",
+   "size": 3563390,
+   "lat": -17.8768047,
+   "lon": 25.822517399722223,
+   "dt": "2025:05:08 16:30:51",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_164710.jpg",
+   "size": 6187371,
+   "lat": -17.875913,
+   "lon": 25.8161869,
+   "dt": "2025:05:08 16:47:10",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_164714.jpg",
+   "size": 5816333,
+   "lat": -17.875913,
+   "lon": 25.8161869,
+   "dt": "2025:05:08 16:47:14",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_164729.jpg",
+   "size": 4184290,
+   "lat": -17.875913,
+   "lon": 25.8161869,
+   "dt": "2025:05:08 16:47:29",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_164826.jpg",
+   "size": 4023270,
+   "lat": -17.8746179,
+   "lon": 25.816023,
+   "dt": "2025:05:08 16:48:26",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_165106.jpg",
+   "size": 4855712,
+   "lat": -17.8739169,
+   "lon": 25.815567699722223,
+   "dt": "2025:05:08 16:51:06",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_170912.jpg",
+   "size": 4384018,
+   "lat": -17.8645862,
+   "lon": 25.798459499722224,
+   "dt": "2025:05:08 17:09:12",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_171415.jpg",
+   "size": 10645605,
+   "lat": -17.865895699722223,
+   "lon": 25.798188499722222,
+   "dt": "2025:05:08 17:14:15",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_171431.jpg",
+   "size": 4247349,
+   "lat": -17.865895699722223,
+   "lon": 25.798188499722222,
+   "dt": "2025:05:08 17:14:31",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_171753.jpg",
+   "size": 3344220,
+   "lat": -17.865900899722224,
+   "lon": 25.7981957,
+   "dt": "2025:05:08 17:17:54",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_171922.jpg",
+   "size": 4535933,
+   "lat": -17.8674506,
+   "lon": 25.7981827,
+   "dt": "2025:05:08 17:19:22",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_171956.jpg",
+   "size": 2990206,
+   "lat": -17.867469799722222,
+   "lon": 25.7981902,
+   "dt": "2025:05:08 17:19:56",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_172342.jpg",
+   "size": 10117867,
+   "lat": -17.869931099722223,
+   "lon": 25.797541899722223,
+   "dt": "2025:05:08 17:23:42",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_172406.jpg",
+   "size": 6133436,
+   "lat": -17.869966999722223,
+   "lon": 25.7975445,
+   "dt": "2025:05:08 17:24:07",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_172611.jpg",
+   "size": 5645188,
+   "lat": -17.871706199722222,
+   "lon": 25.797401799722223,
+   "dt": "2025:05:08 17:26:11",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_173547.jpg",
+   "size": 3063552,
+   "lat": -17.881599,
+   "lon": 25.8070364,
+   "dt": "2025:05:08 17:35:47",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_173910.jpg",
+   "size": 4431035,
+   "lat": -17.8828849,
+   "lon": 25.8108545,
+   "dt": "2025:05:08 17:39:10",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_174845.jpg",
+   "size": 10112906,
+   "lat": -17.8835112,
+   "lon": 25.8280557,
+   "dt": "2025:05:08 17:48:45",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_174857.jpg",
+   "size": 4154154,
+   "lat": -17.8835112,
+   "lon": 25.8280557,
+   "dt": "2025:05:08 17:48:57",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_175022.jpg",
+   "size": 3194682,
+   "lat": -17.8835945,
+   "lon": 25.829378099722224,
+   "dt": "2025:05:08 17:50:22",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_175302.jpg",
+   "size": 11645312,
+   "lat": -17.883617999722222,
+   "lon": 25.8300422,
+   "dt": "2025:05:08 17:53:02",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_175411.jpg",
+   "size": 4041463,
+   "lat": -17.8837298,
+   "lon": 25.830832999722222,
+   "dt": "2025:05:08 17:54:11",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_175416.jpg",
+   "size": 3291394,
+   "lat": -17.8837331,
+   "lon": 25.8309378,
+   "dt": "2025:05:08 17:54:17",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250508_210335.jpg",
+   "size": 2758909,
+   "lat": -17.855482899722222,
+   "lon": 25.849637999722223,
+   "dt": "2025:05:08 21:03:35",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_130614.jpg",
+   "size": 3462918,
+   "lat": -17.9265377,
+   "lon": 25.8617144,
+   "dt": "2025:05:09 13:06:14",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_130619.jpg",
+   "size": 3414844,
+   "lat": -17.9265377,
+   "lon": 25.8617144,
+   "dt": "2025:05:09 13:06:19",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_131047.jpg",
+   "size": 6422326,
+   "lat": -17.9268849,
+   "lon": 25.862046899722223,
+   "dt": "2025:05:09 13:10:47",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_131058.jpg",
+   "size": 5852983,
+   "lat": -17.9268742,
+   "lon": 25.8620592,
+   "dt": "2025:05:09 13:10:58",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_131129.jpg",
+   "size": 3749727,
+   "lat": -17.926877,
+   "lon": 25.8620543,
+   "dt": "2025:05:09 13:11:29",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_131739.jpg",
+   "size": 3932486,
+   "lat": -17.9265195,
+   "lon": 25.8618759,
+   "dt": "2025:05:09 13:17:39",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_131747.jpg",
+   "size": 3267057,
+   "lat": -17.9265195,
+   "lon": 25.8618759,
+   "dt": "2025:05:09 13:17:47",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140047.jpg",
+   "size": 5894547,
+   "lat": -17.927832899722222,
+   "lon": 25.860313999722223,
+   "dt": "2025:05:09 14:00:47",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140738.jpg",
+   "size": 3182983,
+   "lat": -17.9280976,
+   "lon": 25.859362399722222,
+   "dt": "2025:05:09 14:07:38",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140842.jpg",
+   "size": 7537038,
+   "lat": -17.9281039,
+   "lon": 25.8593724,
+   "dt": "2025:05:09 14:08:42",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140845.jpg",
+   "size": 7582602,
+   "lat": -17.9281039,
+   "lon": 25.8593724,
+   "dt": "2025:05:09 14:08:45",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140847.jpg",
+   "size": 6751591,
+   "lat": -17.9281039,
+   "lon": 25.8593724,
+   "dt": "2025:05:09 14:08:48",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140921.jpg",
+   "size": 7149615,
+   "lat": -17.928142099722223,
+   "lon": 25.859411699722223,
+   "dt": "2025:05:09 14:09:21",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140928.jpg",
+   "size": 7329025,
+   "lat": -17.928142099722223,
+   "lon": 25.859411699722223,
+   "dt": "2025:05:09 14:09:28",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140931.jpg",
+   "size": 6994376,
+   "lat": -17.928142099722223,
+   "lon": 25.859411699722223,
+   "dt": "2025:05:09 14:09:31",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140945.jpg",
+   "size": 7896498,
+   "lat": -17.928142099722223,
+   "lon": 25.859411699722223,
+   "dt": "2025:05:09 14:09:44",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_140950.jpg",
+   "size": 8403098,
+   "lat": -17.928142099722223,
+   "lon": 25.859411699722223,
+   "dt": "2025:05:09 14:09:50",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_154911.jpg",
+   "size": 2940353,
+   "lat": -17.9265408,
+   "lon": 25.861742899722223,
+   "dt": "2025:05:09 15:49:11",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_154915.jpg",
+   "size": 3640034,
+   "lat": -17.9265408,
+   "lon": 25.861742899722223,
+   "dt": "2025:05:09 15:49:15",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_154928.jpg",
+   "size": 3173590,
+   "lat": -17.9265408,
+   "lon": 25.861742899722223,
+   "dt": "2025:05:09 15:49:28",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_154948.jpg",
+   "size": 7389871,
+   "lat": -17.926522299722222,
+   "lon": 25.861755299722223,
+   "dt": "2025:05:09 15:49:48",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_154958.jpg",
+   "size": 6384058,
+   "lat": -17.926522299722222,
+   "lon": 25.861755299722223,
+   "dt": "2025:05:09 15:49:58",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155000(0).jpg",
+   "size": 6787442,
+   "lat": -17.926522299722222,
+   "lon": 25.861755299722223,
+   "dt": "2025:05:09 15:50:01",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155233.jpg",
+   "size": 7413291,
+   "lat": -17.9268056,
+   "lon": 25.8628709,
+   "dt": "2025:05:09 15:52:34",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155242.jpg",
+   "size": 7989447,
+   "lat": -17.9268056,
+   "lon": 25.8628709,
+   "dt": "2025:05:09 15:52:42",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155259.jpg",
+   "size": 3547676,
+   "lat": -17.9268056,
+   "lon": 25.8628709,
+   "dt": "2025:05:09 15:52:59",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155308.jpg",
+   "size": 2343490,
+   "lat": -17.9268056,
+   "lon": 25.8628709,
+   "dt": "2025:05:09 15:53:08",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155323.jpg",
+   "size": 3786940,
+   "lat": -17.9268056,
+   "lon": 25.8628709,
+   "dt": "2025:05:09 15:53:23",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155402.jpg",
+   "size": 4188077,
+   "lat": -17.926774999722223,
+   "lon": 25.862913999722224,
+   "dt": "2025:05:09 15:54:02",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155740.jpg",
+   "size": 2743831,
+   "lat": -17.926053199722222,
+   "lon": 25.8631373,
+   "dt": "2025:05:09 15:57:40",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155742.jpg",
+   "size": 3098575,
+   "lat": -17.926053199722222,
+   "lon": 25.8631373,
+   "dt": "2025:05:09 15:57:42",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155807.jpg",
+   "size": 4186314,
+   "lat": -17.926053199722222,
+   "lon": 25.8631373,
+   "dt": "2025:05:09 15:58:07",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155811.jpg",
+   "size": 4273497,
+   "lat": -17.9260528,
+   "lon": 25.8631376,
+   "dt": "2025:05:09 15:58:10",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155814.jpg",
+   "size": 3275848,
+   "lat": -17.9260528,
+   "lon": 25.8631376,
+   "dt": "2025:05:09 15:58:14",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155826.jpg",
+   "size": 5002139,
+   "lat": -17.9260528,
+   "lon": 25.8631376,
+   "dt": "2025:05:09 15:58:26",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250509_155837.jpg",
+   "size": 2288820,
+   "lat": -17.926062399722223,
+   "lon": 25.8631326,
+   "dt": "2025:05:09 15:58:37",
+   "cc": "ZW",
+   "city": "Victoria Falls",
+   "admin1": "Matabeleland North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250510_041413.jpg",
+   "size": 2087379,
+   "lat": -17.84502979972222,
+   "lon": 25.824903899722223,
+   "dt": "2025:05:10 04:14:13",
+   "cc": "ZM",
+   "city": "Livingstone",
+   "admin1": "Southern"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250510_173111.jpg",
+   "size": 2703708,
+   "lat": -15.422662799722222,
+   "lon": 28.279359199722222,
+   "dt": "2025:05:10 17:31:11",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250510_173154.jpg",
+   "size": 2744498,
+   "lat": -15.422603299999999,
+   "lon": 28.279582599999998,
+   "dt": "2025:05:10 17:31:54",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250510_173224.jpg",
+   "size": 2736388,
+   "lat": -15.422576899722221,
+   "lon": 28.27965269972222,
+   "dt": "2025:05:10 17:32:24",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250510_173252.jpg",
+   "size": 1893833,
+   "lat": -15.422605199722222,
+   "lon": 28.279597199999998,
+   "dt": "2025:05:10 17:32:52",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250510_193019.jpg",
+   "size": 2572534,
+   "lat": -15.411645099722223,
+   "lon": 28.292527599722224,
+   "dt": "2025:05:10 19:30:19",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250511_142301.jpg",
+   "size": 2293031,
+   "lat": -15.326757199722222,
+   "lon": 28.447634099722222,
+   "dt": "2025:05:11 14:23:01",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250511_142317.jpg",
+   "size": 8376510,
+   "lat": -15.326750699722222,
+   "lon": 28.447604699722223,
+   "dt": "2025:05:11 14:23:17",
+   "cc": "ZM",
+   "city": "Lusaka",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250511_145229.jpg",
+   "size": 6502446,
+   "lat": -15.187470799722222,
+   "lon": 28.717428499999997,
+   "dt": "2025:05:11 14:52:30",
+   "cc": "ZM",
+   "city": "Chongwe",
+   "admin1": "Lusaka"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_102347.jpg",
+   "size": 3136127,
+   "lat": -6.822603899722222,
+   "lon": 39.274953599999996,
+   "dt": "2025:05:12 10:23:47",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_102423.jpg",
+   "size": 4082311,
+   "lat": -6.822618799722222,
+   "lon": 39.2748987,
+   "dt": "2025:05:12 10:24:23",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_102432.jpg",
+   "size": 4131294,
+   "lat": -6.822664399722222,
+   "lon": 39.27476779972222,
+   "dt": "2025:05:12 10:24:32",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_115122.jpg",
+   "size": 3031721,
+   "lat": -6.8194973999999995,
+   "lon": 39.29982139972222,
+   "dt": "2025:05:12 11:51:22",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_115623.jpg",
+   "size": 3024840,
+   "lat": -6.8191293,
+   "lon": 39.30022189972222,
+   "dt": "2025:05:12 11:56:22",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120156.jpg",
+   "size": 4352471,
+   "lat": -6.8191334,
+   "lon": 39.299953699999996,
+   "dt": "2025:05:12 12:01:56",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120232.jpg",
+   "size": 4534964,
+   "lat": -6.819174499722222,
+   "lon": 39.299946999999996,
+   "dt": "2025:05:12 12:02:32",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120355.jpg",
+   "size": 4314205,
+   "lat": -6.8193668,
+   "lon": 39.300065599999996,
+   "dt": "2025:05:12 12:03:55",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120510.jpg",
+   "size": 3218474,
+   "lat": -6.8191714999999995,
+   "lon": 39.30026409972222,
+   "dt": "2025:05:12 12:05:10",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120617.jpg",
+   "size": 4098818,
+   "lat": -6.818927899999999,
+   "lon": 39.300186599999996,
+   "dt": "2025:05:12 12:06:17",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120644.jpg",
+   "size": 3920793,
+   "lat": -6.8188794999999995,
+   "lon": 39.300167099999996,
+   "dt": "2025:05:12 12:06:44",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120648.jpg",
+   "size": 3274515,
+   "lat": -6.8188794999999995,
+   "lon": 39.300167099999996,
+   "dt": "2025:05:12 12:06:48",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_120706.jpg",
+   "size": 1945802,
+   "lat": -6.8188794999999995,
+   "lon": 39.300167099999996,
+   "dt": "2025:05:12 12:07:06",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250512_121416.jpg",
+   "size": 3404067,
+   "lat": -6.818989,
+   "lon": 39.2973548,
+   "dt": "2025:05:12 12:14:16",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_071550.jpg",
+   "size": 2621537,
+   "lat": -6.820435499999999,
+   "lon": 39.30091769972222,
+   "dt": "2025:05:13 07:15:50",
+   "cc": "TZ",
+   "city": "Dar es Salaam",
+   "admin1": "Dar es Salaam"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_105914.jpg",
+   "size": 1704255,
+   "lat": -5.7240294,
+   "lon": 39.303919199999996,
+   "dt": "2025:05:13 10:59:14",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_140743.jpg",
+   "size": 3218495,
+   "lat": -5.7241729,
+   "lon": 39.29900359972222,
+   "dt": "2025:05:13 14:07:42",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_140759.jpg",
+   "size": 3515240,
+   "lat": -5.7241666,
+   "lon": 39.299002099999996,
+   "dt": "2025:05:13 14:07:59",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_140904.jpg",
+   "size": 4605742,
+   "lat": -5.7244944,
+   "lon": 39.29943639972222,
+   "dt": "2025:05:13 14:09:04",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_140906.jpg",
+   "size": 4643673,
+   "lat": -5.7244944,
+   "lon": 39.29943639972222,
+   "dt": "2025:05:13 14:09:06",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144205(0).jpg",
+   "size": 5597718,
+   "lat": -5.7237958,
+   "lon": 39.30329199972222,
+   "dt": "2025:05:13 14:42:05",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144210.jpg",
+   "size": 5481316,
+   "lat": -5.7237958,
+   "lon": 39.30329199972222,
+   "dt": "2025:05:13 14:42:10",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144219.jpg",
+   "size": 4403702,
+   "lat": -5.7237958,
+   "lon": 39.30329199972222,
+   "dt": "2025:05:13 14:42:19",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144221.jpg",
+   "size": 5394907,
+   "lat": -5.7237958,
+   "lon": 39.30329199972222,
+   "dt": "2025:05:13 14:42:21",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144222.jpg",
+   "size": 5511780,
+   "lat": -5.7237958,
+   "lon": 39.30329199972222,
+   "dt": "2025:05:13 14:42:22",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144224.jpg",
+   "size": 5679946,
+   "lat": -5.7237958,
+   "lon": 39.30329199972222,
+   "dt": "2025:05:13 14:42:24",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144320.jpg",
+   "size": 5700978,
+   "lat": -5.723797399722223,
+   "lon": 39.303297099999995,
+   "dt": "2025:05:13 14:43:20",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144325.jpg",
+   "size": 4209705,
+   "lat": -5.723797399722223,
+   "lon": 39.303297099999995,
+   "dt": "2025:05:13 14:43:25",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144326.jpg",
+   "size": 4517024,
+   "lat": -5.723797399722223,
+   "lon": 39.303297099999995,
+   "dt": "2025:05:13 14:43:26",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144333(0).jpg",
+   "size": 5445226,
+   "lat": -5.723797399722223,
+   "lon": 39.303297099999995,
+   "dt": "2025:05:13 14:43:34",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144338.jpg",
+   "size": 5341417,
+   "lat": -5.723797399722223,
+   "lon": 39.303297099999995,
+   "dt": "2025:05:13 14:43:38",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144431.jpg",
+   "size": 3820797,
+   "lat": -5.723799999722222,
+   "lon": 39.30331989972222,
+   "dt": "2025:05:13 14:44:31",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144432.jpg",
+   "size": 4731571,
+   "lat": -5.723799999722222,
+   "lon": 39.30331989972222,
+   "dt": "2025:05:13 14:44:32",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144433.jpg",
+   "size": 5206757,
+   "lat": -5.723799999722222,
+   "lon": 39.30331989972222,
+   "dt": "2025:05:13 14:44:34",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144439.jpg",
+   "size": 5209449,
+   "lat": -5.723799999722222,
+   "lon": 39.30331989972222,
+   "dt": "2025:05:13 14:44:39",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144443.jpg",
+   "size": 5550902,
+   "lat": -5.723799999722222,
+   "lon": 39.30331989972222,
+   "dt": "2025:05:13 14:44:43",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144444.jpg",
+   "size": 5676236,
+   "lat": -5.723799999722222,
+   "lon": 39.30331989972222,
+   "dt": "2025:05:13 14:44:45",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144527.jpg",
+   "size": 4722715,
+   "lat": -5.723795299722222,
+   "lon": 39.303319599999995,
+   "dt": "2025:05:13 14:45:27",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144528.jpg",
+   "size": 5283818,
+   "lat": -5.723795299722222,
+   "lon": 39.303319599999995,
+   "dt": "2025:05:13 14:45:28",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144533.jpg",
+   "size": 5016894,
+   "lat": -5.723795299722222,
+   "lon": 39.303319599999995,
+   "dt": "2025:05:13 14:45:33",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144546.jpg",
+   "size": 6683086,
+   "lat": -5.723795299722222,
+   "lon": 39.303319599999995,
+   "dt": "2025:05:13 14:45:47",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144845.jpg",
+   "size": 3410839,
+   "lat": -5.723818338888889,
+   "lon": 39.30336961944444,
+   "dt": "2025:05:13 14:48:45",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144850(0).jpg",
+   "size": 3703639,
+   "lat": -5.723818338888889,
+   "lon": 39.30336961944444,
+   "dt": "2025:05:13 14:48:51",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144854.jpg",
+   "size": 3700627,
+   "lat": -5.723818338888889,
+   "lon": 39.30336961944444,
+   "dt": "2025:05:13 14:48:54",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144918.jpg",
+   "size": 5241657,
+   "lat": -5.7238552,
+   "lon": 39.30339479972222,
+   "dt": "2025:05:13 14:49:18",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144924.jpg",
+   "size": 5121887,
+   "lat": -5.723855999722223,
+   "lon": 39.303391899999994,
+   "dt": "2025:05:13 14:49:24",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144932.jpg",
+   "size": 4851898,
+   "lat": -5.723855999722223,
+   "lon": 39.303391899999994,
+   "dt": "2025:05:13 14:49:32",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144937.jpg",
+   "size": 4576054,
+   "lat": -5.723855999722223,
+   "lon": 39.303391899999994,
+   "dt": "2025:05:13 14:49:37",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144939.jpg",
+   "size": 4919711,
+   "lat": -5.723855999722223,
+   "lon": 39.303391899999994,
+   "dt": "2025:05:13 14:49:40",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_144942.jpg",
+   "size": 5151482,
+   "lat": -5.723855999722223,
+   "lon": 39.303391899999994,
+   "dt": "2025:05:13 14:49:43",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_145306.jpg",
+   "size": 5055840,
+   "lat": -5.7237783,
+   "lon": 39.30335749972222,
+   "dt": "2025:05:13 14:53:06",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_145327.jpg",
+   "size": 5091520,
+   "lat": -5.723778099722223,
+   "lon": 39.30335709972222,
+   "dt": "2025:05:13 14:53:27",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_145641.jpg",
+   "size": 4524814,
+   "lat": -5.7238053,
+   "lon": 39.30338869972222,
+   "dt": "2025:05:13 14:56:42",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150456.jpg",
+   "size": 3944373,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:04:57",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150458.jpg",
+   "size": 3899019,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:04:58",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150500.jpg",
+   "size": 3902241,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:05:00",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150503.jpg",
+   "size": 3673341,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:05:03",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150505.jpg",
+   "size": 4059148,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:05:05",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150506(0).jpg",
+   "size": 3347335,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:05:07",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150508.jpg",
+   "size": 3425874,
+   "lat": -5.723735058333333,
+   "lon": 39.30298003888888,
+   "dt": "2025:05:13 15:05:08",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150554.jpg",
+   "size": 8750005,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:05:54",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150558.jpg",
+   "size": 9097353,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:05:58",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150600.jpg",
+   "size": 9651470,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:06:00",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150608.jpg",
+   "size": 9382423,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:06:08",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150615.jpg",
+   "size": 9504312,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:06:15",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150619.jpg",
+   "size": 9795893,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:06:19",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150624.jpg",
+   "size": 9320320,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:06:24",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150625.jpg",
+   "size": 9052684,
+   "lat": -5.7238207,
+   "lon": 39.302780199999994,
+   "dt": "2025:05:13 15:06:25",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150705.jpg",
+   "size": 10549676,
+   "lat": -5.723807599722222,
+   "lon": 39.30278599972222,
+   "dt": "2025:05:13 15:07:05",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150943.jpg",
+   "size": 4340118,
+   "lat": -5.723833199722223,
+   "lon": 39.30292969972222,
+   "dt": "2025:05:13 15:09:43",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150955.jpg",
+   "size": 10931434,
+   "lat": -5.723833199722223,
+   "lon": 39.30292969972222,
+   "dt": "2025:05:13 15:09:55",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150958.jpg",
+   "size": 10634551,
+   "lat": -5.723833199722223,
+   "lon": 39.30292969972222,
+   "dt": "2025:05:13 15:09:58",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_150959.jpg",
+   "size": 11186766,
+   "lat": -5.723833199722223,
+   "lon": 39.30292969972222,
+   "dt": "2025:05:13 15:09:59",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151009.jpg",
+   "size": 10703648,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:09",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151011.jpg",
+   "size": 10566336,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:11",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151013.jpg",
+   "size": 8740450,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:14",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151015.jpg",
+   "size": 9184770,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:15",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151017.jpg",
+   "size": 9325226,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:17",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151018.jpg",
+   "size": 9794424,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:18",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151020.jpg",
+   "size": 8713832,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:20",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151023.jpg",
+   "size": 8667224,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:23",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151025.jpg",
+   "size": 8807747,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:25",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151032.jpg",
+   "size": 10156184,
+   "lat": -5.7238492,
+   "lon": 39.302945099999995,
+   "dt": "2025:05:13 15:10:33",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151200.jpg",
+   "size": 5355755,
+   "lat": -5.723866608333333,
+   "lon": 39.30296739722222,
+   "dt": "2025:05:13 15:12:00",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151204.jpg",
+   "size": 3498543,
+   "lat": -5.723966597222223,
+   "lon": 39.30296326944444,
+   "dt": "2025:05:13 15:12:04",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151320.jpg",
+   "size": 4268319,
+   "lat": -5.723970999722222,
+   "lon": 39.302988199999994,
+   "dt": "2025:05:13 15:13:20",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151332.jpg",
+   "size": 3806458,
+   "lat": -5.723941199722223,
+   "lon": 39.302964499999995,
+   "dt": "2025:05:13 15:13:33",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_151338.jpg",
+   "size": 3957715,
+   "lat": -5.723941199722223,
+   "lon": 39.302964499999995,
+   "dt": "2025:05:13 15:13:39",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154423.jpg",
+   "size": 2763014,
+   "lat": -5.724118299722222,
+   "lon": 39.3034368,
+   "dt": "2025:05:13 15:44:23",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154523.jpg",
+   "size": 3910492,
+   "lat": -5.724113299722222,
+   "lon": 39.30341849972222,
+   "dt": "2025:05:13 15:45:23",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154554.jpg",
+   "size": 3294065,
+   "lat": -5.724126199722222,
+   "lon": 39.303365199999995,
+   "dt": "2025:05:13 15:45:53",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154559.jpg",
+   "size": 4113833,
+   "lat": -5.724126199722222,
+   "lon": 39.303365199999995,
+   "dt": "2025:05:13 15:45:59",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154829(0).jpg",
+   "size": 9555921,
+   "lat": -5.7240934,
+   "lon": 39.303424199999995,
+   "dt": "2025:05:13 15:48:29",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154836.jpg",
+   "size": 9086210,
+   "lat": -5.7240934,
+   "lon": 39.303424199999995,
+   "dt": "2025:05:13 15:48:36",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154841.jpg",
+   "size": 10260049,
+   "lat": -5.7240934,
+   "lon": 39.303424199999995,
+   "dt": "2025:05:13 15:48:41",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154842(0).jpg",
+   "size": 9891699,
+   "lat": -5.7240934,
+   "lon": 39.303424199999995,
+   "dt": "2025:05:13 15:48:42",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154901(1).jpg",
+   "size": 8264053,
+   "lat": -5.7240849,
+   "lon": 39.303417399999994,
+   "dt": "2025:05:13 15:49:02",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154905(0).jpg",
+   "size": 9271171,
+   "lat": -5.7240849,
+   "lon": 39.303417399999994,
+   "dt": "2025:05:13 15:49:05",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154912.jpg",
+   "size": 9680429,
+   "lat": -5.7240849,
+   "lon": 39.303417399999994,
+   "dt": "2025:05:13 15:49:12",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154920.jpg",
+   "size": 9409766,
+   "lat": -5.7240849,
+   "lon": 39.303417399999994,
+   "dt": "2025:05:13 15:49:21",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_154923.jpg",
+   "size": 7741818,
+   "lat": -5.7240849,
+   "lon": 39.303417399999994,
+   "dt": "2025:05:13 15:49:22",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155424(0).jpg",
+   "size": 9019566,
+   "lat": -5.724134,
+   "lon": 39.303399199999994,
+   "dt": "2025:05:13 15:54:24",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155425(1).jpg",
+   "size": 9001822,
+   "lat": -5.724134,
+   "lon": 39.303399199999994,
+   "dt": "2025:05:13 15:54:25",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155433(0).jpg",
+   "size": 10926212,
+   "lat": -5.724134,
+   "lon": 39.303399199999994,
+   "dt": "2025:05:13 15:54:33",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155456.jpg",
+   "size": 5182500,
+   "lat": -5.724134,
+   "lon": 39.303399199999994,
+   "dt": "2025:05:13 15:54:56",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155635.jpg",
+   "size": 8242501,
+   "lat": -5.7241242,
+   "lon": 39.303396799999994,
+   "dt": "2025:05:13 15:56:36",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155640.jpg",
+   "size": 7652926,
+   "lat": -5.7241242,
+   "lon": 39.303396799999994,
+   "dt": "2025:05:13 15:56:40",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155642.jpg",
+   "size": 7951228,
+   "lat": -5.7241242,
+   "lon": 39.303396799999994,
+   "dt": "2025:05:13 15:56:42",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155645.jpg",
+   "size": 8175513,
+   "lat": -5.7241242,
+   "lon": 39.303396799999994,
+   "dt": "2025:05:13 15:56:45",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155657.jpg",
+   "size": 8054959,
+   "lat": -5.7241242,
+   "lon": 39.303396799999994,
+   "dt": "2025:05:13 15:56:58",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155700.jpg",
+   "size": 7410364,
+   "lat": -5.7241242,
+   "lon": 39.303396799999994,
+   "dt": "2025:05:13 15:57:00",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155720.jpg",
+   "size": 3306271,
+   "lat": -5.724122499722222,
+   "lon": 39.303392599999995,
+   "dt": "2025:05:13 15:57:20",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_155729.jpg",
+   "size": 2953518,
+   "lat": -5.724122499722222,
+   "lon": 39.303392599999995,
+   "dt": "2025:05:13 15:57:29",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_160805.jpg",
+   "size": 1864340,
+   "lat": -5.724077369444444,
+   "lon": 39.30336558888889,
+   "dt": "2025:05:13 16:08:06",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_162039.jpg",
+   "size": 7131710,
+   "lat": -5.724127,
+   "lon": 39.30336109972222,
+   "dt": "2025:05:13 16:20:39",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_162152.jpg",
+   "size": 6845968,
+   "lat": -5.7241371,
+   "lon": 39.303393699999994,
+   "dt": "2025:05:13 16:21:52",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_162200(0).jpg",
+   "size": 6638944,
+   "lat": -5.7241371,
+   "lon": 39.303393699999994,
+   "dt": "2025:05:13 16:22:00",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_162213(0).jpg",
+   "size": 6986466,
+   "lat": -5.7241369,
+   "lon": 39.303390699999994,
+   "dt": "2025:05:13 16:22:13",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250513_200013.jpg",
+   "size": 516048,
+   "lat": -5.7337866,
+   "lon": 39.29744449972222,
+   "dt": "2025:05:13 20:00:13",
+   "cc": "TZ",
+   "city": "Nungwi",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250514_100716.jpg",
+   "size": 2932142,
+   "lat": -5.839081099722222,
+   "lon": 39.3918595,
+   "dt": "2025:05:14 10:07:16",
+   "cc": "TZ",
+   "city": "Kijini",
+   "admin1": "Zanzibar North"
+  },
+  {
+   "path": "D:\\Images\\Camera & Video ALL\\20250514_100724.jpg",
+   "size": 2820242,
+   "lat": -5.839497399722222,
+   "lon": 39.3921366,
+   "dt": "2025:05:14 10:07:24",
+   "cc": "TZ",
+   "city": "Kijini",
+   "admin1": "Zanzibar North"
+  }
+ ]
+}
