@@ -77,7 +77,9 @@ export default function About() {
     if (Math.abs(delta) > 40) {
       isDragSwipe.current = true;
       prevent?.();
-      if (delta < 0) goNext(); else goPrev();
+      // Swipe left → next in LTR; swipe right → next in RTL
+      if (isAr) { if (delta > 0) goNext(); else goPrev(); }
+      else       { if (delta < 0) goNext(); else goPrev(); }
     } else {
       setTimeout(() => setPaused(false), 6000);
     }
@@ -123,27 +125,27 @@ export default function About() {
                 </AnimatePresence>
                 <div className="absolute inset-0" style={{ background: "linear-gradient(to top, var(--live-accent-30) 0%, transparent 55%)", zIndex: 2 }} />
 
-                {/* Left click zone — go prev */}
+                {/* Left click zone — prev in LTR, next in RTL */}
                 <div
-                  onClick={() => { if (!isDragSwipe.current) goPrev(); isDragSwipe.current = false; }}
+                  onClick={() => { if (!isDragSwipe.current) { isAr ? goNext() : goPrev(); } isDragSwipe.current = false; }}
                   className="group absolute left-0 top-0 bottom-0 flex items-center justify-start"
                   style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingLeft: 14 }}
                 >
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16 }}>
-                    ←
+                    {isAr ? "→" : "←"}
                   </div>
                 </div>
 
-                {/* Right click zone — go next */}
+                {/* Right click zone — next in LTR, prev in RTL */}
                 <div
-                  onClick={() => { if (!isDragSwipe.current) goNext(); isDragSwipe.current = false; }}
+                  onClick={() => { if (!isDragSwipe.current) { isAr ? goPrev() : goNext(); } isDragSwipe.current = false; }}
                   className="group absolute right-0 top-0 bottom-0 flex items-center justify-end"
                   style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingRight: 14 }}
                 >
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16 }}>
-                    →
+                    {isAr ? "←" : "→"}
                   </div>
                 </div>
 

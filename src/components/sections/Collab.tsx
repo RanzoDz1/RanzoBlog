@@ -18,6 +18,20 @@ export default function Collab() {
     window.addEventListener('scroll', check, { passive: true });
     return () => window.removeEventListener('scroll', check);
   }, []);
+
+  // Load pricing/stats from admin KV (admin-editable), fall back to i18n
+  const [packages, setPackages] = useState(t.collab.pricing.packages);
+  const [audienceStats, setAudienceStats] = useState(t.collab.stats);
+  useEffect(() => {
+    fetch("/api/admin/content?key=collab-pricing")
+      .then(r => r.json())
+      .then(d => {
+        if (d.data?.packages?.length) setPackages(d.data.packages);
+        if (d.data?.audienceStats?.length) setAudienceStats(d.data.audienceStats);
+      })
+      .catch(() => {});
+  }, []);
+
   const [form, setForm]         = useState({ name: "", email: "", brand: "", message: "" });
   const [formState, setFormState] = useState<FormState>("idle");
   const [selectedPkg, setSelectedPkg] = useState("");
@@ -114,7 +128,7 @@ export default function Collab() {
         <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.18 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 40 }}>
           <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 14 }}>
-            {t.collab.stats.map((stat) => (
+            {audienceStats.map((stat) => (
               <div key={stat.label} className="text-center rounded-2xl" style={{ padding: "32px 16px", border: "1px solid var(--live-accent-15)", background: "var(--live-accent-08)", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(to right, transparent, var(--live-accent), transparent)" }} />
                 <div className="text-gradient-vivid font-bold leading-none brand-ltr" style={{ fontFamily: "var(--font-display)", fontSize: 36, marginBottom: 12, direction: "ltr", unicodeBidi: "isolate" }}>{stat.value}</div>
@@ -206,7 +220,7 @@ export default function Collab() {
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {t.collab.pricing.packages.map((pkg, i) => {
+                {packages.map((pkg, i) => {
                   const isSelected = selectedPkg === pkg.name;
                   const isFeatured = !!pkg.tag;
                   return (

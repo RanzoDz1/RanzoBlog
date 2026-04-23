@@ -6,7 +6,7 @@ import { STORY_TITLES_AR, STORY_LOCATIONS_AR, STORY_BODIES_AR, STORY_EXCERPTS_AR
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Msg { id: string; name: string; email: string; brand?: string; message: string; date: string; read: boolean; }
-type Tab = "messages" | "countries" | "stories" | "gallery" | "apps" | "settings";
+type Tab = "messages" | "countries" | "stories" | "gallery" | "collab" | "apps" | "settings";
 type Story = (typeof STORIES)[0] & {
   imageX?: number; imageY?: number; imageZoom?: number;
   titleAr?: string; locationAr?: string; tagAr?: string; excerptAr?: string; bodyAr?: string[];
@@ -164,6 +164,7 @@ const TABS: { id: Tab; label: string; labelAr: string; icon: string }[] = [
   { id: "countries", label: "Countries",   labelAr: "الدول",      icon: "🌍" },
   { id: "stories",   label: "Stories",     labelAr: "القصص",      icon: "📖" },
   { id: "gallery",   label: "Gallery",     labelAr: "المعرض",     icon: "🖼️" },
+  { id: "collab",    label: "Collab",      labelAr: "التعاون",    icon: "💰" },
   { id: "apps",      label: "Travel Apps", labelAr: "تطبيقات",    icon: "📱" },
   { id: "settings",  label: "⚙ Settings",  labelAr: "الإعدادات",  icon: "🎛️" },
 ];
@@ -949,6 +950,8 @@ function StoriesTab({ token, lang }: { token: string; lang: "en" | "ar" }) {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveErr, setSaveErr] = useState("");
+  const [dragSt, setDragSt] = useState<number | null>(null);
+  const [dropSt, setDropSt] = useState<number | null>(null);
 
   // Load saved stories from KV on mount, merging AR fields
   useEffect(() => {
@@ -1004,10 +1007,31 @@ function StoriesTab({ token, lang }: { token: string; lang: "en" | "ar" }) {
           <button onClick={save} disabled={saving} style={btnP}>{saving ? (ar ? "راني نحفظ…" : "Saving…") : saved ? (ar ? "✓ تحفظت!" : "✓ Saved!") : (ar ? "احفظ كل شيء" : "Save All")}</button>
         </div>
       </div>
+      <div style={{ fontSize: 11, color: "rgba(248,248,240,0.25)", marginBottom: 8 }}>💡 Drag cards to reorder stories on the site</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {stories.map((s, i) => (
-          <div key={s.id} style={card}>
+          <div
+            key={s.id}
+            draggable
+            onDragStart={() => setDragSt(i)}
+            onDragOver={e => { e.preventDefault(); setDropSt(i); }}
+            onDrop={() => {
+              if (dragSt === null || dragSt === i) { setDragSt(null); setDropSt(null); return; }
+              setStories(ss => { const a = [...ss]; const [m] = a.splice(dragSt, 1); a.splice(i, 0, m); return a; });
+              setDragSt(null); setDropSt(null);
+            }}
+            onDragEnd={() => { setDragSt(null); setDropSt(null); }}
+            style={{
+              ...card,
+              cursor: open === i ? "default" : "grab",
+              opacity: dragSt === i ? 0.35 : 1,
+              border: dropSt === i && dragSt !== i ? "1px solid #7c3aed" : "1px solid rgba(255,255,255,0.08)",
+              transform: dropSt === i && dragSt !== i ? "scale(1.01)" : "scale(1)",
+              transition: "all 0.15s",
+            }}
+          >
             <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <span style={{ fontSize: 18, color: "rgba(248,248,240,0.18)", cursor: "grab", userSelect: "none" as const, flexShrink: 0 }}>⠿</span>
               <div style={{ width: 56, height: 56, borderRadius: 10, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }}>
                 <img src={s.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
@@ -1102,6 +1126,8 @@ function GalleryTab({ token }: { token: string }) {
   const [saved, setSaved] = useState(false);
   const [saveErr, setSaveErr] = useState("");
   const [editIdx, setEditIdx] = useState<number | null>(null);
+  const [dragGal, setDragGal] = useState<number | null>(null);
+  const [dropGal, setDropGal] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/content?key=gallery-items", { headers: { Authorization: `Bearer ${token}` } })
@@ -1123,6 +1149,11 @@ function GalleryTab({ token }: { token: string }) {
 
   const upd = (i: number, f: string, v: string) => setItems(is => is.map((item, j) => j === i ? { ...item, [f]: v } : item));
   const remove = (i: number) => { if (!confirm("Remove this photo from the gallery?")) return; setItems(is => is.filter((_, j) => j !== i)); if (editIdx === i) setEditIdx(null); };
+  const onGalDrop = (toIdx: number) => {
+    if (dragGal === null || dragGal === toIdx) { setDragGal(null); setDropGal(null); return; }
+    setItems(is => { const a = [...is]; const [m] = a.splice(dragGal, 1); a.splice(toIdx, 0, m); return a; });
+    setDragGal(null); setDropGal(null);
+  };
 
   const save = async () => {
     setSaving(true); setSaveErr("");
@@ -1154,12 +1185,30 @@ function GalleryTab({ token }: { token: string }) {
       </div>
 
       {/* Photo grid */}
+      <div style={{ fontSize: 11, color: "rgba(248,248,240,0.25)", marginBottom: 12 }}>💡 Drag cards to reorder · click Edit to change details</div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: 14 }}>
         {items.map((item, i) => (
-          <div key={item.id} style={{ ...card, padding: 0, overflow: "hidden" }}>
+          <div
+            key={item.id}
+            draggable
+            onDragStart={() => setDragGal(i)}
+            onDragOver={e => { e.preventDefault(); setDropGal(i); }}
+            onDrop={() => onGalDrop(i)}
+            onDragEnd={() => { setDragGal(null); setDropGal(null); }}
+            style={{
+              ...card, padding: 0, overflow: "hidden",
+              cursor: "grab",
+              opacity: dragGal === i ? 0.35 : 1,
+              border: dropGal === i && dragGal !== i ? "2px solid #7c3aed" : "1px solid rgba(255,255,255,0.08)",
+              transform: dropGal === i && dragGal !== i ? "scale(1.03)" : "scale(1)",
+              transition: "all 0.15s",
+            }}
+          >
             <div style={{ position: "relative", height: 130, background: "#111" }}>
               <img src={item.src} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.15"; }} />
-              <button onClick={() => remove(i)} style={{ position: "absolute", top: 6, right: 6, width: 22, height: 22, borderRadius: "50%", border: "none", background: "rgba(239,68,68,0.85)", color: "#fff", fontSize: 11, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>✕</button>
+              {/* Drag handle badge */}
+              <div style={{ position: "absolute", top: 6, left: 6, background: "rgba(0,0,0,0.55)", borderRadius: 4, padding: "2px 6px", fontSize: 12, color: "rgba(255,255,255,0.5)", userSelect: "none" as const }}>⠿</div>
+              <button onClick={e => { e.stopPropagation(); remove(i); }} style={{ position: "absolute", top: 6, right: 6, width: 22, height: 22, borderRadius: "50%", border: "none", background: "rgba(239,68,68,0.85)", color: "#fff", fontSize: 11, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>✕</button>
             </div>
             <div style={{ padding: 10 }}>
               {editIdx === i ? (
@@ -1192,6 +1241,149 @@ function GalleryTab({ token }: { token: string }) {
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Collab & Pricing ──────────────────────────────────────────────────────────
+type PricingPkg  = { name: string; price: string; alt: string; desc: string; tag: string };
+type AudienceStat = { value: string; label: string };
+
+const DEFAULT_PKGS: PricingPkg[] = [
+  { name: "Simple Story",   price: "~€50",        alt: "",             desc: "Single story frame",                     tag: "" },
+  { name: "Story Pack",     price: "~€100",       alt: "",             desc: "Multiple stories · 3 frames",            tag: "" },
+  { name: "Reel + Stories", price: "~€500",       alt: "",             desc: "Full reel production + 3 story frames",  tag: "Most Requested" },
+  { name: "Link in Bio",    price: "€200 / week", alt: "€500 / month", desc: "Pinned placement across all platforms",  tag: "" },
+  { name: "Custom",         price: "Let's talk",  alt: "",             desc: "Something else in mind? Let's discuss.", tag: "" },
+];
+const DEFAULT_AUD_STATS: AudienceStat[] = [
+  { value: "72%",   label: "Travel Enthusiasts" },
+  { value: "18-34", label: "Core Age Range" },
+  { value: "65%",   label: "High Purchase Intent" },
+  { value: "40+",   label: "Countries Reached" },
+];
+
+function CollabTab({ token }: { token: string }) {
+  const [pkgs, setPkgs]         = useState<PricingPkg[]>(DEFAULT_PKGS);
+  const [audStats, setAudStats] = useState<AudienceStat[]>(DEFAULT_AUD_STATS);
+  const [saving, setSaving]     = useState(false);
+  const [saved, setSaved]       = useState(false);
+  const [saveErr, setSaveErr]   = useState("");
+  const [dragIdx, setDragIdx]   = useState<number | null>(null);
+  const [dropIdx, setDropIdx]   = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/content?key=collab-pricing", { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(d => {
+        if (d.data?.packages?.length)     setPkgs(d.data.packages);
+        if (d.data?.audienceStats?.length) setAudStats(d.data.audienceStats);
+      })
+      .catch(() => {});
+  }, [token]);
+
+  const updPkg  = (i: number, f: string, v: string) => setPkgs(ps => ps.map((p, j) => j === i ? { ...p, [f]: v } : p));
+  const updStat = (i: number, f: string, v: string) => setAudStats(ss => ss.map((s, j) => j === i ? { ...s, [f]: v } : s));
+  const addPkg  = () => setPkgs(ps => [...ps, { name: "New Package", price: "€0", alt: "", desc: "", tag: "" }]);
+  const removePkg = (i: number) => { if (!confirm("Remove this package?")) return; setPkgs(ps => ps.filter((_, j) => j !== i)); };
+
+  const onDrop = (toIdx: number) => {
+    if (dragIdx === null || dragIdx === toIdx) { setDragIdx(null); setDropIdx(null); return; }
+    setPkgs(ps => { const a = [...ps]; const [m] = a.splice(dragIdx, 1); a.splice(toIdx, 0, m); return a; });
+    setDragIdx(null); setDropIdx(null);
+  };
+
+  const save = async () => {
+    setSaving(true); setSaveErr("");
+    try {
+      const r = await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "collab-pricing", data: { packages: pkgs, audienceStats: audStats } }),
+      });
+      if (r.ok) { setSaved(true); setTimeout(() => setSaved(false), 2500); }
+      else { const d = await r.json().catch(() => ({})); setSaveErr(d.error || `Error ${r.status}`); }
+    } catch { setSaveErr("Network error"); }
+    finally { setSaving(false); }
+  };
+
+  return (
+    <div style={{ padding: 36, maxWidth: 860 }}>
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32 }}>
+        <div>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: "#f8f8f0", marginBottom: 4 }}>Collab & Pricing</h2>
+          <p style={{ fontSize: 13, color: "rgba(248,248,240,0.4)" }}>Edit your pricing packages and audience stats shown in the Collab section.</p>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+          {saveErr && <div style={{ fontSize: 12, color: "#f87171" }}>{saveErr}</div>}
+          <button onClick={save} disabled={saving} style={btnP}>{saving ? "Saving…" : saved ? "✓ Saved!" : "Save All"}</button>
+        </div>
+      </div>
+
+      {/* ── Pricing Packages ── */}
+      <div style={{ ...card, marginBottom: 20 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#f8f8f0" }}>💰 Pricing Packages</div>
+          <button onClick={addPkg} style={{ ...btnG, padding: "7px 16px", fontSize: 11 }}>+ Add Package</button>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {pkgs.map((pkg, i) => (
+            <div
+              key={i}
+              draggable
+              onDragStart={() => setDragIdx(i)}
+              onDragOver={e => { e.preventDefault(); setDropIdx(i); }}
+              onDrop={() => onDrop(i)}
+              onDragEnd={() => { setDragIdx(null); setDropIdx(null); }}
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: dropIdx === i && dragIdx !== i ? "1px solid #7c3aed" : "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 12, padding: 18,
+                opacity: dragIdx === i ? 0.4 : 1,
+                transform: dropIdx === i && dragIdx !== i ? "scale(1.01)" : "scale(1)",
+                transition: "all 0.15s", cursor: "grab",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <span style={{ fontSize: 18, color: "rgba(248,248,240,0.2)", cursor: "grab", userSelect: "none" as const, flexShrink: 0 }}>⠿</span>
+                <div style={{ flex: 1, fontSize: 13, fontWeight: 600, color: "#f8f8f0" }}>{pkg.name || "Untitled"}</div>
+                {pkg.tag && <span style={{ fontSize: 9, padding: "3px 10px", borderRadius: 999, background: "rgba(124,58,237,0.2)", color: "#a78bfa", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" as const }}>{pkg.tag}</span>}
+                <button onClick={() => removePkg(i)} style={{ ...btnD, padding: "4px 12px", fontSize: 11, flexShrink: 0 }}>✕</button>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div><span style={label}>Package Name</span><input style={inp} value={pkg.name} onChange={e => updPkg(i, "name", e.target.value)} /></div>
+                <div><span style={label}>Tag (e.g. "Most Requested")</span><input style={inp} value={pkg.tag} onChange={e => updPkg(i, "tag", e.target.value)} placeholder="Leave empty" /></div>
+                <div><span style={label}>Main Price</span><input style={inp} value={pkg.price} onChange={e => updPkg(i, "price", e.target.value)} placeholder="~€500" /></div>
+                <div><span style={label}>Alt Price (monthly, etc.)</span><input style={inp} value={pkg.alt} onChange={e => updPkg(i, "alt", e.target.value)} placeholder="€500 / month" /></div>
+                <div style={{ gridColumn: "1/-1" }}><span style={label}>Description</span><input style={inp} value={pkg.desc} onChange={e => updPkg(i, "desc", e.target.value)} /></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 11, color: "rgba(248,248,240,0.25)", marginTop: 14, lineHeight: 1.7 }}>
+          💡 Drag the <strong style={{ color: "rgba(248,248,240,0.4)" }}>⠿</strong> handle to reorder packages. Changes are live on the site after saving.
+        </p>
+      </div>
+
+      {/* ── Audience Stats ── */}
+      <div style={card}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: "#f8f8f0", marginBottom: 20 }}>📊 Audience Stats</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          {audStats.map((s, i) => (
+            <div key={i} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: 14 }}>
+              <div style={{ marginBottom: 10 }}>
+                <span style={label}>Value (e.g. 72% or 18-34)</span>
+                <input style={inp} value={s.value} onChange={e => updStat(i, "value", e.target.value)} />
+              </div>
+              <div>
+                <span style={label}>Label</span>
+                <input style={inp} value={s.label} onChange={e => updStat(i, "label", e.target.value)} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -1290,6 +1482,8 @@ function AboutSlides({ token }: { token: string }) {
   const [newUrl, setNewUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [dragSl, setDragSl] = useState<number | null>(null);
+  const [dropSl, setDropSl] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/content?key=about-slides", { headers: { Authorization: `Bearer ${token}` } })
@@ -1333,7 +1527,27 @@ function AboutSlides({ token }: { token: string }) {
       {/* Current slides */}
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
         {slides.map((src, i) => (
-          <div key={i} style={{ ...card, display: "flex", alignItems: "center", gap: 12, padding: "12px 16px" }}>
+          <div
+            key={i}
+            draggable
+            onDragStart={() => setDragSl(i)}
+            onDragOver={e => { e.preventDefault(); setDropSl(i); }}
+            onDrop={() => {
+              if (dragSl === null || dragSl === i) { setDragSl(null); setDropSl(null); return; }
+              setSlides(s => { const a = [...s]; const [m] = a.splice(dragSl, 1); a.splice(i, 0, m); return a; });
+              setDragSl(null); setDropSl(null);
+            }}
+            onDragEnd={() => { setDragSl(null); setDropSl(null); }}
+            style={{
+              ...card, display: "flex", alignItems: "center", gap: 12, padding: "12px 16px",
+              cursor: "grab",
+              opacity: dragSl === i ? 0.35 : 1,
+              border: dropSl === i && dragSl !== i ? "1px solid #7c3aed" : "1px solid rgba(255,255,255,0.08)",
+              transform: dropSl === i && dragSl !== i ? "scale(1.01)" : "scale(1)",
+              transition: "all 0.15s",
+            }}
+          >
+            <span style={{ fontSize: 16, color: "rgba(248,248,240,0.2)", cursor: "grab", userSelect: "none" as const, flexShrink: 0 }}>⠿</span>
             <img src={src} alt="" style={{ width: 64, height: 64, objectFit: "cover", borderRadius: 8, flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }} onError={e => { (e.target as HTMLImageElement).style.opacity = "0.3"; }} />
             <div style={{ flex: 1, fontSize: 11, color: "rgba(248,248,240,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{src}</div>
             <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
@@ -1577,6 +1791,7 @@ export default function AdminPage() {
             {tab === "countries" && <Countries  token={token} />}
             {tab === "stories"   && <StoriesTab  token={token} lang={lang} />}
             {tab === "gallery"   && <GalleryTab  token={token} />}
+            {tab === "collab"    && <CollabTab   token={token} />}
             {tab === "apps"      && <AppsTab     token={token} />}
             {tab === "settings"  && <Settings   token={token} />}
           </motion.div>
