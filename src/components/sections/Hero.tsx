@@ -353,7 +353,7 @@ export default function Hero() {
           <button
             className="btn-primary"
             style={{ color: "#000", border: "none", cursor: "pointer" }}
-            onClick={() => navigateTo("collab-form")}
+            onClick={() => navigateTo(isMobile ? "pricing" : "collab-form")}
           >
             {t.nav.workWithMe}
           </button>

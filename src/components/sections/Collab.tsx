@@ -210,7 +210,7 @@ export default function Collab() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr]" style={{ gap: 20, alignItems: "start" }}>
 
             {/* ── Pricing column ── */}
-            <div>
+            <div id="pricing">
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 18 }}>
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "2.5px", textTransform: "uppercase" as const, color: "var(--muted)" }}>
                   {t.collab.pricing.label}
