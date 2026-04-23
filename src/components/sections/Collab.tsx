@@ -141,13 +141,13 @@ export default function Collab() {
         {/* Collab Types */}
         <motion.div initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease, delay: 0.2 }}
           className="w-full" style={{ maxWidth: 800, marginBottom: 56 }}>
-          <div className="overflow-x-auto md:overflow-x-visible" style={{ scrollbarWidth: "none", msOverflowStyle: "none", paddingBottom: 4 }}>
-          <div className="flex md:grid md:grid-cols-4" style={{ gap: 12 }}>
+          <div>
+          <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: 12 }}>
             {t.collab.types.map((type, i) => (
               <motion.div key={i} initial={false} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + i * 0.08, duration: 0.5, ease }}
                 className="rounded-xl transition-all duration-300"
-                style={{ flexShrink: 0, minWidth: 170, padding: "14px 14px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)", display: "flex", alignItems: "flex-start", gap: 12 }}
+                style={{ padding: "14px 14px", border: "1px solid var(--border)", background: "rgba(255,255,255,0.02)", display: "flex", alignItems: "flex-start", gap: 12 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${type.color}50`; (e.currentTarget as HTMLElement).style.background = `${type.color}08`; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}>
                 <div className="flex items-center justify-center flex-shrink-0"
