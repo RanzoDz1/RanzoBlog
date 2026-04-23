@@ -129,7 +129,7 @@ export default function About() {
                 <div
                   onClick={() => { if (!isDragSwipe.current) { isAr ? goNext() : goPrev(); } isDragSwipe.current = false; }}
                   className="group absolute left-0 top-0 bottom-0 flex items-center justify-start"
-                  style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingLeft: 14 }}
+                  style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingLeft: 14, direction: "ltr" }}
                 >
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16 }}>
@@ -141,7 +141,7 @@ export default function About() {
                 <div
                   onClick={() => { if (!isDragSwipe.current) { isAr ? goPrev() : goNext(); } isDragSwipe.current = false; }}
                   className="group absolute right-0 top-0 bottom-0 flex items-center justify-end"
-                  style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingRight: 14 }}
+                  style={{ width: "45%", zIndex: 4, cursor: "pointer", paddingRight: 14, direction: "ltr" }}
                 >
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{ width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16 }}>
