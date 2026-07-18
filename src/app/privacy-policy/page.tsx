@@ -94,7 +94,7 @@ export default function PrivacyPolicy() {
               <li><strong style={{ color: "var(--white, #f8f8f0)" }}>Portability</strong> — request transfer of your data</li>
             </ul>
             <p style={{ marginTop: 12 }}>
-              Contact: <a href="mailto:ranzodzt@gmail.com" style={{ color: "var(--blue-l, #60a5fa)" }}>ranzodzt@gmail.com</a>
+              Contact: <a href="/#collab-form" style={{ color: "var(--blue-l, #60a5fa)" }}>our contact form</a>
             </p>
           </section>
 
@@ -116,7 +116,7 @@ export default function PrivacyPolicy() {
             <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--white, #f8f8f0)", marginBottom: 12 }}>8. Contact</h2>
             <div style={{ padding: "16px 20px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", fontSize: 14 }}>
               <p style={{ fontWeight: 700, color: "var(--white, #f8f8f0)", marginBottom: 6 }}>RanzoDz</p>
-              <p>Email: <a href="mailto:ranzodzt@gmail.com" style={{ color: "var(--blue-l, #60a5fa)" }}>ranzodzt@gmail.com</a></p>
+              <p>Contact: <a href="/#collab-form" style={{ color: "var(--blue-l, #60a5fa)" }}>our contact form</a></p>
               <p>Website: <a href="https://ranzodz.com" style={{ color: "var(--blue-l, #60a5fa)" }}>https://ranzodz.com</a></p>
             </div>
           </section>

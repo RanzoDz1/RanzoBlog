@@ -91,7 +91,7 @@ export default function Terms() {
             <h2 style={{ fontSize: 18, fontWeight: 700, color: "var(--white, #f8f8f0)", marginBottom: 12 }}>8. Contact</h2>
             <div style={{ padding: "16px 20px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", fontSize: 14 }}>
               <p style={{ fontWeight: 700, color: "var(--white, #f8f8f0)", marginBottom: 6 }}>RanzoDz</p>
-              <p>Email: <a href="mailto:ranzodzt@gmail.com" style={{ color: "var(--blue-l, #60a5fa)" }}>ranzodzt@gmail.com</a></p>
+              <p>Contact: <a href="/#collab-form" style={{ color: "var(--blue-l, #60a5fa)" }}>our contact form</a></p>
             </div>
           </section>
         </div>

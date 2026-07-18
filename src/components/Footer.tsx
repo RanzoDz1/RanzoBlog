@@ -175,9 +175,15 @@ export default function Footer() {
             >
               Terms
             </a>
-            <p className="text-[11px]" style={{ color: "var(--muted)" }}>
-              ranzodzt@gmail.com
-            </p>
+            <a
+              href="#collab"
+              className="text-[11px]"
+              style={{ color: "var(--muted)", textDecoration: "none" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "rgba(248,248,240,0.8)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--muted)"; }}
+            >
+              Contact
+            </a>
           </div>
         </div>
       </div>

@@ -350,9 +350,9 @@ export default function Collab() {
           </div>
 
           <div className="text-center" style={{ marginTop: 28 }}>
-            <a href="mailto:ranzodzt@gmail.com" className="inline-flex items-center transition-colors duration-200 hover:text-white" style={{ gap: 12, fontSize: 13, color: "var(--muted)" }}>
+            <a href="#collab-form" className="inline-flex items-center transition-colors duration-200 hover:text-white" style={{ gap: 12, fontSize: 13, color: "var(--muted)" }}>
               <span className="flex items-center justify-center rounded-full" style={{ width: 32, height: 32, fontSize: 14, background: "var(--live-accent-15)", border: "1px solid var(--live-accent-30)" }}>✉</span>
-              <span className="brand-ltr">ranzodzt@gmail.com</span>
+              <span>Send me a message</span>
             </a>
           </div>
         </motion.div>
