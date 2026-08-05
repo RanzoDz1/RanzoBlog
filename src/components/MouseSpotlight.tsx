@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { subscribePointer, isCoarsePointer, prefersReducedMotion } from "@/lib/pointer";
 
 export default function MouseSpotlight() {
   const ref = useRef<HTMLDivElement>(null);
@@ -7,21 +8,15 @@ export default function MouseSpotlight() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (isCoarsePointer() || prefersReducedMotion()) return;
 
-    const move = (e: MouseEvent) => {
-      // Instant position — no CSS transition delay
-      el.style.transform = `translate(${e.clientX - 140}px, ${e.clientY - 140}px)`;
-
-      // Match current section accent color from CSS vars updated by scroll system
-      const s = getComputedStyle(document.documentElement);
-      const r = s.getPropertyValue("--live-r").trim();
-      const g = s.getPropertyValue("--live-g").trim();
-      const b = s.getPropertyValue("--live-b").trim();
-      el.style.background = `radial-gradient(circle, rgba(${r},${g},${b},0.20) 0%, rgba(${r},${g},${b},0.07) 45%, transparent 70%)`;
-    };
-
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
+    // Position only. The gradient colour is expressed in CSS against the
+    // --live-* vars, so the browser recolours it for free — no getComputedStyle
+    // read (which forced a full style recalc on every single mouse event) and
+    // no background rewrite (which re-rasterised a blurred layer every event).
+    return subscribePointer((x, y) => {
+      el.style.transform = `translate3d(${x - 140}px, ${y - 140}px, 0)`;
+    });
   }, []);
 
   return (
@@ -37,7 +32,8 @@ export default function MouseSpotlight() {
         borderRadius: "50%",
         pointerEvents: "none",
         zIndex: 9999,
-        background: "radial-gradient(circle, rgba(34,197,94,0.20) 0%, rgba(34,197,94,0.07) 45%, transparent 70%)",
+        background:
+          "radial-gradient(circle, rgba(var(--live-r),var(--live-g),var(--live-b),0.20) 0%, rgba(var(--live-r),var(--live-g),var(--live-b),0.07) 45%, transparent 70%)",
         filter: "blur(28px)",
         willChange: "transform",
       }}

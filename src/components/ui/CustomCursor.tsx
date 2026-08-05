@@ -1,15 +1,18 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { subscribePointer, isCoarsePointer } from "@/lib/pointer";
 
 export default function CustomCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const [visible,  setVisible]  = useState(false);
   const [hovering, setHovering] = useState(false);
+  const visibleRef  = useRef(false);
+  const hoveringRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (isCoarsePointer()) return;
     if (window.location.pathname.startsWith("/admin")) return;
 
     // Hide system cursor
@@ -20,27 +23,29 @@ export default function CustomCursor() {
     style.textContent = "button{cursor:none!important}a{cursor:none!important}input{cursor:none!important}textarea{cursor:none!important}";
     document.head.appendChild(style);
 
-    // Use transform instead of left/top — GPU-composited, no layout recalculation
-    const move = (e: MouseEvent) => {
-      const x = e.clientX;
-      const y = e.clientY;
-      if (dotRef.current)  dotRef.current.style.transform  = `translate(${x}px,${y}px) translate(-50%,-50%)`;
-      if (ringRef.current) ringRef.current.style.transform = `translate(${x}px,${y}px) translate(-50%,-50%)`;
-      setVisible(true);
-    };
+    // Frame-batched via the shared pointer stream; transform only, so this is
+    // a compositor-only update with no layout or style recalculation.
+    const unsub = subscribePointer((x, y) => {
+      const t = `translate(${x}px,${y}px) translate(-50%,-50%)`;
+      if (dotRef.current)  dotRef.current.style.transform  = t;
+      if (ringRef.current) ringRef.current.style.transform = t;
+      if (!visibleRef.current) { visibleRef.current = true; setVisible(true); }
+    });
 
-    const leave = () => setVisible(false);
-    const enter = () => setVisible(true);
+    const leave = () => { visibleRef.current = false; setVisible(false); };
+    const enter = () => { visibleRef.current = true;  setVisible(true); };
 
+    // mouseover only fires when the hovered element changes, but the state
+    // write is still guarded so identical results never schedule a render.
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement;
-      setHovering(!!(
+      const next = !!(
         t.closest("a") || t.closest("button") || t.closest("[role='button']") ||
         t.closest(".story-card") || t.tagName === "INPUT" || t.tagName === "TEXTAREA"
-      ));
+      );
+      if (next !== hoveringRef.current) { hoveringRef.current = next; setHovering(next); }
     };
 
-    window.addEventListener("mousemove", move, { passive: true });
     document.addEventListener("mouseleave", leave);
     document.addEventListener("mouseenter", enter);
     document.addEventListener("mouseover", onOver, { passive: true });
@@ -49,7 +54,7 @@ export default function CustomCursor() {
       document.documentElement.style.cursor = "";
       document.body.style.cursor = "";
       document.getElementById("__custom-cursor-style")?.remove();
-      window.removeEventListener("mousemove", move);
+      unsub();
       document.removeEventListener("mouseleave", leave);
       document.removeEventListener("mouseenter", enter);
       document.removeEventListener("mouseover", onOver);

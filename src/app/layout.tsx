@@ -1,7 +1,25 @@
 import type { Metadata } from "next";
+import { Space_Grotesk, Cairo } from "next/font/google";
 import "./globals.css";
 import ClientWrapper from "@/components/ClientWrapper";
 import CookieBanner from "@/components/CookieBanner";
+
+// Self-hosted at build time — no fonts.googleapis.com round-trip on the
+// critical path, and the woff2 files are preloaded from our own origin.
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-cairo",
+  display: "swap",
+  preload: false, // only needed once the visitor switches to Arabic
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ranzodz.com"),
@@ -46,14 +64,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning style={{ overflowX: "hidden" }}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${spaceGrotesk.variable} ${cairo.variable}`}
+      style={{ overflowX: "hidden" }}
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         <meta name="theme-color" content="#060608" />
         <script
           type="application/ld+json"

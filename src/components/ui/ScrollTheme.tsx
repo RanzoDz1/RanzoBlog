@@ -12,6 +12,10 @@ const SECTIONS = [
   { id: "collab",  r: 244, g: 63,  b: 94  }, // 🌹 Rose    — passion & action
 ];
 
+// Granular enough that the dominant section is re-evaluated smoothly while
+// scrolling, without ever touching getBoundingClientRect on the main thread.
+const THRESHOLDS = Array.from({ length: 26 }, (_, i) => i / 25);
+
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
@@ -19,62 +23,29 @@ function lerp(a: number, b: number, t: number) {
 export default function ScrollTheme() {
   const topRef    = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const barRef    = useRef<HTMLStyleElement | null>(null);
   const cur       = useRef<[number, number, number]>([34, 197, 94]); // start at hero green
+  const target    = useRef<[number, number, number]>([34, 197, 94]);
+  const painted   = useRef<[number, number, number]>([-1, -1, -1]);
   const raf       = useRef(0);
+  const running   = useRef(false);
 
   useEffect(() => {
-    // Inject dynamic scrollbar style
-    const style = document.createElement("style");
-    document.head.appendChild(style);
-    barRef.current = style;
+    const root = document.documentElement;
 
-    const tick = () => {
-      const winH = window.innerHeight;
-      let best = SECTIONS[0];
-      let bestScore = -Infinity;
+    // ── Paint: only ever called when the rounded colour actually changed ──
+    const paint = (r: number, g: number, b: number) => {
+      const [pr, pg, pb] = painted.current;
+      if (r === pr && g === pg && b === pb) return;
+      painted.current = [r, g, b];
 
-      for (const s of SECTIONS) {
-        const el = document.getElementById(s.id);
-        if (!el) continue;
-        const rect = s === SECTIONS[0]
-          ? el.getBoundingClientRect()
-          : el.getBoundingClientRect();
-        const visible = Math.min(rect.bottom, winH) - Math.max(rect.top, 0);
-        if (visible > bestScore) { bestScore = visible; best = s; }
-      }
-
-      // Smooth interpolation toward target
-      const spd = 0.04;
-      cur.current = [
-        lerp(cur.current[0], best.r, spd),
-        lerp(cur.current[1], best.g, spd),
-        lerp(cur.current[2], best.b, spd),
-      ] as [number, number, number];
-
-      const [r, g, b] = cur.current.map(Math.round);
-
-      // ── TOP glow overlay (above section bg, below content) ──
       if (topRef.current) {
         topRef.current.style.background =
           `radial-gradient(ellipse 160% 90% at 50% 0%, rgba(${r},${g},${b},0.13) 0%, transparent 65%)`;
       }
-      // ── BOTTOM glow overlay ──
       if (bottomRef.current) {
         bottomRef.current.style.background =
           `radial-gradient(ellipse 160% 90% at 50% 100%, rgba(${r},${g},${b},0.07) 0%, transparent 65%)`;
       }
-
-      // ── Scrollbar color ──
-      if (barRef.current) {
-        barRef.current.textContent = `
-          ::-webkit-scrollbar-thumb { background: rgba(${r},${g},${b},0.55) !important; border-radius: 4px; }
-          ::selection { background: rgba(${r},${g},${b},0.55) !important; }
-        `;
-      }
-
-      // ── CSS vars — used everywhere for live theming ──
-      const root = document.documentElement;
 
       // Bright version: blend 50% toward white for gradient highlights
       const lr = Math.min(255, Math.round(r + (255 - r) * 0.5));
@@ -92,14 +63,100 @@ export default function ScrollTheme() {
       root.style.setProperty("--live-accent-50",    `rgba(${r},${g},${b},0.50)`);
       root.style.setProperty("--live-glow",         `rgba(${r},${g},${b},0.35)`);
       root.style.setProperty("--live-glow-lg",      `rgba(${r},${g},${b},0.18)`);
+      // NOTE: the scrollbar thumb and ::selection are already declared against
+      // these vars in globals.css, so there is no <style> tag to rewrite here.
+    };
 
+    // ── Animation: runs only while the colour is still travelling ──
+    const tick = () => {
+      const spd = 0.08;
+      const [tr, tg, tb] = target.current;
+      const c = cur.current;
+      c[0] = lerp(c[0], tr, spd);
+      c[1] = lerp(c[1], tg, spd);
+      c[2] = lerp(c[2], tb, spd);
+
+      const done =
+        Math.abs(c[0] - tr) < 0.4 &&
+        Math.abs(c[1] - tg) < 0.4 &&
+        Math.abs(c[2] - tb) < 0.4;
+
+      if (done) {
+        c[0] = tr; c[1] = tg; c[2] = tb;
+      }
+
+      paint(Math.round(c[0]), Math.round(c[1]), Math.round(c[2]));
+
+      if (done) {
+        running.current = false;   // settled — stop burning frames
+        return;
+      }
       raf.current = requestAnimationFrame(tick);
     };
 
-    raf.current = requestAnimationFrame(tick);
+    const kick = () => {
+      if (running.current || document.hidden) return;
+      running.current = true;
+      raf.current = requestAnimationFrame(tick);
+    };
+
+    // ── Which section owns the viewport? Answered by IntersectionObserver,
+    //    so we never force a synchronous layout while scrolling. ──
+    const visible = new Map<string, number>();
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          visible.set(e.target.id, e.isIntersecting ? e.intersectionRect.height : 0);
+        }
+        let bestId = SECTIONS[0].id;
+        let bestPx = -1;
+        for (const s of SECTIONS) {
+          const px = visible.get(s.id) ?? 0;
+          if (px > bestPx) { bestPx = px; bestId = s.id; }
+        }
+        const next = SECTIONS.find((s) => s.id === bestId)!;
+        const [tr, tg, tb] = target.current;
+        if (next.r !== tr || next.g !== tg || next.b !== tb) {
+          target.current = [next.r, next.g, next.b];
+          kick();
+        }
+      },
+      { threshold: THRESHOLDS }
+    );
+
+    // Sections are code-split, so they mount after us. Observe whatever exists
+    // now and watch for the rest, then stop watching once all are wired up.
+    const observed = new Set<string>();
+    const wire = () => {
+      for (const s of SECTIONS) {
+        if (observed.has(s.id)) continue;
+        const el = document.getElementById(s.id);
+        if (el) { io.observe(el); observed.add(s.id); }
+      }
+      return observed.size === SECTIONS.length;
+    };
+
+    let mo: MutationObserver | null = null;
+    if (!wire()) {
+      mo = new MutationObserver(() => {
+        if (wire()) { mo?.disconnect(); mo = null; }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
+
+    const onVisibility = () => { if (!document.hidden) kick(); };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // Paint the initial colour once so the vars match `cur` from frame one.
+    paint(34, 197, 94);
+
     return () => {
       cancelAnimationFrame(raf.current);
-      barRef.current?.remove();
+      running.current = false;
+      io.disconnect();
+      mo?.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
@@ -110,7 +167,6 @@ export default function ScrollTheme() {
     height: "55vh",
     zIndex: 6,
     pointerEvents: "none",
-    willChange: "background",
     mixBlendMode: "screen",   // blends with dark backgrounds — makes color visible
   };
 

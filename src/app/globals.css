@@ -1,6 +1,8 @@
-/* ── FONTS ── */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
+/* ── FONTS ──
+   Space Grotesk + Cairo are self-hosted by next/font in app/layout.tsx and
+   exposed as --font-space-grotesk / --font-cairo. They used to be pulled in
+   here with @import, which made first paint wait on a three-hop serial chain:
+   globals.css → fonts.googleapis.com stylesheet → fonts.gstatic.com files. */
 
 @import "tailwindcss";
 
@@ -24,8 +26,8 @@
   --glow-p:     rgba(124,58,237,0.4);
   --glow-b:     rgba(37,99,235,0.3);
   --glow-a:     rgba(217,119,6,0.35);
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-ui:      'Space Grotesk', system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-ui:      var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
   --radius:     12px;
   --radius-lg:  20px;
 
@@ -280,8 +282,8 @@ button { border: none; background: none; font-family: inherit; }
 /* ── ARABIC / RTL SUPPORT ── */
 /* When Arabic is active, switch font vars and remove letter-spacing */
 [data-lang="ar"] {
-  --font-display: 'Cairo', system-ui, sans-serif;
-  --font-ui:      'Cairo', system-ui, sans-serif;
+  --font-display: var(--font-cairo), 'Cairo', system-ui, sans-serif;
+  --font-ui:      var(--font-cairo), 'Cairo', system-ui, sans-serif;
 }
 [data-lang="ar"] body {
   font-family: var(--font-ui);

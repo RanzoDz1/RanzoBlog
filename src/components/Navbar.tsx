@@ -100,7 +100,7 @@ export default function Navbar() {
           <button
             onClick={() => navigateTo("hero")}
             className="brand-ltr text-[20px] font-bold tracking-[4px] text-gradient"
-            style={{ fontFamily: "'Space Grotesk', system-ui, sans-serif", flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            style={{ fontFamily: "var(--font-display)", flexShrink: 0, background: "none", border: "none", cursor: "pointer", padding: 0 }}
           >
             RANZODZ
           </button>
@@ -150,7 +150,7 @@ export default function Navbar() {
                   background: "none", border: "none", cursor: "pointer",
                   padding: "4px 0",
                   letterSpacing: lang === "ar" ? "0" : "2px",
-                  fontFamily: lang === "ar" ? "'Cairo', system-ui, sans-serif" : undefined,
+                  fontFamily: lang === "ar" ? "var(--font-ui)" : undefined,
                   fontSize: lang === "ar" ? "13px" : "11px",
                 }}
               >

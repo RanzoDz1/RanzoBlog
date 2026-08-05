@@ -6,6 +6,7 @@ import { IMAGES } from "@/lib/images";
 import { STATS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import { useNavTransition } from "@/components/NavTransitionProvider";
+import { subscribePointer, isCoarsePointer, prefersReducedMotion } from "@/lib/pointer";
 
 const ParticleCanvas = dynamic(() => import("@/components/ui/ParticleCanvas"), { ssr: false });
 
@@ -125,16 +126,16 @@ export default function Hero() {
     return () => clearTimeout(t);
   }, []);
 
-  // Mouse follow glow — instant, direct DOM
+  // Mouse follow glow — frame-batched, transform-only.
+  // (Writing left/top forced a layout pass plus a re-blur of a 500px element
+  //  on every mouse event; transform stays on the compositor.)
   useEffect(() => {
     const el = glowRef.current;
     if (!el) return;
-    const move = (e: MouseEvent) => {
-      el.style.left = `${e.clientX}px`;
-      el.style.top = `${e.clientY}px`;
-    };
-    window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
+    if (isCoarsePointer() || prefersReducedMotion()) return;
+    return subscribePointer((x, y) => {
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    });
   }, []);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
@@ -212,7 +213,7 @@ export default function Hero() {
             transform: "translate(-50%, -50%)",
             background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%)",
             filter: "blur(40px)",
-            willChange: "left, top",
+            willChange: "transform",
           }}
         />
       </div>

@@ -20,15 +20,38 @@ export default function Preloader() {
       });
     }, 80);
 
-    // Minimum display time
-    const timer = setTimeout(() => {
+    // The overlay used to sit there for a flat 1.8s + 0.4s fade no matter how
+    // fast the page actually was. Now it clears as soon as the page is really
+    // loaded, with a short floor so it doesn't flash, and a hard cap so a slow
+    // asset can never hold the site hostage.
+    const MIN_MS = 700;
+    const MAX_MS = 1800;
+    const startedAt = performance.now();
+    let finished = false;
+    let settleTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
       setProgress(100);
-      setTimeout(() => setLoading(false), 400);
-    }, 1800);
+      settleTimer = setTimeout(() => setLoading(false), 300);
+    };
+
+    const settle = () => {
+      const remaining = Math.max(0, MIN_MS - (performance.now() - startedAt));
+      settleTimer = setTimeout(finish, remaining);
+    };
+
+    if (document.readyState === "complete") settle();
+    else window.addEventListener("load", settle, { once: true });
+
+    const cap = setTimeout(finish, MAX_MS);
 
     return () => {
       clearInterval(interval);
-      clearTimeout(timer);
+      clearTimeout(cap);
+      if (settleTimer) clearTimeout(settleTimer);
+      window.removeEventListener("load", settle);
     };
   }, []);
 

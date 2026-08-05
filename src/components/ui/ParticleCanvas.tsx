@@ -1,15 +1,20 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/pointer";
 
 export default function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    let animId: number;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    if (prefersReducedMotion()) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
+
+    let animId = 0;
+    let running = false;
+    let onScreen = true;
 
     const resize = () => {
       canvas.width  = window.innerWidth;
@@ -46,10 +51,36 @@ export default function ParticleCanvas() {
       });
       animId = requestAnimationFrame(draw);
     };
-    draw();
+
+    // Only animate while the hero is actually on screen and the tab is
+    // focused — the loop used to keep running for the whole page, competing
+    // for frames with the scroll the user was doing further down.
+    const start = () => {
+      if (running || document.hidden || !onScreen) return;
+      running = true;
+      animId = requestAnimationFrame(draw);
+    };
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(animId);
+    };
+
+    const io = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      if (onScreen) start(); else stop();
+    }, { threshold: 0 });
+    io.observe(canvas);
+
+    const onVisibility = () => { if (document.hidden) stop(); else start(); };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    start();
 
     return () => {
-      cancelAnimationFrame(animId);
+      stop();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
     };
   }, []);
