@@ -7,6 +7,7 @@ import { STATS } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import { useNavTransition } from "@/components/NavTransitionProvider";
 import { subscribePointer, isCoarsePointer, prefersReducedMotion } from "@/lib/pointer";
+import { optimizeImage, darkenLayer } from "@/lib/imageOpt";
 
 const ParticleCanvas = dynamic(() => import("@/components/ui/ParticleCanvas"), { ssr: false });
 
@@ -113,8 +114,12 @@ export default function Hero() {
       });
   }, []);
 
-  // Preload whichever image will be used
-  const bgImageUrl = heroPos?.imageUrl || IMAGES.auroraRoad;
+  // Preload whichever image will be used. Delivered as AVIF/WebP at auto quality
+  // with the saturation boost baked in, instead of the full-size original JPEG.
+  const bgImageUrl = optimizeImage(heroPos?.imageUrl || IMAGES.auroraRoad, {
+    width: 2000,
+    saturation: 25,
+  });
   useEffect(() => {
     const img = new Image();
     img.src = bgImageUrl;
@@ -155,7 +160,7 @@ export default function Hero() {
       style={{ background: "var(--black)" }}
     >
       {/* Background image with parallax */}
-      <motion.div className="absolute inset-0 z-0" style={{ y: bgY, scale: bgScale }}>
+      <motion.div className="absolute inset-0 z-0" style={{ y: bgY, scale: bgScale, willChange: "transform" }}>
         <div
           className="absolute inset-0"
           style={{ opacity: bgLoaded ? 1 : 0, transition: "opacity 1s", overflow: "hidden" }}
@@ -164,10 +169,16 @@ export default function Hero() {
             style={{
               position: "absolute",
               inset: 0,
-              backgroundImage: bgLoaded ? `url(${bgImageUrl})` : "none",
+              // The darkening used to be `filter: brightness(0.40)`. A filter forces
+              // its own render surface, and this layer's ancestor animates `scale`
+              // on scroll — so the filtered surface was re-rasterised every parallax
+              // step. brightness(0.4) is mathematically identical to compositing
+              // black at 0.6 alpha, so it is painted in this same background layer
+              // instead: same pixels, no render surface, no re-raster.
+              // saturate(1.25) is baked at the CDN via e_saturation:25.
+              backgroundImage: bgLoaded ? `${darkenLayer(0.6)}, url(${bgImageUrl})` : "none",
               backgroundSize: "cover",
               backgroundPosition: "center",
-              filter: "brightness(0.40) saturate(1.25)",
               // scale(1.5) creates 25% overflow on all sides so translate always has room
               // translate converts 0-100 slider → -15% to +15% shift
               transform: (() => {
